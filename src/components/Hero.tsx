@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Hero = () => {
   const [avatar, setAvatar] = useState<string>("");
@@ -35,7 +36,7 @@ const Hero = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="flex-1 text-center md:text-left space-y-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800">
-              <span className="block">Hi, I'm </span>
+              <span className="block">Hi, I&apos;m </span>
               <span className="text-indigo-600">Mai Vủ</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600">
@@ -66,10 +67,12 @@ const Hero = () => {
           >
             <div className="absolute inset-0 bg-indigo-600 rounded-full opacity-10 animate-pulse"></div>
             <div className="absolute inset-2 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg">
-              <img 
+              <Image 
                 src={avatar || "/avatar-placeholder.jpg.jpg"} 
                 alt="Mai Vủ"
                 className="w-full h-full object-cover"
+                width={288}
+                height={288}
               />
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-white font-medium">Edit Avatar</span>
@@ -181,10 +184,12 @@ const AvatarEditModal = ({
         
         <div className="mb-6">
           <div className="w-40 h-40 mx-auto relative rounded-full overflow-hidden border-4 border-indigo-100">
-            <img 
+            <Image 
               src={previewAvatar || "/avatar-placeholder.jpg.jpg"} 
               alt="Avatar Preview" 
               className="w-full h-full object-cover"
+              width={160}
+              height={160}
             />
           </div>
         </div>

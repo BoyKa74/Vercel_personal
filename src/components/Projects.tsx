@@ -1,7 +1,5 @@
 "use client"
 
-import Image from "next/image";
-
 // Project data structure
 type Project = {
   id: number;

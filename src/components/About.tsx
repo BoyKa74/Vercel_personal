@@ -1,7 +1,5 @@
 "use client"
 
-import Image from "next/image";
-
 const About = () => {
   return (
     <section id="about" className="py-20 bg-white">
@@ -14,17 +12,17 @@ const About = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <p className="text-gray-600 text-lg">
-              Hello! I'm <span className="font-medium text-indigo-600">Mai Vủ</span>, a passionate Frontend Developer 
+              Hello! I&apos;m <span className="font-medium text-indigo-600">Mai Vủ</span>, a passionate Frontend Developer 
               with a strong eye for creating engaging UI effects and animations, and creating intuitive, dynamic user experiences.
             </p>
             
             <p className="text-gray-600 text-lg">
               With a background in Computer Science and a love for clean, efficient code, I enjoy bringing ideas to life in the browser.
-              I'm constantly learning new technologies and techniques to stay at the forefront of web development.
+              I&apos;m constantly learning new technologies and techniques to stay at the forefront of web development.
             </p>
             
             <p className="text-gray-600 text-lg">
-              When I'm not coding, you can find me exploring new hiking trails, reading sci-fi novels, or experimenting with new recipes in the kitchen.
+              When I&apos;m not coding, you can find me exploring new hiking trails, reading sci-fi novels, or experimenting with new recipes in the kitchen.
             </p>
             
             <div className="pt-4">

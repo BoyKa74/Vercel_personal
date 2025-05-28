@@ -19,7 +19,7 @@ const Footer = () => {
             </p>
             <div className="mt-6 flex space-x-4">
               <a 
-                href="https://github.com/yourusername" 
+                href="https://github.com/BoyKa74" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -30,7 +30,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a 
-                href="https://linkedin.com/in/yourusername" 
+                href="https://www.linkedin.com/in/mai-văn-anh-vủ-8793512bb" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -108,7 +108,7 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="text-gray-400">Your City, Country</span>
+                <span className="text-gray-400">Da Nang, Viet Nam</span>
               </li>
             </ul>
           </div>

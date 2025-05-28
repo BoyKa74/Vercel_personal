@@ -123,7 +123,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-lg font-medium text-gray-700">Location</h4>
-                    <p className="text-gray-600">Your City, Country</p>
+                    <p className="text-gray-600">Da Nang, Viet Nam</p>
                   </div>
                 </div>
               </div>
@@ -143,7 +143,7 @@ const Contact = () => {
                     </svg>
                   </a>
                   <a 
-                    href="https://linkedin.com/in/yourusername" 
+                    href="https://www.linkedin.com/in/mai-văn-anh-vủ-8793512bb" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-indigo-600 transition-colors"
