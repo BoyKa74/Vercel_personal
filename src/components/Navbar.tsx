@@ -144,7 +144,7 @@ const Navbar = () => {
                 : 'from-blue-600 via-purple-600 to-indigo-700'
             } bg-clip-text text-transparent`}
           >
-            Mai Vũ
+            MVAV
           </motion.button>
           
           {/* Desktop menu */}

@@ -112,7 +112,7 @@ export default function Footer() {
                 ? 'bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent' 
                 : 'bg-gradient-to-r from-yellow-200 to-orange-300 bg-clip-text text-transparent'
             }`}>
-              Mai Vũ
+              Mai Vủ
             </h3>
             <p className={`mb-4 ${
               isDarkMode ? 'text-gray-400' : 'text-white/80'
@@ -205,12 +205,12 @@ export default function Footer() {
               <p className={`${
                 isDarkMode ? 'text-gray-400' : 'text-white/80'
               }`}>
-                📧 maivu.dev@email.com
+                📧 maivananhvu.dev@email.com
               </p>
               <p className={`${
                 isDarkMode ? 'text-gray-400' : 'text-white/80'
               }`}>
-                📍 Ho Chi Minh City, Vietnam
+                📍 Da Nang City, Vietnam
               </p>
               <p className={`${
                 isDarkMode ? 'text-gray-400' : 'text-white/80'
@@ -245,7 +245,7 @@ export default function Footer() {
           <p className={`text-sm mb-4 md:mb-0 ${
             isDarkMode ? 'text-gray-500' : 'text-white/60'
           }`}>
-            © {new Date().getFullYear()} Mai Vũ. All rights reserved.
+            © {new Date().getFullYear()} Mai Vủ. All rights reserved.
           </p>
           
           <motion.div

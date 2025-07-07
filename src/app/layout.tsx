@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Mai Vũ - Full Stack Developer",
+  title: "Mai Vủ - Full Stack Developer",
   description: "Passionate Full Stack Developer specializing in React, Node.js, and modern web technologies",
 };
 
@@ -14,7 +14,7 @@ function AnimatedBackground() {
   return (
     <>
       {/* Dark theme - Space background */}
-      <div className="dark-theme-bg fixed inset-0 z-0">
+      <div className="dark:block hidden fixed inset-0 z-0">
         {/* Stars */}
         <div className="absolute inset-0">
           {[...Array(100)].map((_, i) => (
@@ -43,7 +43,7 @@ function AnimatedBackground() {
       </div>
 
       {/* Light theme - Ocean background */}
-      <div className="light-theme-bg fixed inset-0 z-0">
+      <div className="dark:hidden block fixed inset-0 z-0">
         {/* Ocean depth gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-sky-400 via-blue-500 to-blue-800"></div>
         
@@ -88,7 +88,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -101,12 +101,8 @@ export default function RootLayout({
               const theme = localStorage.getItem('theme');
               if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
-                document.querySelector('.dark-theme-bg')?.classList.remove('hidden');
-                document.querySelector('.light-theme-bg')?.classList.add('hidden');
               } else {
                 document.documentElement.classList.remove('dark');
-                document.querySelector('.dark-theme-bg')?.classList.add('hidden');
-                document.querySelector('.light-theme-bg')?.classList.remove('hidden');
               }
             `,
           }}
