@@ -2,12 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  
+  const backgroundOpacity = useTransform(scrollY, [0, 100], [0, 0.9]);
+  const backdropBlur = useTransform(scrollY, [0, 100], [0, 10]);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -77,12 +82,24 @@ const Navbar = () => {
     }
   };
 
+  const navItems = [
+    { name: 'Trang Chủ', href: '#home' },
+    { name: 'Giới Thiệu', href: '#about' },
+    { name: 'Kỹ Năng', href: '#skills' },
+    { name: 'Dự Án', href: '#projects' },
+    { name: 'Liên Hệ', href: '#contact' },
+  ];
+
   return (
-    <motion.nav 
-      className="sticky top-0 z-50"
-      variants={navbarVariants}
-      animate={scrolled ? "scrolled" : "top"}
-      transition={{ duration: 0.3 }}
+    <motion.nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'glass-effect border-b border-white/10' 
+          : 'bg-transparent'
+      }`}
+      style={{
+        backdropFilter: scrolled ? `blur(${backdropBlur}px)` : 'none',
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -111,21 +128,23 @@ const Navbar = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
           >
             <div className="ml-10 flex items-center space-x-4">
-              <NavItem href="#home" isActive={activeSection === "home"}>
-                Home
-              </NavItem>
-              <NavItem href="#about" isActive={activeSection === "about"}>
-                About
-              </NavItem>
-              <NavItem href="#projects" isActive={activeSection === "projects"}>
-                Projects
-              </NavItem>
-              <NavItem href="#skills" isActive={activeSection === "skills"}>
-                Skills
-              </NavItem>
-              <NavItem href="#contact" isActive={activeSection === "contact"}>
-                Contact
-              </NavItem>
+              {navItems.map((item, index) => (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="text-gray-300 hover:text-blue-400 px-3 py-2 text-sm font-medium transition-all duration-300 relative group"
+                >
+                  {item.name}
+                  <motion.div
+                    className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 group-hover:w-full transition-all duration-300"
+                    whileHover={{ width: '100%' }}
+                  />
+                </motion.a>
+              ))}
             </div>
           </motion.div>
           
@@ -138,52 +157,10 @@ const Navbar = () => {
           >
             <motion.button
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 focus:outline-none"
+              className="text-gray-300 hover:text-blue-400 p-2 rounded-lg transition-colors duration-300"
               onClick={toggleMenu}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 400 }}
             >
-              <span className="sr-only">Open main menu</span>
-              {/* Menu icon */}
-              <motion.svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-                animate={{ rotate: isMenuOpen ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <AnimatePresence mode="wait">
-                  {!isMenuOpen ? (
-                    <motion.path
-                      key="menu"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 6h16M4 12h16M4 18h16"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      exit={{ pathLength: 0 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  ) : (
-                    <motion.path
-                      key="close"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      exit={{ pathLength: 0 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  )}
-                </AnimatePresence>
-              </motion.svg>
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </motion.button>
           </motion.div>
         </div>
@@ -193,125 +170,38 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            className="md:hidden overflow-hidden"
+            className="md:hidden overflow-hidden glass-effect border-t border-white/10"
             variants={mobileMenuVariants}
             initial="hidden"
             animate="visible"
             exit="hidden"
           >
-            <motion.div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-md">
-              <MobileNavItem 
-                href="#home" 
-                isActive={activeSection === "home"}
-                onClick={() => setIsMenuOpen(false)}
-                variants={mobileItemVariants}
-              >
-                Home
-              </MobileNavItem>
-              <MobileNavItem 
-                href="#about" 
-                isActive={activeSection === "about"}
-                onClick={() => setIsMenuOpen(false)}
-                variants={mobileItemVariants}
-              >
-                About
-              </MobileNavItem>
-              <MobileNavItem 
-                href="#projects" 
-                isActive={activeSection === "projects"}
-                onClick={() => setIsMenuOpen(false)}
-                variants={mobileItemVariants}
-              >
-                Projects
-              </MobileNavItem>
-              <MobileNavItem 
-                href="#skills" 
-                isActive={activeSection === "skills"}
-                onClick={() => setIsMenuOpen(false)}
-                variants={mobileItemVariants}
-              >
-                Skills
-              </MobileNavItem>
-              <MobileNavItem 
-                href="#contact" 
-                isActive={activeSection === "contact"}
-                onClick={() => setIsMenuOpen(false)}
-                variants={mobileItemVariants}
-              >
-                Contact
-              </MobileNavItem>
+            <motion.div className="px-2 pt-2 pb-3 space-y-1">
+              {navItems.map((item, index) => (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ 
+                    opacity: isMenuOpen ? 1 : 0, 
+                    x: isMenuOpen ? 0 : -20 
+                  }}
+                  transition={{ 
+                    duration: 0.3, 
+                    delay: isMenuOpen ? index * 0.05 : 0 
+                  }}
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-300 hover:text-blue-400 block px-3 py-2 text-base font-medium transition-all duration-300 rounded-lg hover:bg-white/5"
+                >
+                  {item.name}
+                </motion.a>
+              ))}
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </motion.nav>
-  );
-};
-
-// Component cho menu item trên desktop với thanh gạch chân
-const NavItem = ({ href, isActive, children }: { href: string; isActive: boolean; children: React.ReactNode }) => {
-  return (
-    <Link 
-      href={href} 
-      className="relative px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors group"
-    >
-      <motion.span
-        whileHover={{ y: -2 }}
-        transition={{ type: "spring", stiffness: 400 }}
-      >
-        {children}
-      </motion.span>
-      <motion.div 
-        className="absolute bottom-0 left-0 h-0.5 bg-indigo-600"
-        initial={{ width: 0 }}
-        animate={{ width: isActive ? "100%" : "0%" }}
-        whileHover={{ width: "100%" }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-      />
-    </Link>
-  );
-};
-
-// Component cho menu item trên mobile
-const MobileNavItem = ({ 
-  href, 
-  isActive, 
-  onClick, 
-  children,
-  variants 
-}: { 
-  href: string; 
-  isActive: boolean; 
-  onClick: () => void; 
-  children: React.ReactNode;
-  variants: any;
-}) => {
-  return (
-    <motion.div variants={variants}>
-      <Link 
-        href={href} 
-        className={`block px-3 py-2 rounded-md text-base font-medium ${
-          isActive 
-            ? 'text-indigo-600 bg-indigo-50' 
-            : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
-        } relative`}
-        onClick={onClick}
-      >
-        <motion.span
-          whileHover={{ x: 10 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          {children}
-        </motion.span>
-        {isActive && (
-          <motion.div
-            className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-600"
-            layoutId="activeIndicator"
-            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          />
-        )}
-      </Link>
-    </motion.div>
   );
 };
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Github, Linkedin, Mail, ChevronDown } from 'lucide-react';
 
 const Hero = () => {
   const [avatar, setAvatar] = useState<string>("");
@@ -99,205 +100,191 @@ const Hero = () => {
     }
   };
   
-  return (
-    <section id="home" className="relative bg-gradient-to-b from-indigo-50 to-white py-20 overflow-hidden">
-      {/* Animated Background Elements */}
-      <motion.div 
-        className="absolute inset-0 z-0 opacity-30"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.3 }}
-        transition={{ duration: 2 }}
-      >
-        <motion.div 
-          className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-200 rounded-full filter blur-3xl"
-          animate={{
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        ></motion.div>
-        <motion.div 
-          className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-200 rounded-full filter blur-3xl"
-          animate={{
-            x: [0, -30, 0],
-            y: [0, 50, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        ></motion.div>
-      </motion.div>
+  const socialLinks = [
+    { icon: Github, href: 'https://github.com', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: Mail, href: 'mailto:contact@example.com', label: 'Email' },
+  ];
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div 
-          className="flex flex-col md:flex-row items-center justify-between gap-12"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="flex-1 text-center md:text-left space-y-6">
-            <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800"
-              variants={itemVariants}
+  return (
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden px-4">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-20 left-10 w-20 h-20 bg-blue-500/10 rounded-full blur-xl"
+          animate={{
+            y: [0, -20, 0],
+            x: [0, 10, 0],
+          }}
+          transition={{ duration: 4, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute top-40 right-20 w-32 h-32 bg-purple-500/10 rounded-full blur-xl"
+          animate={{
+            y: [0, 20, 0],
+            x: [0, -15, 0],
+          }}
+          transition={{ duration: 5, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-1/4 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl"
+          animate={{
+            y: [0, -15, 0],
+            x: [0, 20, 0],
+          }}
+          transition={{ duration: 6, repeat: Infinity }}
+        />
+      </div>
+
+      <div className="max-w-6xl mx-auto text-center relative z-10">
+        {/* Main content with glassmorphism */}
+        <div className="glass-effect rounded-3xl p-8 md:p-12 backdrop-blur-lg border border-white/10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-6"
+          >
+            {/* Avatar */}
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mx-auto w-32 h-32 md:w-40 md:h-40 relative"
             >
-              <motion.span 
-                className="block"
-                initial={{ x: -100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
+              <motion.div
+                animate={{
+                  y: [0, -10, 0],
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="w-full h-full rounded-full bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600 p-1 shadow-2xl"
               >
-                Hi, I&apos;m{" "}
-              </motion.span>
-              <motion.span 
-                className="text-indigo-600"
-                initial={{ x: 100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-              >
-                Mai Vủ
-              </motion.span>
+                <img
+                  src={avatar || "/avatar-placeholder.jpg.jpg"}
+                  alt="Mai Vũ"
+                  className="w-full h-full rounded-full object-cover border-4 border-white/20"
+                />
+              </motion.div>
+              
+              {/* Floating ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full border-2 border-blue-400/30"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              />
+            </motion.div>
+
+            {/* Name */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-4xl md:text-6xl lg:text-7xl font-bold"
+            >
+              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-600 bg-clip-text text-transparent">
+                Mai Vũ
+              </span>
             </motion.h1>
-            
-            <motion.p 
-              className="text-xl md:text-2xl text-gray-600 h-8"
-              variants={itemVariants}
+
+            {/* Typing effect subtitle */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="text-xl md:text-2xl text-gray-300 h-8"
             >
               {typedText}
               <motion.span
                 animate={{ opacity: [1, 0] }}
                 transition={{ duration: 0.8, repeat: Infinity }}
-                className="inline-block w-0.5 h-6 bg-indigo-600 ml-1"
-              />
-            </motion.p>
-            
-            <motion.p 
-              className="text-lg text-gray-600 max-w-2xl"
-              variants={itemVariants}
-            >
-              I design and build beautiful web applications with a focus on user experience,
-              using modern technologies to create responsive and intuitive interfaces.
-            </motion.p>
-            
-            <motion.div 
-              className="flex flex-wrap gap-4 justify-center md:justify-start"
-              variants={itemVariants}
-            >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="text-blue-400"
               >
-                <Link 
-                  href="#contact"
-                  className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow-md hover:bg-indigo-700 transition-colors"
-                >
-                  Get in Touch
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link 
-                  href="#projects"
-                  className="px-6 py-3 bg-white text-indigo-600 font-medium rounded-lg shadow-md border border-indigo-200 hover:bg-indigo-50 transition-colors"
-                >
-                  View Projects
-                </Link>
-              </motion.div>
+                |
+              </motion.span>
             </motion.div>
-          </div>
-          
-          <motion.div 
-            className="w-56 h-56 md:w-72 md:h-72 relative cursor-pointer group"
-            onClick={handleAvatarClick}
-            variants={avatarVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
-          >
-            <motion.div 
-              className="absolute inset-0 bg-indigo-600 rounded-full opacity-10"
-              animate={floatingAnimation}
-            ></motion.div>
-            <motion.div 
-              className="absolute inset-2 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg"
-              animate={floatingAnimation}
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+              className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
             >
-              <Image 
-                src={avatar || "/avatar-placeholder.jpg.jpg"} 
-                alt="Mai Vủ"
-                className="w-full h-full object-cover"
-                width={288}
-                height={288}
-              />
-              <motion.div 
-                className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
+              Tôi tạo ra những trải nghiệm web hiện đại và tương tác, 
+              kết hợp giữa thiết kế đẹp mắt và hiệu suất tối ưu
+            </motion.p>
+
+            {/* Action buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6"
+            >
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(99, 102, 241, 0.4)" }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
               >
-                <span className="text-white font-medium">Edit Avatar</span>
-              </motion.div>
+                Xem Portfolio
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 border-2 border-blue-400/50 text-blue-400 rounded-full font-semibold text-lg hover:bg-blue-400/10 transition-all duration-300 backdrop-blur-sm"
+              >
+                Liên Hệ
+              </motion.button>
+            </motion.div>
+
+            {/* Social links */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 2 }}
+              className="flex justify-center space-x-6 pt-6"
+            >
+              {socialLinks.map((social, index) => (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 2.2 + index * 0.1 }}
+                  whileHover={{ 
+                    scale: 1.2, 
+                    rotate: 5,
+                    boxShadow: "0 10px 30px rgba(99, 102, 241, 0.3)"
+                  }}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-gray-300 hover:text-blue-400 hover:border-blue-400/50 transition-all duration-300"
+                  aria-label={social.label}
+                >
+                  <social.icon size={24} />
+                </motion.a>
+              ))}
             </motion.div>
           </motion.div>
-        </motion.div>
-        
-        <motion.div 
-          className="flex justify-center mt-12 md:mt-20"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 2.5 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         >
-          <div className="flex space-x-6">
-            <motion.a 
-              href="https://github.com/BoyKa74" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:text-indigo-600 transition-colors"
-              whileHover={{ scale: 1.2, rotate: 360 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <span className="sr-only">GitHub</span>
-              <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-              </svg>
-            </motion.a>
-            <motion.a 
-              href="https://www.linkedin.com/in/mai-văn-anh-vủ-8793512bb" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:text-indigo-600 transition-colors"
-              whileHover={{ scale: 1.2, rotate: 360 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <span className="sr-only">LinkedIn</span>
-              <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-            </motion.a>
-            <motion.a 
-              href="mailto:maivananhvu.dev@gmail.com" 
-              className="text-gray-600 hover:text-indigo-600 transition-colors"
-              whileHover={{ scale: 1.2, rotate: 360 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <span className="sr-only">Email</span>
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </motion.a>
-          </div>
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="flex flex-col items-center text-gray-400"
+          >
+            <span className="text-sm mb-2">Scroll Down</span>
+            <ChevronDown size={24} />
+          </motion.div>
         </motion.div>
       </div>
       
