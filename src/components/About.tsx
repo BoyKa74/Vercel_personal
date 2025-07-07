@@ -21,63 +21,7 @@ export default function About() {
     return () => clearInterval(interval);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
-      },
-    },
-  } as const;
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.6, -0.05, 0.01, 0.99],
-      },
-    },
-  } as const;
-
-  const experiences = [
-    {
-      icon: GraduationCap,
-      title: 'Education',
-      subtitle: 'Bachelor of Information Technology',
-      description: 'Graduated with excellent grades, specialized in Software Development',
-      year: '2020-2024',
-      color: 'from-blue-400 to-cyan-400'
-    },
-    {
-      icon: Briefcase,
-      title: 'Experience',
-      subtitle: 'Full Stack Developer',
-      description: '2+ years of experience developing modern web applications',
-      year: '2022-Present',
-      color: 'from-purple-400 to-pink-400'
-    },
-    {
-      icon: Code,
-      title: 'Projects',
-      subtitle: '20+ Completed Projects',
-      description: 'From personal websites to large-scale enterprise applications',
-      year: 'Portfolio',
-      color: 'from-green-400 to-emerald-400'
-    },
-    {
-      icon: Coffee,
-      title: 'Passion',
-      subtitle: 'Technology Enthusiast',
-      description: 'Always learning and staying updated with the latest trends',
-      year: 'Always',
-      color: 'from-orange-400 to-red-400'
-    }
-  ];
 
   return (
     <section 

@@ -351,7 +351,7 @@ export default function Projects() {
                       isDarkMode ? 'text-blue-300 bg-blue-300/20' : 'text-blue-200 bg-blue-200/30'
                     }`}>
                       <Users className="w-3 h-3" />
-                      <span>{(project as any).teamSize}</span>
+                      <span>{'teamSize' in project ? (project as {teamSize: string}).teamSize : ''}</span>
                     </span>
                   </div>
                 )}
