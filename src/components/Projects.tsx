@@ -147,13 +147,13 @@ const Projects = () => {
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-600 bg-clip-text text-transparent">
-              Dự Án Của Tôi
+              My Projects
             </span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto mb-8 rounded-full" />
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Khám phá các dự án tôi đã thực hiện, từ ứng dụng web đơn giản đến những platform phức tạp. 
-            Mỗi dự án đều thể hiện kỹ năng và đam mê của tôi với công nghệ.
+            Explore the projects I've worked on, from simple web applications to complex platforms. 
+            Each project demonstrates my skills and passion for technology.
           </p>
         </motion.div>
 
@@ -284,17 +284,17 @@ const Projects = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="text-center mt-16"
         >
-          <motion.a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(99, 102, 241, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
-          >
-            <Github size={24} />
-            <span>Xem Thêm Trên GitHub</span>
-          </motion.a>
+                      <motion.a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(99, 102, 241, 0.4)" }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              <Github size={24} />
+              <span>View More on GitHub</span>
+            </motion.a>
         </motion.div>
       </div>
     </section>

@@ -127,7 +127,7 @@ const Contact = () => {
   };
   
   return (
-    <section id="contact" className="py-20 bg-gray-50 overflow-hidden">
+    <section id="contact" className="py-20 dark:bg-gray-900 light:bg-gray-50 overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           className="text-center mb-16"
@@ -135,9 +135,9 @@ const Contact = () => {
           animate={isInView ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">Get In Touch</h2>
+          <h2 className="text-3xl md:text-4xl font-bold dark:text-white light:text-gray-800">Get In Touch</h2>
           <motion.p 
-            className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto"
+            className="mt-4 text-xl dark:text-gray-300 light:text-gray-600 max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -145,7 +145,7 @@ const Contact = () => {
             Have a question or want to work together? Feel free to contact me!
           </motion.p>
           <motion.div 
-            className="w-20 h-1 bg-indigo-600 mx-auto mt-4 rounded-full"
+            className="w-20 h-1 dark:bg-blue-500 light:bg-indigo-600 mx-auto mt-4 rounded-full"
             initial={{ width: 0 }}
             animate={isInView ? { width: 80 } : { width: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -162,7 +162,7 @@ const Contact = () => {
           {/* Contact Information */}
           <motion.div className="space-y-8" variants={itemVariants}>
             <motion.div 
-              className="bg-white p-6 rounded-xl shadow-sm"
+              className="dark:bg-gray-800 light:bg-white p-6 rounded-xl shadow-sm border dark:border-gray-700 light:border-transparent"
               variants={floatingCardVariants}
               whileHover={{ 
                 y: -5,
@@ -170,7 +170,7 @@ const Contact = () => {
               }}
               transition={{ type: "spring" as const, stiffness: 300 }}
             >
-              <h3 className="text-xl font-semibold text-gray-800 mb-6">Contact Information</h3>
+              <h3 className="text-xl font-semibold dark:text-white light:text-gray-800 mb-6">Contact Information</h3>
               
               <div className="space-y-6">
                 <motion.div 
@@ -310,7 +310,7 @@ const Contact = () => {
             </motion.div>
             
             <motion.div 
-              className="bg-white p-6 rounded-xl shadow-sm"
+              className="dark:bg-gray-800 light:bg-white p-6 rounded-xl shadow-sm border dark:border-gray-700 light:border-transparent"
               variants={floatingCardVariants}
               whileHover={{ 
                 y: -5,
@@ -318,8 +318,8 @@ const Contact = () => {
               }}
               transition={{ type: "spring" as const, stiffness: 300 }}
             >
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">Resume / CV</h3>
-              <p className="text-gray-600 mb-4">
+              <h3 className="text-xl font-semibold dark:text-white light:text-gray-800 mb-4">Resume / CV</h3>
+              <p className="dark:text-gray-300 light:text-gray-600 mb-4">
                 Download my resume to learn more about my experience and skills.
               </p>
               <motion.a 
@@ -351,7 +351,7 @@ const Contact = () => {
           {/* Contact Form */}
           <motion.div variants={itemVariants}>
             <motion.div 
-              className="bg-white p-8 rounded-xl shadow-sm"
+              className="dark:bg-gray-800 light:bg-white p-8 rounded-xl shadow-sm border dark:border-gray-700 light:border-transparent"
               variants={floatingCardVariants}
               whileHover={{ 
                 y: -5,
@@ -359,7 +359,7 @@ const Contact = () => {
               }}
               transition={{ type: "spring" as const, stiffness: 300 }}
             >
-              <h3 className="text-xl font-semibold text-gray-800 mb-6">Send Me a Message</h3>
+              <h3 className="text-xl font-semibold dark:text-white light:text-gray-800 mb-6">Send Me a Message</h3>
               
               {submitResult && (
                 <motion.div 
@@ -392,7 +392,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all dark:bg-gray-700 light:bg-white dark:text-white light:text-gray-900 dark:placeholder-gray-400 light:placeholder-gray-500"
                     whileFocus={{ 
                       scale: 1.02,
                       boxShadow: "0 0 0 3px rgba(79, 70, 229, 0.1)" 
@@ -409,7 +409,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all dark:bg-gray-700 light:bg-white dark:text-white light:text-gray-900 dark:placeholder-gray-400 light:placeholder-gray-500"
                     whileFocus={{ 
                       scale: 1.02,
                       boxShadow: "0 0 0 3px rgba(79, 70, 229, 0.1)" 
@@ -426,7 +426,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all dark:bg-gray-700 light:bg-white dark:text-white light:text-gray-900 dark:placeholder-gray-400 light:placeholder-gray-500"
                     whileFocus={{ 
                       scale: 1.02,
                       boxShadow: "0 0 0 3px rgba(79, 70, 229, 0.1)" 
@@ -443,7 +443,7 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-vertical"
+                    className="w-full px-4 py-3 border dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-vertical dark:bg-gray-700 light:bg-white dark:text-white light:text-gray-900 dark:placeholder-gray-400 light:placeholder-gray-500"
                     whileFocus={{ 
                       scale: 1.02,
                       boxShadow: "0 0 0 3px rgba(79, 70, 229, 0.1)" 
@@ -458,8 +458,8 @@ const Contact = () => {
                     disabled={isSubmitting}
                     className={`w-full px-6 py-3 text-white font-medium rounded-lg transition-all ${
                       isSubmitting 
-                        ? 'bg-gray-400 cursor-not-allowed' 
-                        : 'bg-indigo-600 hover:bg-indigo-700'
+                        ? 'dark:bg-gray-600 light:bg-gray-400 cursor-not-allowed' 
+                        : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700'
                     }`}
                     whileHover={!isSubmitting ? { 
                       scale: 1.02,

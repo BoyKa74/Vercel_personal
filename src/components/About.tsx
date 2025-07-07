@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { GraduationCap, Briefcase, Code, Coffee } from 'lucide-react';
 
-const About = () => {
+export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
@@ -34,34 +34,34 @@ const About = () => {
   const experiences = [
     {
       icon: GraduationCap,
-      title: 'Học Vấn',
-      subtitle: 'Cử nhân Công nghệ Thông tin',
-      description: 'Tốt nghiệp loại Giỏi, chuyên ngành Phát triển phần mềm',
+      title: 'Education',
+      subtitle: 'Bachelor of Information Technology',
+      description: 'Graduated with excellent grades, specialized in Software Development',
       year: '2020-2024',
       color: 'from-blue-400 to-cyan-400'
     },
     {
       icon: Briefcase,
-      title: 'Kinh Nghiệm',
+      title: 'Experience',
       subtitle: 'Frontend Developer',
-      description: '2+ năm kinh nghiệm phát triển ứng dụng web hiện đại',
-      year: '2022-Hiện tại',
+      description: '2+ years of experience developing modern web applications',
+      year: '2022-Present',
       color: 'from-purple-400 to-pink-400'
     },
     {
       icon: Code,
-      title: 'Dự Án',
-      subtitle: '15+ Dự án hoàn thành',
-      description: 'Từ website cá nhân đến ứng dụng enterprise lớn',
+      title: 'Projects',
+      subtitle: '15+ Completed Projects',
+      description: 'From personal websites to large-scale enterprise applications',
       year: 'Portfolio',
       color: 'from-green-400 to-emerald-400'
     },
     {
       icon: Coffee,
       title: 'Passion',
-      subtitle: 'Đam mê công nghệ',
-      description: 'Luôn học hỏi và cập nhật những xu hướng mới nhất',
-      year: 'Mọi lúc',
+      subtitle: 'Technology Enthusiast',
+      description: 'Always learning and staying updated with the latest trends',
+      year: 'Always',
       color: 'from-orange-400 to-red-400'
     }
   ];
@@ -101,7 +101,7 @@ const About = () => {
             className="text-4xl md:text-5xl font-bold mb-6"
           >
             <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-600 bg-clip-text text-transparent">
-              Về Tôi
+              About Me
             </span>
           </motion.h2>
           
@@ -114,10 +114,10 @@ const About = () => {
             variants={itemVariants}
             className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
           >
-            Xin chào! Tôi là <span className="text-blue-400 font-semibold">Mai Vũ</span>, 
-            một Frontend Developer đam mê tạo ra những trải nghiệm web tuyệt vời. 
-            Với kinh nghiệm trong việc phát triển ứng dụng hiện đại, 
-            tôi luôn hướng tới việc kết hợp thiết kế đẹp mắt với hiệu suất tối ưu.
+            Hello! I'm <span className="text-blue-400 font-semibold">Mai Vũ</span>, 
+            a passionate Frontend Developer who loves creating amazing web experiences. 
+            With experience in developing modern applications, 
+            I always strive to combine beautiful design with optimal performance.
           </motion.p>
         </motion.div>
 
@@ -189,15 +189,15 @@ const About = () => {
             variants={itemVariants}
             className="text-2xl md:text-3xl font-bold text-center mb-8 text-white"
           >
-            Một Chút Thống Kê
+            Some Statistics
           </motion.h3>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { number: '15+', label: 'Dự Án', color: 'from-blue-400 to-cyan-400' },
-              { number: '2+', label: 'Năm KN', color: 'from-purple-400 to-pink-400' },
-              { number: '10+', label: 'Công Nghệ', color: 'from-green-400 to-emerald-400' },
-              { number: '100%', label: 'Đam Mê', color: 'from-orange-400 to-red-400' }
+              { number: '15+', label: 'Projects', color: 'from-blue-400 to-cyan-400' },
+              { number: '2+', label: 'Years Exp', color: 'from-purple-400 to-pink-400' },
+              { number: '10+', label: 'Technologies', color: 'from-green-400 to-emerald-400' },
+              { number: '100%', label: 'Passion', color: 'from-orange-400 to-red-400' }
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -223,6 +223,4 @@ const About = () => {
       </div>
     </section>
   );
-};
-
-export default About; 
+} 
