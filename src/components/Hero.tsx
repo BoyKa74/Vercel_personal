@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, ChevronDown, Sun, Moon } from 'lucide-react';
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { Github, Linkedin, Mail, ChevronDown, Sun, Moon, Download } from 'lucide-react';
 
 // Fish component for day theme
 function Fish({ onClick }: { onClick: (x: number, y: number) => void }) {
@@ -343,6 +343,13 @@ export default function Hero() {
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
   const fullText = 'Passionate Frontend Developer';
   
+  // Mouse position for parallax effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  const rotateX = useTransform(mouseY, [-300, 300], [10, -10]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
+
   // Client-side only rendering
   useEffect(() => {
     setIsMounted(true);
@@ -378,9 +385,24 @@ export default function Hero() {
   }, []);
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:contact@example.com', label: 'Email' },
+    {
+      icon: <Github className="w-6 h-6" />,
+      href: "https://github.com",
+      label: "GitHub",
+      color: "hover:text-gray-300"
+    },
+    {
+      icon: <Linkedin className="w-6 h-6" />,
+      href: "https://linkedin.com",
+      label: "LinkedIn", 
+      color: "hover:text-blue-400"
+    },
+    {
+      icon: <Mail className="w-6 h-6" />,
+      href: "mailto:maivananhvu.dev@gmail.com",
+      label: "Email",
+      color: "hover:text-green-400"
+    }
   ];
 
   const handleCreatureLand = (x: number, y: number) => {
@@ -416,12 +438,34 @@ export default function Hero() {
     setIsDarkMode(!isDarkMode);
   };
 
+  // Mouse move handler
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    mouseX.set(e.clientX - centerX);
+    mouseY.set(e.clientY - centerY);
+  };
+
+  if (!isMounted) {
+    return (
+      <section className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+      </section>
+    );
+  }
+
   return (
-    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden px-4 hero-container transition-all duration-1000 ${
-      isDarkMode 
-        ? 'bg-gray-900' 
-        : 'bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100'
-    }`}>
+    <section 
+      id="home" 
+      className={`min-h-screen flex items-center justify-center transition-all duration-1000 ${
+        isDarkMode 
+          ? 'bg-gray-900' 
+          : 'bg-gradient-to-b from-sky-400 via-blue-500 to-blue-600'
+      } relative overflow-hidden`}
+      onMouseMove={handleMouseMove}
+    >
       {/* Theme Toggle Button - High z-index to stay on top */}
       <motion.button
         onClick={toggleTheme}
@@ -436,180 +480,220 @@ export default function Hero() {
         {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
       </motion.button>
 
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {isDarkMode ? (
-          // Dark mode: Space theme
-          <>
+      {/* Dark mode effects - Shooting stars/meteors */}
+      {isDarkMode && (
+        <>
+          {/* Shooting stars/meteors */}
+          {[...Array(5)].map((_, i) => (
             <motion.div
-              className="absolute top-20 left-10 w-20 h-20 bg-blue-500/10 rounded-full blur-xl"
-              animate={{
-                y: [0, -20, 0],
-                x: [0, 10, 0],
+              key={i}
+              className="absolute w-1 h-20 bg-gradient-to-b from-white via-blue-300 to-transparent opacity-70"
+              style={{
+                left: `${20 + i * 20}%`,
+                top: '-10%',
+                transform: 'rotate(45deg)',
+                filter: 'blur(0.5px)',
               }}
-              transition={{ duration: 4, repeat: Infinity }}
+              animate={{
+                y: ['0vh', '120vh'],
+                opacity: [0, 1, 1, 0],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: i * 2 + Math.random() * 3,
+                ease: 'linear',
+              }}
             />
+          ))}
+          
+          {/* Additional meteors with different angles */}
+          {[...Array(3)].map((_, i) => (
             <motion.div
-              className="absolute top-40 right-20 w-32 h-32 bg-purple-500/10 rounded-full blur-xl"
-              animate={{
-                y: [0, 20, 0],
-                x: [0, -15, 0],
+              key={`meteor-${i}`}
+              className="absolute w-0.5 h-16 bg-gradient-to-b from-purple-300 via-blue-400 to-transparent opacity-60"
+              style={{
+                left: `${10 + i * 30}%`,
+                top: '-5%',
+                transform: 'rotate(60deg)',
+                filter: 'blur(0.3px)',
               }}
-              transition={{ duration: 5, repeat: Infinity }}
-            />
-            <motion.div
-              className="absolute bottom-20 left-1/4 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl"
               animate={{
-                y: [0, -15, 0],
-                x: [0, 20, 0],
+                y: ['0vh', '110vh'],
+                x: ['0vw', '20vw'],
+                opacity: [0, 0.8, 0.8, 0],
               }}
-              transition={{ duration: 6, repeat: Infinity }}
-            />
-          </>
-        ) : (
-          // Light mode: Ocean theme
-          <>
-            <motion.div
-              className="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-2xl"
-              animate={{
-                y: [0, -25, 0],
-                x: [0, 15, 0],
+              transition={{
+                duration: 4 + Math.random() * 1.5,
+                repeat: Infinity,
+                delay: i * 3 + Math.random() * 4,
+                ease: 'linear',
               }}
-              transition={{ duration: 6, repeat: Infinity }}
             />
-            <motion.div
-              className="absolute top-60 right-16 w-40 h-40 bg-cyan-200/20 rounded-full blur-2xl"
-              animate={{
-                y: [0, 30, 0],
-                x: [0, -20, 0],
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
-            />
-            <motion.div
-              className="absolute bottom-32 left-1/3 w-28 h-28 bg-teal-200/25 rounded-full blur-xl"
-              animate={{
-                y: [0, -20, 0],
-                x: [0, 25, 0],
-              }}
-              transition={{ duration: 7, repeat: Infinity }}
-            />
-            {/* Ocean waves effect */}
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-200/20 to-transparent"
-              animate={{
-                x: [-20, 20, -20],
-              }}
-              transition={{ duration: 4, repeat: Infinity }}
-            />
-          </>
-        )}
-      </div>
-
-      {/* Interactive creature - only render client side */}
-      {isMounted && (
-        isDarkMode ? (
-          <Spaceship onClick={handleCreatureLand} />
-        ) : (
-          <Fish onClick={handleCreatureLand} />
-        )
+          ))}
+        </>
       )}
 
-      <div className="max-w-7xl mx-auto relative z-10 w-full">
-        {/* Two column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Ocean effects for light mode */}
+      {!isDarkMode && (
+        <>
+          {/* Sunlight rays from top */}
+          <div className="absolute top-0 left-1/4 w-3 h-1/2 bg-gradient-to-b from-yellow-200/40 to-transparent transform rotate-12" />
+          <div className="absolute top-0 left-1/2 w-2 h-1/3 bg-gradient-to-b from-yellow-100/50 to-transparent transform -rotate-6" />
+          <div className="absolute top-0 right-1/3 w-4 h-2/3 bg-gradient-to-b from-yellow-200/30 to-transparent transform rotate-8" />
           
-          {/* Left Column - Content */}
+          {/* Surface waves effect */}
+          <motion.div
+            className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-cyan-200/30 to-transparent"
+            animate={{
+              background: [
+                'linear-gradient(to bottom, rgba(165, 243, 252, 0.3) 0%, transparent 100%)',
+                'linear-gradient(to bottom, rgba(125, 211, 252, 0.4) 0%, transparent 100%)',
+                'linear-gradient(to bottom, rgba(165, 243, 252, 0.3) 0%, transparent 100%)'
+              ]
+            }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          
+          {/* Floating sea particles */}
+          <motion.div
+            className="absolute top-1/4 left-1/6 w-3 h-3 bg-white/40 rounded-full"
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.4, 0.8, 0.4],
+            }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute top-1/3 right-1/5 w-2 h-2 bg-cyan-100/50 rounded-full"
+            animate={{
+              y: [0, -20, 0],
+              x: [0, 10, 0],
+              opacity: [0.3, 0.7, 0.3],
+            }}
+            transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+          />
+          <motion.div
+            className="absolute top-2/3 left-1/8 w-4 h-4 bg-blue-200/30 rounded-full"
+            animate={{
+              y: [0, -25, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{ duration: 5, repeat: Infinity, delay: 2 }}
+          />
+        </>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="order-2 lg:order-1 text-center lg:text-left no-spaceship"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-center lg:text-left order-2 lg:order-1"
           >
-            {/* Name */}
-            <motion.h1
+            {/* Greeting */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4"
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className={`text-lg mb-4 ${
+                isDarkMode ? 'text-blue-400' : 'text-yellow-200'
+              } font-medium`}
             >
-              <span className={`bg-gradient-to-r ${
+              Hello, I'm
+            </motion.div>
+
+            {/* Name with enhanced styling */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className={`text-5xl md:text-7xl font-bold mb-6 ${
+                isDarkMode ? 'text-white' : 'text-white'
+              }`}
+            >
+              <span className={`inline-block ${
                 isDarkMode 
-                  ? 'from-blue-400 via-purple-500 to-indigo-600' 
-                  : 'from-blue-600 via-purple-600 to-indigo-700'
-              } bg-clip-text text-transparent`}>
-                Mai Vũ
+                  ? 'bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 bg-clip-text text-transparent' 
+                  : 'bg-gradient-to-r from-yellow-200 via-orange-300 to-yellow-400 bg-clip-text text-transparent'
+              }`}>
+                Mai Vủ
               </span>
             </motion.h1>
 
-            {/* Typing effect subtitle */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className={`text-xl md:text-2xl h-8 mb-6 ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+            {/* Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className={`text-2xl md:text-3xl font-semibold mb-6 ${
+                isDarkMode ? 'text-gray-300' : 'text-white/90'
               }`}
             >
-              {displayedText}
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className={isDarkMode ? 'text-blue-400' : 'text-blue-600'}
-              >
-                |
-              </motion.span>
-            </motion.div>
+              Full Stack Developer
+            </motion.h2>
 
             {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className={`text-lg md:text-xl leading-relaxed mb-8 ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className={`text-lg leading-relaxed mb-8 max-w-xl ${
+                isDarkMode ? 'text-gray-400' : 'text-white/80'
               }`}
             >
-              I create modern and interactive web experiences, 
-              combining beautiful design with optimal performance. 
-              Let's build something amazing together!
+              Passionate about creating exceptional digital experiences with modern technologies. 
+              Specializing in React, Node.js, and building scalable web applications.
             </motion.p>
 
-            {/* Action buttons - Higher z-index */}
+            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center mb-8 relative z-30"
+              transition={{ duration: 0.6, delay: 1.1 }}
+              className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start"
             >
               <motion.button
-                onClick={() => scrollToSection('projects')}
-                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(99, 102, 241, 0.4)" }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                className={`px-8 py-4 rounded-lg font-medium flex items-center justify-center space-x-2 ${
+                  isDarkMode 
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700' 
+                    : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600'
+                } text-white transition-all duration-300 shadow-lg no-spaceship z-30`}
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                View Portfolio
+                <span>View My Work</span>
               </motion.button>
               
               <motion.button
-                onClick={() => scrollToSection('contact')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`px-8 py-4 border-2 rounded-full font-semibold text-lg transition-all duration-300 backdrop-blur-sm ${
+                className={`px-8 py-4 rounded-lg font-medium flex items-center justify-center space-x-2 ${
                   isDarkMode 
-                    ? 'border-blue-400/50 text-blue-400 hover:bg-blue-400/10'
-                    : 'border-blue-600/50 text-blue-600 hover:bg-blue-600/10'
-                }`}
+                    ? 'border border-white/20 text-white hover:bg-white/10' 
+                    : 'border border-white/40 text-white hover:bg-white/20'
+                } transition-all duration-300 no-spaceship z-30`}
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/resume.pdf';
+                  link.download = 'Mai_Vu_Resume.pdf';
+                  link.click();
+                }}
               >
-                Get In Touch
+                <Download className="w-5 h-5" />
+                <span>Download CV</span>
               </motion.button>
             </motion.div>
 
-            {/* Social links - Higher z-index */}
+            {/* Social Links */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="flex justify-center lg:justify-start space-x-6 relative z-30"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.3 }}
+              className="flex space-x-6 justify-center lg:justify-start"
             >
               {socialLinks.map((social, index) => (
                 <motion.a
@@ -617,128 +701,152 @@ export default function Hero() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
-                  whileHover={{ 
-                    scale: 1.2, 
-                    rotate: 5,
-                    boxShadow: "0 10px 30px rgba(99, 102, 241, 0.3)"
-                  }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.4, delay: 1.5 + index * 0.1 }}
+                  whileHover={{ scale: 1.2, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className={`p-3 backdrop-blur-sm border rounded-full transition-all duration-300 ${
+                  className={`p-3 rounded-lg ${
                     isDarkMode 
-                      ? 'bg-white/5 border-white/10 text-gray-300 hover:text-blue-400 hover:border-blue-400/50'
-                      : 'bg-white/50 border-gray-300 text-gray-600 hover:text-blue-600 hover:border-blue-600/50'
-                  }`}
+                      ? 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10' 
+                      : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                  } transition-all duration-300 ${social.color} no-spaceship z-30`}
                   aria-label={social.label}
                 >
-                  <social.icon size={24} />
+                  {social.icon}
                 </motion.a>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Avatar */}
+          {/* Avatar Section */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="order-1 lg:order-2 flex justify-center no-spaceship"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="flex justify-center order-1 lg:order-2"
+            style={{
+              perspective: 1000,
+            }}
           >
             <motion.div
-              className="relative"
-              animate={{
-                y: [0, -10, 0],
+              style={{
+                rotateX,
+                rotateY,
               }}
-              transition={{ duration: 3, repeat: Infinity }}
+              className="relative"
             >
-              {/* Main avatar container */}
-              <div className="w-80 h-80 md:w-96 md:h-96 relative">
-                {/* Rotating rings */}
-                <motion.div
-                  className={`absolute inset-0 rounded-full border-2 ${
-                    isDarkMode ? 'border-blue-400/30' : 'border-blue-500/40'
-                  }`}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                />
-                <motion.div
-                  className={`absolute inset-4 rounded-full border ${
-                    isDarkMode ? 'border-purple-400/20' : 'border-purple-500/30'
-                  }`}
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                />
+              {/* Rotating rings with better theme styling */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className={`absolute inset-0 w-80 h-80 rounded-full border-2 ${
+                  isDarkMode 
+                    ? 'border-blue-400/30' 
+                    : 'border-yellow-200/40'
+                } border-dashed`}
+              />
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                className={`absolute inset-4 w-72 h-72 rounded-full border ${
+                  isDarkMode 
+                    ? 'border-purple-400/20' 
+                    : 'border-orange-300/30'
+                } border-dotted`}
+              />
+
+              {/* Floating orbs with enhanced effects */}
+              {[...Array(6)].map((_, i) => {
+                const positions = [
+                  { top: '10%', left: '20%' },
+                  { top: '30%', right: '15%' },
+                  { bottom: '25%', left: '10%' },
+                  { bottom: '15%', right: '25%' },
+                  { top: '60%', left: '5%' },
+                  { top: '20%', right: '35%' }
+                ];
                 
-                {/* Avatar with gradient border */}
-                <motion.div
-                  className={`absolute inset-8 rounded-full p-2 shadow-2xl ${
-                    isDarkMode 
-                      ? 'bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600'
-                      : 'bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-700'
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                >
+                return (
+                  <motion.div
+                    key={i}
+                    className={`absolute w-3 h-3 rounded-full ${
+                      isDarkMode 
+                        ? 'bg-blue-400/60' 
+                        : i % 2 === 0 ? 'bg-white/60' : 'bg-yellow-200/60'
+                    } shadow-lg`}
+                    style={positions[i]}
+                    animate={{
+                      y: [0, -10, 0],
+                      opacity: [0.6, 1, 0.6],
+                      scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                      duration: 3 + i * 0.5,
+                      repeat: Infinity,
+                      delay: i * 0.3,
+                    }}
+                  />
+                );
+              })}
+
+              {/* Avatar with real image like About page */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="relative mx-auto w-64 h-64"
+              >
+                {/* Profile Image Container với gradient border */}
+                <div className={`absolute inset-0 rounded-full p-1 ${
+                  isDarkMode 
+                    ? 'bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600' 
+                    : 'bg-gradient-to-br from-yellow-200 via-orange-300 to-pink-400'
+                }`}>
                   <img
                     src="/avatar-placeholder.jpg.jpg"
-                    alt="Mai Vũ"
-                    className={`w-full h-full rounded-full object-cover border-4 ${
-                      isDarkMode ? 'border-white/20' : 'border-white/40'
-                    }`}
+                    alt="Mai Vủ"
+                    className="w-full h-full rounded-full object-cover border-4 border-white/20"
                   />
-                </motion.div>
+                </div>
+                
+                {/* Overlay effect */}
+                <div className={`absolute inset-0 rounded-full ${
+                  isDarkMode 
+                    ? 'bg-gradient-to-t from-blue-900/20 to-transparent' 
+                    : 'bg-gradient-to-t from-blue-800/20 to-transparent'
+                }`} />
+              </motion.div>
 
-                {/* Simple floating orbs without Math calculations */}
-                {isMounted && (
-                  <>
-                    {[
-                      { top: '20%', left: '90%', color: isDarkMode ? 'bg-blue-400/60' : 'bg-blue-500/50', delay: 0 },
-                      { top: '80%', left: '85%', color: isDarkMode ? 'bg-purple-400/60' : 'bg-purple-500/50', delay: 0.3 },
-                      { top: '50%', left: '5%', color: isDarkMode ? 'bg-indigo-400/60' : 'bg-indigo-500/50', delay: 0.6 },
-                      { top: '10%', left: '15%', color: isDarkMode ? 'bg-cyan-400/60' : 'bg-cyan-500/50', delay: 0.9 },
-                      { top: '70%', left: '20%', color: isDarkMode ? 'bg-pink-400/60' : 'bg-pink-500/50', delay: 1.2 },
-                      { top: '30%', left: '80%', color: isDarkMode ? 'bg-green-400/60' : 'bg-green-500/50', delay: 1.5 },
-                    ].map((orb, index) => (
-                      <motion.div
-                        key={index}
-                        className={`absolute w-3 h-3 ${orb.color} rounded-full blur-sm`}
-                        style={{ top: orb.top, left: orb.left }}
-                        animate={{
-                          scale: [1, 1.5, 1],
-                          opacity: [0.6, 1, 0.6],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: orb.delay,
-                        }}
-                      />
-                    ))}
-                  </>
-                )}
-              </div>
+              {/* Enhanced glow effect */}
+              <div className={`absolute inset-8 w-64 h-64 mx-auto rounded-full ${
+                isDarkMode 
+                  ? 'bg-blue-500/10' 
+                  : 'bg-cyan-300/20'
+              } blur-xl -z-10`} />
             </motion.div>
           </motion.div>
         </div>
 
         {/* Scroll indicator */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 no-spaceship"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
         >
+          <span className={`text-sm mb-2 ${
+            isDarkMode ? 'text-gray-400' : 'text-white/70'
+          }`}>
+            Scroll to explore
+          </span>
           <motion.div
-            animate={{ y: [0, 10, 0] }}
+            animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className={`flex flex-col items-center ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-600'
-            }`}
+            className={`${
+              isDarkMode ? 'text-blue-400' : 'text-white'
+            } cursor-pointer no-spaceship z-30`}
+            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            <span className="text-sm mb-2">Scroll Down</span>
-            <ChevronDown size={24} />
+            <ChevronDown className="w-6 h-6" />
           </motion.div>
         </motion.div>
       </div>

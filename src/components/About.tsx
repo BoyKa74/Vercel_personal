@@ -1,12 +1,25 @@
 "use client"
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { GraduationCap, Briefcase, Code, Coffee } from 'lucide-react';
 
 export default function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  // Theme detection
+  useEffect(() => {
+    const checkTheme = () => {
+      const theme = localStorage.getItem('theme');
+      setIsDarkMode(theme === 'dark');
+    };
+    
+    checkTheme();
+    const interval = setInterval(checkTheme, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -43,7 +56,7 @@ export default function About() {
     {
       icon: Briefcase,
       title: 'Experience',
-      subtitle: 'Frontend Developer',
+      subtitle: 'Full Stack Developer',
       description: '2+ years of experience developing modern web applications',
       year: '2022-Present',
       color: 'from-purple-400 to-pink-400'
@@ -51,7 +64,7 @@ export default function About() {
     {
       icon: Code,
       title: 'Projects',
-      subtitle: '15+ Completed Projects',
+      subtitle: '20+ Completed Projects',
       description: 'From personal websites to large-scale enterprise applications',
       year: 'Portfolio',
       color: 'from-green-400 to-emerald-400'
@@ -67,159 +80,289 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-20 px-4 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0">
-        <motion.div
-          className="absolute top-10 right-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
-      </div>
+    <section 
+      id="about" 
+      className={`py-20 transition-all duration-1000 ${
+        isDarkMode 
+          ? 'bg-gray-900' 
+          : 'bg-gradient-to-b from-blue-300 via-blue-400 to-blue-500'
+      } relative overflow-hidden`}
+    >
+      {/* Ocean effects for light mode */}
+      {!isDarkMode && (
+        <>
+          {/* Underwater light beams */}
+          <div className="absolute top-0 left-1/6 w-1 h-full bg-gradient-to-b from-yellow-200/20 to-transparent transform rotate-12" />
+          <div className="absolute top-0 left-2/3 w-2 h-full bg-gradient-to-b from-yellow-100/30 to-transparent transform -rotate-8" />
+          
+          {/* Floating particles */}
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-3 h-3 bg-white/30 rounded-full"
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.3, 0.7, 0.3],
+            }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute top-2/3 right-1/4 w-2 h-2 bg-white/40 rounded-full"
+            animate={{
+              y: [0, -15, 0],
+              opacity: [0.4, 0.8, 0.4],
+            }}
+            transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+          />
+        </>
+      )}
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
           <motion.h2 
-            variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold mb-6"
+            initial={{ y: 50, opacity: 0 }}
+            animate={isInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className={`text-4xl md:text-5xl font-bold mb-6 ${
+              isDarkMode ? 'text-white' : 'text-white'
+            }`}
           >
-            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-600 bg-clip-text text-transparent">
-              About Me
-            </span>
+            About Me
           </motion.h2>
           
-          <motion.div 
-            variants={itemVariants}
-            className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto mb-8 rounded-full"
+          <motion.div
+            initial={{ width: 0 }}
+            animate={isInView ? { width: 100 } : { width: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className={`h-1 mx-auto rounded-full ${
+              isDarkMode 
+                ? 'bg-gradient-to-r from-blue-400 to-purple-500' 
+                : 'bg-gradient-to-r from-yellow-200 to-yellow-400'
+            }`}
+            style={{ maxWidth: '100px' }}
           />
-          
-          <motion.p 
-            variants={itemVariants}
-            className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
-          >
-            Hello! I'm <span className="text-blue-400 font-semibold">Mai Vũ</span>, 
-            a passionate Frontend Developer who loves creating amazing web experiences. 
-            With experience in developing modern applications, 
-            I always strive to combine beautiful design with optimal performance.
-          </motion.p>
         </motion.div>
 
-        {/* Experience cards grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
-        >
-          {experiences.map((exp, index) => (
-            <motion.div
-              key={exp.title}
-              variants={itemVariants}
-              whileHover={{ 
-                scale: 1.05, 
-                rotateY: 5,
-                boxShadow: "0 25px 50px rgba(0, 0, 0, 0.25)"
-              }}
-              className="glass-effect rounded-2xl p-8 group cursor-pointer transform-gpu"
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left side - Text Content */}
+          <motion.div
+            initial={{ x: -50, opacity: 0 }}
+            animate={isInView ? { x: 0, opacity: 1 } : { x: -50, opacity: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="space-y-6"
+          >
+            <motion.p 
+              className={`text-lg leading-relaxed ${
+                isDarkMode ? 'text-gray-300' : 'text-white/90'
+              }`}
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
             >
-              <div className="flex items-start space-x-4">
-                <motion.div
-                  whileHover={{ rotate: 360, scale: 1.2 }}
-                  transition={{ duration: 0.6 }}
-                  className={`p-3 rounded-xl bg-gradient-to-br ${exp.color} shadow-lg`}
+              Hello! I'm Mai Vủ, a passionate Full Stack Developer with a love for creating 
+              beautiful and functional web experiences. I specialize in modern web technologies 
+              and enjoy bringing creative designs to life through code.
+            </motion.p>
+            
+            <motion.p 
+              className={`text-lg leading-relaxed ${
+                isDarkMode ? 'text-gray-300' : 'text-white/90'
+              }`}
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
+            >
+              My journey in web development started with a curiosity about how websites work, 
+              and it has evolved into a passion for crafting user-centered digital solutions. 
+              I believe that great design and functionality should go hand in hand.
+            </motion.p>
+
+            <motion.div
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+              className="space-y-4"
+            >
+              <h3 className={`text-xl font-semibold ${
+                isDarkMode ? 'text-blue-400' : 'text-yellow-200'
+              }`}>
+                What I Love:
+              </h3>
+              <ul className={`space-y-2 ${
+                isDarkMode ? 'text-gray-300' : 'text-white/90'
+              }`}>
+                <motion.li 
+                  className="flex items-center space-x-3"
+                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4, delay: 1.4 }}
                 >
-                  <exp.icon className="w-6 h-6 text-white" />
-                </motion.div>
-                
-                <div className="flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors duration-300">
-                      {exp.title}
-                    </h3>
-                    <span className="text-sm text-gray-400 font-medium">
-                      {exp.year}
-                    </span>
-                  </div>
-                  
-                  <h4 className="text-lg font-semibold text-blue-400 mb-3">
-                    {exp.subtitle}
-                  </h4>
-                  
-                  <p className="text-gray-300 leading-relaxed">
-                    {exp.description}
-                  </p>
-                  
-                  <motion.div
-                    className={`mt-4 h-1 bg-gradient-to-r ${exp.color} rounded-full`}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '100%' }}
-                    transition={{ duration: 1, delay: index * 0.2 }}
-                  />
-                </div>
+                  <span className={`w-2 h-2 rounded-full ${
+                    isDarkMode ? 'bg-blue-400' : 'bg-yellow-200'
+                  }`}></span>
+                  <span>Creating responsive and interactive user interfaces</span>
+                </motion.li>
+                <motion.li 
+                  className="flex items-center space-x-3"
+                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4, delay: 1.6 }}
+                >
+                  <span className={`w-2 h-2 rounded-full ${
+                    isDarkMode ? 'bg-blue-400' : 'bg-yellow-200'
+                  }`}></span>
+                  <span>Learning new technologies and best practices</span>
+                </motion.li>
+                <motion.li 
+                  className="flex items-center space-x-3"
+                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4, delay: 1.8 }}
+                >
+                  <span className={`w-2 h-2 rounded-full ${
+                    isDarkMode ? 'bg-blue-400' : 'bg-yellow-200'
+                  }`}></span>
+                  <span>Collaborating with teams to solve complex problems</span>
+                </motion.li>
+                <motion.li 
+                  className="flex items-center space-x-3"
+                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4, delay: 2.0 }}
+                >
+                  <span className={`w-2 h-2 rounded-full ${
+                    isDarkMode ? 'bg-blue-400' : 'bg-yellow-200'
+                  }`}></span>
+                  <span>Optimizing performance and user experience</span>
+                </motion.li>
+              </ul>
+            </motion.div>
+          </motion.div>
+
+          {/* Right side - Profile Image & Stats */}
+          <motion.div
+            initial={{ x: 50, opacity: 0 }}
+            animate={isInView ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="relative"
+          >
+            {/* Profile Image Container */}
+            <motion.div 
+              className="relative mx-auto w-80 h-80 mb-8"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Decorative rings */}
+              <motion.div
+                className={`absolute inset-0 rounded-full border-2 ${
+                  isDarkMode ? 'border-blue-400/20' : 'border-yellow-200/30'
+                }`}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div
+                className={`absolute inset-4 rounded-full border ${
+                  isDarkMode ? 'border-purple-400/20' : 'border-yellow-300/20'
+                }`}
+                animate={{ rotate: -360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+              />
+              
+              {/* Profile Image */}
+              <div className={`absolute inset-8 rounded-full p-1 ${
+                isDarkMode 
+                  ? 'bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600' 
+                  : 'bg-gradient-to-br from-yellow-200 via-orange-300 to-pink-400'
+              }`}>
+                <img
+                  src="/avatar-placeholder.jpg.jpg"
+                  alt="Mai Vủ"
+                  className="w-full h-full rounded-full object-cover border-4 border-white/20"
+                />
               </div>
             </motion.div>
-          ))}
-        </motion.div>
 
-        {/* Personal stats */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="glass-effect rounded-3xl p-8 md:p-12"
-        >
-          <motion.h3 
-            variants={itemVariants}
-            className="text-2xl md:text-3xl font-bold text-center mb-8 text-white"
-          >
-            Some Statistics
-          </motion.h3>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: '15+', label: 'Projects', color: 'from-blue-400 to-cyan-400' },
-              { number: '2+', label: 'Years Exp', color: 'from-purple-400 to-pink-400' },
-              { number: '10+', label: 'Technologies', color: 'from-green-400 to-emerald-400' },
-              { number: '100%', label: 'Passion', color: 'from-orange-400 to-red-400' }
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                variants={itemVariants}
-                whileHover={{ scale: 1.1, rotateY: 10 }}
-                className="text-center group"
+            {/* Stats Cards */}
+            <motion.div 
+              className="grid grid-cols-2 gap-4"
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+            >
+              <motion.div 
+                className={`p-4 rounded-xl text-center ${
+                  isDarkMode 
+                    ? 'bg-white/5 backdrop-blur-sm border border-white/10' 
+                    : 'bg-white/20 backdrop-blur-sm border border-white/30'
+                }`}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.3 }}
               >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className={`text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  {stat.number}
-                </motion.div>
-                <div className="text-gray-400 font-medium group-hover:text-gray-300 transition-colors duration-300">
-                  {stat.label}
-                </div>
+                <h4 className={`text-2xl font-bold ${
+                  isDarkMode ? 'text-blue-400' : 'text-yellow-200'
+                }`}>2+</h4>
+                <p className={`text-sm ${
+                  isDarkMode ? 'text-gray-300' : 'text-white/90'
+                }`}>Years Experience</p>
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
+              
+              <motion.div 
+                className={`p-4 rounded-xl text-center ${
+                  isDarkMode 
+                    ? 'bg-white/5 backdrop-blur-sm border border-white/10' 
+                    : 'bg-white/20 backdrop-blur-sm border border-white/30'
+                }`}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h4 className={`text-2xl font-bold ${
+                  isDarkMode ? 'text-purple-400' : 'text-orange-200'
+                }`}>20+</h4>
+                <p className={`text-sm ${
+                  isDarkMode ? 'text-gray-300' : 'text-white/90'
+                }`}>Projects Completed</p>
+              </motion.div>
+              
+              <motion.div 
+                className={`p-4 rounded-xl text-center ${
+                  isDarkMode 
+                    ? 'bg-white/5 backdrop-blur-sm border border-white/10' 
+                    : 'bg-white/20 backdrop-blur-sm border border-white/30'
+                }`}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h4 className={`text-2xl font-bold ${
+                  isDarkMode ? 'text-indigo-400' : 'text-pink-200'
+                }`}>15+</h4>
+                <p className={`text-sm ${
+                  isDarkMode ? 'text-gray-300' : 'text-white/90'
+                }`}>Technologies</p>
+              </motion.div>
+              
+              <motion.div 
+                className={`p-4 rounded-xl text-center ${
+                  isDarkMode 
+                    ? 'bg-white/5 backdrop-blur-sm border border-white/10' 
+                    : 'bg-white/20 backdrop-blur-sm border border-white/30'
+                }`}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h4 className={`text-2xl font-bold ${
+                  isDarkMode ? 'text-cyan-400' : 'text-yellow-300'
+                }`}>100%</h4>
+                <p className={`text-sm ${
+                  isDarkMode ? 'text-gray-300' : 'text-white/90'
+                }`}>Commitment</p>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
