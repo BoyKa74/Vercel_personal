@@ -3,12 +3,48 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { ExternalLink, Github, Star, Users, GraduationCap, Coffee } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { ExternalLink, Github, Users, Globe, Smartphone, BrainCircuit, Boxes, Sparkles, Lock } from 'lucide-react';
+import { projects, type Audience, type Platform } from '@/lib/projects';
+
+type TabId = 'featured' | Platform | 'private';
+
+const platformTabs: { id: TabId; name: string; short: string; icon: ReactNode }[] = [
+  { id: 'featured', name: 'Featured', short: 'Featured', icon: <Sparkles className="w-5 h-5" /> },
+  { id: 'web', name: 'Web', short: 'Web', icon: <Globe className="w-5 h-5" /> },
+  { id: 'mobile', name: 'Mobile App', short: 'Mobile', icon: <Smartphone className="w-5 h-5" /> },
+  { id: 'ai', name: 'AI', short: 'AI', icon: <BrainCircuit className="w-5 h-5" /> },
+  { id: 'other', name: 'Other', short: 'Other', icon: <Boxes className="w-5 h-5" /> },
+  { id: 'private', name: 'Private', short: 'Private', icon: <Lock className="w-5 h-5" /> }
+];
+
+const audienceFilters: { id: Audience; name: string }[] = [
+  { id: 'client', name: 'Client' },
+  { id: 'enterprise', name: 'Enterprise' },
+  { id: 'personal', name: 'Personal' },
+  { id: 'academic', name: 'Academic' },
+  { id: 'learning', name: 'Learning' }
+];
+
+const platformEmoji: Record<Platform, string> = {
+  web: '🌐',
+  mobile: '📱',
+  ai: '🧠',
+  other: '🧰'
+};
+
+const getTabProjects = (tab: TabId) =>
+  tab === 'featured'
+    ? projects.filter((project) => project.featured)
+    : tab === 'private'
+      ? projects.filter((project) => project.isPrivate)
+      : projects.filter((project) => project.platform === tab);
 
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState<TabId>('featured');
+  const [activeFilter, setActiveFilter] = useState<'all' | Audience>('all');
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Theme detection
@@ -17,167 +53,61 @@ export default function Projects() {
       const theme = localStorage.getItem('theme');
       setIsDarkMode(theme === 'dark');
     };
-    
+
     checkTheme();
     const interval = setInterval(checkTheme, 100);
     return () => clearInterval(interval);
   }, []);
 
-  const projectTabs = [
-    {
-      id: 0,
-      name: 'Client Projects',
-      icon: <Star className="w-5 h-5" />,
-      description: 'Professional projects for clients'
-    },
-    {
-      id: 1,
-      name: 'Academic Projects',
-      icon: <GraduationCap className="w-5 h-5" />,
-      description: 'University and team projects'
-    },
-    {
-      id: 2,
-      name: 'Personal Projects',
-      icon: <Coffee className="w-5 h-5" />,
-      description: 'Fun projects and experiments'
-    }
-  ];
+  const tabProjects = getTabProjects(activeTab);
 
-  const clientProjects = [
-    {
-      title: "E-Commerce Platform",
-      description: "Complete online shopping solution with payment integration, admin dashboard, and real-time inventory management.",
-      tech: ["Next.js", "Node.js", "PostgreSQL", "Stripe"],
-      link: "#",
-      github: "#",
-      image: "/projects/ecommerce.jpg",
-      status: "Completed"
-    },
-    {
-      title: "Business Dashboard",
-      description: "Analytics dashboard for business insights with data visualization and reporting features.",
-      tech: ["React", "Express.js", "MongoDB", "Chart.js"],
-      link: "#",
-      github: "#",
-      image: "/projects/dashboard.jpg",
-      status: "Completed"
-    },
-    {
-      title: "Restaurant Management",
-      description: "Full restaurant management system with order tracking, inventory, and staff management.",
-      tech: ["Vue.js", "Laravel", "MySQL", "Socket.io"],
-      link: "#",
-      github: "#",
-      image: "/projects/restaurant.jpg",
-      status: "Completed"
-    }
-  ];
+  const tabCount = (tab: TabId) => getTabProjects(tab).length;
 
-  const academicProjects = [
-    {
-      title: "Library Management System",
-      description: "University project for managing library resources, student records, and book borrowing system.",
-      tech: ["Java", "Spring Boot", "MySQL", "Thymeleaf"],
-      link: "#",
-      github: "#",
-      image: "/projects/library.jpg",
-      status: "Completed",
-      teamSize: "4 members"
-    },
-    {
-      title: "Student Portal",
-      description: "Web application for students to view grades, course schedules, and university announcements.",
-      tech: ["React", "Node.js", "MongoDB", "Express"],
-      link: "#",
-      github: "#",
-      image: "/projects/student-portal.jpg",
-      status: "Completed",
-      teamSize: "3 members"
-    },
-    {
-      title: "AI Chatbot Assistant",
-      description: "Intelligent chatbot for answering university-related questions using NLP and machine learning.",
-      tech: ["Python", "Django", "TensorFlow", "PostgreSQL"],
-      link: "#",
-      github: "#",
-      image: "/projects/chatbot.jpg",
-      status: "Completed",
-      teamSize: "5 members"
-    }
-  ];
+  const filterCount = (filter: 'all' | Audience) =>
+    filter === 'all'
+      ? tabProjects.length
+      : tabProjects.filter((project) => project.audience === filter).length;
 
-  const personalProjects = [
-    {
-      title: "Weather App",
-      description: "Beautiful weather application with forecasts, maps, and location-based services.",
-      tech: ["React Native", "OpenWeather API", "Redux"],
-      link: "#",
-      github: "#",
-      image: "/projects/weather.jpg",
-      status: "In Progress"
-    },
-    {
-      title: "Music Player",
-      description: "Modern music player with playlist management, lyrics display, and social features.",
-      tech: ["Electron", "React", "Node.js", "SQLite"],
-      link: "#",
-      github: "#",
-      image: "/projects/music.jpg",
-      status: "Experimental"
-    },
-    {
-      title: "Game Collection",
-      description: "Collection of mini-games built with different technologies for learning and fun.",
-      tech: ["JavaScript", "Canvas", "WebGL", "Three.js"],
-      link: "#",
-      github: "#",
-      image: "/projects/games.jpg",
-      status: "Ongoing"
-    },
-    {
-      title: "Photography Portfolio",
-      description: "Portfolio website template for photographers with gallery and booking features.",
-      tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
-      link: "#",
-      github: "#",
-      image: "/projects/photography.jpg",
-      status: "Draft"
-    }
-  ];
+  const availableFilters = audienceFilters.filter((filter) => filterCount(filter.id) > 0);
 
-  const getProjects = () => {
-    switch (activeTab) {
-      case 0: return clientProjects;
-      case 1: return academicProjects;
-      case 2: return personalProjects;
-      default: return clientProjects;
+  const visibleProjects =
+    activeFilter === 'all'
+      ? tabProjects
+      : tabProjects.filter((project) => project.audience === activeFilter);
+
+  const handleTabChange = (tab: TabId) => {
+    setActiveTab(tab);
+    const filterStillExists = getTabProjects(tab).some(
+      (project) => project.audience === activeFilter
+    );
+    if (activeFilter !== 'all' && !filterStillExists) {
+      setActiveFilter('all');
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Completed':
-        return isDarkMode ? 'text-green-400 bg-green-400/20' : 'text-green-300 bg-green-300/30';
-      case 'In Progress':
-        return isDarkMode ? 'text-blue-400 bg-blue-400/20' : 'text-blue-300 bg-blue-300/30';
-      case 'Experimental':
-        return isDarkMode ? 'text-purple-400 bg-purple-400/20' : 'text-purple-300 bg-purple-300/30';
-      case 'Ongoing':
-        return isDarkMode ? 'text-yellow-400 bg-yellow-400/20' : 'text-yellow-300 bg-yellow-300/30';
-      case 'Draft':
-        return isDarkMode ? 'text-gray-400 bg-gray-400/20' : 'text-gray-300 bg-gray-300/30';
+  const getAudienceColor = (audience: Audience) => {
+    switch (audience) {
+      case 'client':
+        return isDarkMode ? 'text-emerald-400 bg-emerald-400/20' : 'text-emerald-100 bg-emerald-900/40';
+      case 'enterprise':
+        return isDarkMode ? 'text-sky-400 bg-sky-400/20' : 'text-sky-100 bg-sky-900/40';
+      case 'personal':
+        return isDarkMode ? 'text-violet-400 bg-violet-400/20' : 'text-violet-100 bg-violet-900/40';
+      case 'academic':
+        return isDarkMode ? 'text-amber-400 bg-amber-400/20' : 'text-amber-100 bg-amber-900/40';
+      case 'learning':
+        return isDarkMode ? 'text-rose-400 bg-rose-400/20' : 'text-rose-100 bg-rose-900/40';
       default:
-        return isDarkMode ? 'text-green-400 bg-green-400/20' : 'text-green-300 bg-green-300/30';
+        return isDarkMode ? 'text-gray-400 bg-gray-400/20' : 'text-gray-100 bg-gray-900/40';
     }
   };
 
   return (
-    <section 
-      id="projects" 
+    <section
+      id="projects"
       className={`py-20 transition-all duration-1000 ${
-        isDarkMode 
-          ? 'bg-gray-800' 
+        isDarkMode
+          ? 'bg-gray-800'
           : 'bg-gradient-to-b from-blue-600 via-blue-700 to-blue-800'
       } relative overflow-hidden`}
     >
@@ -187,7 +117,7 @@ export default function Projects() {
           {/* Deep water light filtering */}
           <div className="absolute top-0 left-1/5 w-2 h-full bg-gradient-to-b from-cyan-200/20 to-transparent transform rotate-3" />
           <div className="absolute top-0 right-1/3 w-1 h-full bg-gradient-to-b from-blue-200/25 to-transparent transform -rotate-8" />
-          
+
           {/* Ocean depth particles */}
           <motion.div
             className="absolute top-1/4 left-1/8 w-3 h-3 bg-white/30 rounded-full"
@@ -206,7 +136,7 @@ export default function Projects() {
             }}
             transition={{ duration: 4, repeat: Infinity, delay: 2 }}
           />
-          
+
           {/* Deep sea coral simulation */}
           <motion.div
             className="absolute bottom-0 left-1/4 w-10 h-20 bg-pink-900/15 rounded-t-full"
@@ -234,7 +164,7 @@ export default function Projects() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <motion.h2 
+          <motion.h2
             initial={{ y: 50, opacity: 0 }}
             animate={isInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -244,7 +174,7 @@ export default function Projects() {
           >
             My Projects
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
@@ -253,39 +183,40 @@ export default function Projects() {
               isDarkMode ? 'text-gray-300' : 'text-white/90'
             }`}
           >
-            A showcase of my work across different domains - from client solutions to academic achievements and personal experiments.
+            {projects.length} projects across web, mobile and AI — live products, client work,
+            enterprise platforms, academic research and personal experiments.
           </motion.p>
-          
+
           <motion.div
             initial={{ width: 0 }}
             animate={isInView ? { width: 100 } : { width: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className={`h-1 mx-auto rounded-full ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-blue-400 to-purple-500' 
+              isDarkMode
+                ? 'bg-gradient-to-r from-blue-400 to-purple-500'
                 : 'bg-gradient-to-r from-yellow-200 to-orange-300'
             }`}
             style={{ maxWidth: '100px' }}
           />
         </motion.div>
 
-        {/* Project Tabs */}
+        {/* Platform Tabs */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={isInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex justify-center mb-12"
+          className="flex justify-center mb-6"
         >
-          <div className={`flex space-x-2 p-2 rounded-xl ${
-            isDarkMode 
-              ? 'bg-white/5 backdrop-blur-sm border border-white/10' 
+          <div className={`flex flex-wrap justify-center gap-2 p-2 rounded-xl ${
+            isDarkMode
+              ? 'bg-white/5 backdrop-blur-sm border border-white/10'
               : 'bg-white/15 backdrop-blur-sm border border-white/20'
           }`}>
-            {projectTabs.map((tab) => (
+            {platformTabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+                onClick={() => handleTabChange(tab.id)}
+                className={`flex items-center space-x-2 px-5 py-3 rounded-lg transition-all duration-300 ${
                   activeTab === tab.id
                     ? isDarkMode
                       ? 'bg-blue-500 text-white shadow-lg'
@@ -297,75 +228,109 @@ export default function Projects() {
               >
                 {tab.icon}
                 <span className="font-medium hidden sm:block">{tab.name}</span>
-                <span className="font-medium sm:hidden">{tab.name.split(' ')[0]}</span>
+                <span className="font-medium sm:hidden">{tab.short}</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                  activeTab === tab.id
+                    ? isDarkMode
+                      ? 'bg-white/20 text-white'
+                      : 'bg-blue-900/20 text-blue-900'
+                    : isDarkMode
+                      ? 'bg-white/10 text-gray-300'
+                      : 'bg-white/20 text-white/90'
+                }`}>
+                  {tabCount(tab.id)}
+                </span>
               </button>
             ))}
           </div>
         </motion.div>
 
+        {/* Audience Filters */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="flex flex-wrap justify-center gap-2 mb-12"
+        >
+          {[{ id: 'all' as const, name: 'All' }, ...availableFilters].map((filter) => (
+            <button
+              key={filter.id}
+              onClick={() => setActiveFilter(filter.id)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                activeFilter === filter.id
+                  ? isDarkMode
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                    : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-blue-900 shadow-lg'
+                  : isDarkMode
+                    ? 'bg-white/5 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10'
+                    : 'bg-white/15 text-white/80 hover:text-white hover:bg-white/25 border border-white/20'
+              } no-spaceship z-30`}
+            >
+              {filter.name}
+              <span className="ml-2 opacity-70">{filterCount(filter.id)}</span>
+            </button>
+          ))}
+        </motion.div>
+
         {/* Project Grid */}
         <motion.div
-          key={activeTab}
+          key={`${activeTab}-${activeFilter}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {getProjects().map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <motion.div
-              key={project.title}
+              key={project.github || project.name}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`group rounded-xl overflow-hidden ${
-                isDarkMode 
-                  ? 'bg-white/5 backdrop-blur-sm border border-white/10' 
+              transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.5) }}
+              className={`group rounded-xl overflow-hidden flex flex-col ${
+                isDarkMode
+                  ? 'bg-white/5 backdrop-blur-sm border border-white/10'
                   : 'bg-white/15 backdrop-blur-sm border border-white/20'
-              } hover:scale-105 transition-all duration-300 ocean-current`}
+              } hover:scale-[1.03] transition-all duration-300 ocean-current`}
             >
-              {/* Project Image */}
-              <div className="relative h-48 overflow-hidden">
-                <div className={`absolute inset-0 ${
-                  isDarkMode 
-                    ? 'bg-gradient-to-br from-blue-500/20 to-purple-600/20' 
-                    : 'bg-gradient-to-br from-cyan-300/30 to-blue-400/30'
-                } flex items-center justify-center`}>
-                  <div className={`text-6xl opacity-30 ${
-                    isDarkMode ? 'text-white' : 'text-white'
-                  }`}>
-                    {activeTab === 0 ? '💼' : activeTab === 1 ? '🎓' : '🚀'}
-                  </div>
-                </div>
-                
-                {/* Status Badge */}
-                <div className="absolute top-4 right-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(project.status)}`}>
-                    {project.status}
-                  </span>
-                </div>
-
-                {/* Team Size for Academic Projects */}
-                {activeTab === 1 && 'teamSize' in project && (
-                  <div className="absolute top-4 left-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${
-                      isDarkMode ? 'text-blue-300 bg-blue-300/20' : 'text-blue-200 bg-blue-200/30'
+              {/* Project Header */}
+              <div className={`relative h-20 flex items-center justify-between px-5 ${
+                isDarkMode
+                  ? 'bg-gradient-to-br from-blue-500/20 to-purple-600/20'
+                  : 'bg-gradient-to-br from-cyan-300/30 to-blue-400/30'
+              }`}>
+                <span className="text-3xl opacity-70">{platformEmoji[project.platform]}</span>
+                <div className="flex items-center space-x-2">
+                  {project.team && (
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${
+                      isDarkMode ? 'text-blue-300 bg-blue-300/20' : 'text-blue-100 bg-blue-900/40'
                     }`}>
                       <Users className="w-3 h-3" />
-                      <span>{'teamSize' in project ? (project as {teamSize: string}).teamSize : ''}</span>
+                      <span>Team</span>
                     </span>
-                  </div>
-                )}
+                  )}
+                  {project.isPrivate && (
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${
+                      isDarkMode ? 'text-orange-300 bg-orange-300/20' : 'text-orange-100 bg-orange-900/40'
+                    }`}>
+                      <Lock className="w-3 h-3" />
+                      <span>Private</span>
+                    </span>
+                  )}
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getAudienceColor(project.audience)}`}>
+                    {project.audience.charAt(0).toUpperCase() + project.audience.slice(1)}
+                  </span>
+                </div>
               </div>
 
               {/* Project Content */}
-              <div className="p-6">
-                <h3 className={`text-xl font-bold mb-3 ${
+              <div className="p-5 flex flex-col flex-1">
+                <h3 className={`text-lg font-bold mb-2 ${
                   isDarkMode ? 'text-white' : 'text-white'
                 }`}>
-                  {project.title}
+                  {project.name}
                 </h3>
-                
-                <p className={`text-sm mb-4 line-clamp-3 ${
+
+                <p className={`text-sm mb-4 line-clamp-3 flex-1 ${
                   isDarkMode ? 'text-gray-300' : 'text-white/90'
                 }`}>
                   {project.description}
@@ -377,8 +342,8 @@ export default function Projects() {
                     <span
                       key={tech}
                       className={`px-3 py-1 rounded-full text-xs ${
-                        isDarkMode 
-                          ? 'bg-white/10 text-gray-300' 
+                        isDarkMode
+                          ? 'bg-white/10 text-gray-300'
                           : 'bg-white/20 text-white/90'
                       }`}
                     >
@@ -389,37 +354,56 @@ export default function Projects() {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-3">
-                  <motion.a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-lg ${
-                      isDarkMode 
-                        ? 'bg-blue-500 hover:bg-blue-600 text-white' 
-                        : 'bg-yellow-400 hover:bg-yellow-500 text-blue-900'
-                    } transition-colors duration-300 no-spaceship z-30`}
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    <span className="text-sm font-medium">View</span>
-                  </motion.a>
-                  
-                  <motion.a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`flex items-center justify-center p-2 rounded-lg ${
-                      isDarkMode 
-                        ? 'border border-white/20 text-gray-300 hover:bg-white/10' 
-                        : 'border border-white/30 text-white hover:bg-white/20'
-                    } transition-all duration-300 no-spaceship z-30`}
-                  >
-                    <Github className="w-4 h-4" />
-                  </motion.a>
+                  {project.demo && (
+                    <motion.a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-lg ${
+                        isDarkMode
+                          ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                          : 'bg-yellow-400 hover:bg-yellow-500 text-blue-900'
+                      } transition-colors duration-300 no-spaceship z-30`}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span className="text-sm font-medium">Live</span>
+                    </motion.a>
+                  )}
+
+                  {project.github && (
+                    <motion.a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-lg ${
+                        project.demo
+                          ? isDarkMode
+                            ? 'border border-white/20 text-gray-300 hover:bg-white/10'
+                            : 'border border-white/30 text-white hover:bg-white/20'
+                          : isDarkMode
+                            ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                            : 'bg-yellow-400 hover:bg-yellow-500 text-blue-900'
+                      } transition-all duration-300 no-spaceship z-30`}
+                    >
+                      <Github className="w-4 h-4" />
+                      <span className="text-sm font-medium">Code</span>
+                    </motion.a>
+                  )}
                 </div>
+
+                {/* Private note */}
+                {project.isPrivate && (
+                  <p className={`mt-3 text-xs italic leading-relaxed ${
+                    isDarkMode ? 'text-gray-400' : 'text-white/70'
+                  }`}>
+                    Private project — due to client and project confidentiality the source code
+                    cannot be shared publicly. Contact me if you would like a walkthrough.
+                  </p>
+                )}
               </div>
             </motion.div>
           ))}
@@ -442,8 +426,8 @@ export default function Projects() {
             whileTap={{ scale: 0.95 }}
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             className={`px-8 py-4 rounded-lg font-medium ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700' 
+              isDarkMode
+                ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700'
                 : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600'
             } text-white transition-all duration-300 shadow-lg no-spaceship z-30`}
           >
@@ -453,4 +437,4 @@ export default function Projects() {
       </div>
     </section>
   );
-} 
+}
