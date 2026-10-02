@@ -265,7 +265,7 @@ export default function About() {
               >
                 <h4 className={`text-2xl font-bold ${
                   isDarkMode ? 'text-purple-400' : 'text-orange-200'
-                }`}>200+</h4>
+                }`}>250+</h4>
                 <p className={`text-sm ${
                   isDarkMode ? 'text-gray-300' : 'text-white/90'
                 }`}>Projects Completed</p>
