@@ -331,10 +331,10 @@ export default function Projects() {
                 />
 
                 {/* sheen sweep on hover */}
-                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                <div className="pointer-events-none absolute inset-0 z-10 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
                 {/* badges */}
-                <div className="absolute inset-x-3 bottom-3 flex items-center justify-between">
+                <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between">
                   <span className="text-2xl opacity-80">{platformEmoji[project.platform]}</span>
                   <div className="flex items-center space-x-1.5">
                     {project.team && (

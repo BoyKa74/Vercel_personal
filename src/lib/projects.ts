@@ -90,7 +90,6 @@ export const projects: Project[] = [
     audience: "enterprise",
     tech: ["HTML", "JavaScript"],
     github: "https://github.com/BoyKa74/Vlux_Company",
-    demo: "https://vlux-company.vercel.app",
     featured: true,
     year: 2025
   },
@@ -635,7 +634,6 @@ export const projects: Project[] = [
     audience: "enterprise",
     tech: ["Next.js", "NestJS", "TypeScript"],
     github: "https://github.com/VluxAI/Vlux_Job_Restaurant_Management",
-    demo: "https://vlux-job-restaurant-management.vercel.app",
     featured: true,
     isPrivate: true,
     year: 2026
@@ -705,7 +703,6 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["Python", "FastAPI", "AWS", "Docker"],
     github: "https://github.com/BoyKa74/Job_Upwork_KEN",
-    demo: "https://frontend-gules-chi-17.vercel.app",
     isPrivate: true,
     year: 2026
   },
@@ -747,7 +744,6 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["HTML", "CSS", "JavaScript"],
     github: "https://github.com/BoyKa74/Job_Primalqueen",
-    demo: "https://job-primalqueen.vercel.app",
     isPrivate: true,
     year: 2025
   },
@@ -769,7 +765,6 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["HTML", "CSS", "jQuery"],
     github: "https://github.com/BoyKa74/Job_Chicken_Web",
-    demo: "https://job-chicken-web.vercel.app",
     isPrivate: true,
     year: 2025
   },
@@ -959,7 +954,6 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["JavaScript", "Canvas", "WebSockets"],
     github: "https://github.com/BoyKa74/Job_Upwork_Multiplayer",
-    demo: "https://multiplayer-sand.vercel.app",
     isPrivate: true,
     year: 2026
   },
@@ -1100,7 +1094,6 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["HTML", "CSS", "JavaScript"],
     github: "https://github.com/BoyKa74/Job_Mocup",
-    demo: "https://job-mocup.vercel.app",
     isPrivate: true,
     year: 2025
   },
@@ -1239,7 +1232,6 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["Next.js", "Node.js"],
     github: "https://github.com/BoyKa74/Job_Upwork_Clone_Theegg.app",
-    demo: "https://job-upwork-clone-theegg-app.vercel.app",
     isPrivate: true,
     year: 2026
   },
@@ -1293,7 +1285,6 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["TypeScript", "Next.js", "NestJS"],
     github: "https://github.com/BoyKa74/Job_Pickleball",
-    demo: "https://job-pickleball-api.vercel.app",
     isPrivate: true,
     year: 2026
   },
@@ -1462,7 +1453,6 @@ export const projects: Project[] = [
     audience: "enterprise",
     tech: ["Next.js", "Prisma", "TypeScript"],
     github: "https://github.com/VluxAI/Vlux_Job_Restaurant_User",
-    demo: "https://vlux-job-restaurant-user.vercel.app",
     isPrivate: true,
     year: 2026
   },
@@ -1582,7 +1572,6 @@ export const projects: Project[] = [
     audience: "personal",
     tech: ["Next.js", "Supabase", "RAG"],
     github: "https://github.com/BoyKa74/RAG-Demo-Dashboard",
-    demo: "https://rag-demo-dashboard.vercel.app",
     isPrivate: true,
     year: 2025
   },
@@ -1716,7 +1705,6 @@ export const projects: Project[] = [
     audience: "personal",
     tech: ["HTML", "JavaScript", "Canvas"],
     github: "https://github.com/BoyKa74/Funject_TrungThu_YaLyHua",
-    demo: "https://funject-trung-thu-ya-ly-hua.vercel.app",
     isPrivate: true,
     year: 2025
   }

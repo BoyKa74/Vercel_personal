@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Platform } from "@/lib/projects";
 
 const mockGradients = [
@@ -247,8 +248,13 @@ export default function ProjectPreview({
   github?: string;
   isDarkMode?: boolean;
 }) {
+  const [screenshotLoaded, setScreenshotLoaded] = useState(false);
+  const [screenshotFailed, setScreenshotFailed] = useState(false);
   const gradient = mockGradient(name);
   const variant = getVariant(name, platform);
+  const screenshotUrl = demo
+    ? `https://image.thum.io/get/png/width/640/viewportWidth/1280/viewportHeight/560/noanimate/${demo}`
+    : null;
 
   return (
     <div className="absolute inset-0">
@@ -272,12 +278,27 @@ export default function ProjectPreview({
         </span>
       </div>
 
-      {/* website mock */}
+      {/* website mock (skeleton / fallback when there is no live site) */}
       {variant === "site" && <SiteMock gradient={gradient} />}
       {variant === "dashboard" && <DashboardMock gradient={gradient} />}
       {variant === "phone" && <PhoneMock gradient={gradient} />}
       {variant === "chat" && <ChatMock gradient={gradient} />}
       {variant === "terminal" && <TerminalMock gradient={gradient} />}
+
+      {/* real website screenshot */}
+      {screenshotUrl && !screenshotFailed && (
+        <img
+          src={screenshotUrl}
+          alt={`${name} website preview`}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setScreenshotLoaded(true)}
+          onError={() => setScreenshotFailed(true)}
+          className={`absolute inset-x-0 bottom-0 top-7 z-[5] h-[calc(100%-1.75rem)] w-full bg-black/20 object-cover object-top transition-opacity duration-700 ${
+            screenshotLoaded ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
     </div>
   );
 }
