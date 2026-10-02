@@ -127,47 +127,207 @@ function DashboardMock({ gradient }: { gradient: string }) {
   );
 }
 
-function PhoneMock({ gradient }: { gradient: string }) {
-  return (
-    <div className="absolute inset-x-0 bottom-0 top-7 flex items-center justify-center">
-      <div className="relative h-[124px] w-[68px] rounded-[16px] border border-white/40 bg-white/15 p-1.5 shadow-xl">
-        <span className="absolute left-1/2 top-1 h-1 w-6 -translate-x-1/2 rounded-full bg-black/30" />
-        {/* app header */}
-        <div className="mt-3 flex items-center justify-between">
-          <span className="h-1.5 w-7 rounded-full bg-white/85" />
-          <span className={`h-3 w-3 rounded-full bg-gradient-to-br ${gradient}`} />
+type PhoneVariant = "feed" | "map" | "booking" | "books" | "dating" | "generic";
+
+const getPhoneVariant = (name: string): PhoneVariant => {
+  const value = name.toLowerCase();
+  if (value.includes("social")) return "feed";
+  if (value.includes("hydrant")) return "map";
+  if (value.includes("flight") || value.includes("booking")) return "booking";
+  if (value.includes("book")) return "books";
+  if (value.includes("dating")) return "dating";
+  return "generic";
+};
+
+function PhoneScreen({ variant, gradient }: { variant: PhoneVariant; gradient: string }) {
+  if (variant === "feed") {
+    return (
+      <div className="px-1.5 pt-0.5">
+        <div className="flex items-center gap-1">
+          <span className={`h-3.5 w-3.5 rounded-full bg-gradient-to-br ${gradient}`} />
+          <div className="flex-1">
+            <span className="block h-1 w-9 rounded-full bg-white/80" />
+            <span className="mt-0.5 block h-0.5 w-5 rounded-full bg-white/40" />
+          </div>
+          <span className="h-1 w-3 rounded-full bg-white/50" />
         </div>
-        {/* avatar row */}
-        <div className="mt-1.5 flex gap-1">
+        <div className="mt-1 flex gap-1">
           {[0, 1, 2, 3].map((index) => (
             <span
               key={index}
-              className={`h-5 w-5 rounded-full border border-white/30 ${
-                index === 0 ? `bg-gradient-to-br ${gradient}` : "bg-white/30"
+              className={`h-6 w-6 rounded-full border border-white/30 ${
+                index === 0 ? `bg-gradient-to-br ${gradient}` : "bg-white/25"
               }`}
             />
           ))}
         </div>
-        {/* list cards */}
-        <div className="mt-1.5 space-y-1">
-          <div className="flex items-center gap-1 rounded-md bg-white/25 p-1">
-            <span className="h-3.5 w-3.5 rounded bg-white/60" />
-            <div className="flex-1">
-              <span className="block h-1 w-8 rounded-full bg-white/70" />
-              <span className="mt-0.5 block h-1 w-6 rounded-full bg-white/40" />
+        <div className="mt-1 space-y-1">
+          {[0, 1].map((index) => (
+            <div key={index} className="rounded-md bg-white/15 p-1">
+              <div className={`h-5 w-full rounded-sm bg-gradient-to-br ${gradient} opacity-80`} />
+              <span className="mt-1 block h-0.5 w-10 rounded-full bg-white/60" />
+              <span className="mt-0.5 block h-0.5 w-7 rounded-full bg-white/35" />
             </div>
-          </div>
-          <div className="h-3.5 rounded-md bg-white/20" />
-          <div className="h-3.5 rounded-md bg-white/15" />
-        </div>
-        {/* tab bar */}
-        <div className="absolute inset-x-2 bottom-1.5 flex justify-between">
-          {[0, 1, 2, 3].map((index) => (
-            <span
-              key={index}
-              className={`h-1.5 w-1.5 rounded-full ${index === 0 ? "bg-white/90" : "bg-white/45"}`}
-            />
           ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "map") {
+    return (
+      <div className="absolute inset-0 overflow-hidden">
+        <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-80`} />
+        <span className="absolute left-0 top-7 h-0.5 w-full rotate-12 bg-white/30" />
+        <span className="absolute left-0 top-14 h-0.5 w-full -rotate-6 bg-white/25" />
+        <span className="absolute left-5 top-0 h-full w-0.5 rotate-12 bg-white/25" />
+        <span className="absolute left-12 top-0 h-full w-0.5 -rotate-3 bg-white/20" />
+        <span className={`absolute left-6 top-9 h-2.5 w-2.5 rounded-full border border-white bg-gradient-to-br ${gradient}`} />
+        <span className="absolute right-5 top-12 h-2.5 w-2.5 rounded-full border border-white bg-red-400" />
+        <span className="absolute right-10 top-5 h-2.5 w-2.5 rounded-full border border-white bg-emerald-400" />
+        <div className="absolute inset-x-1 bottom-6 rounded-lg border border-white/20 bg-black/45 p-1.5">
+          <span className="block h-1 w-10 rounded-full bg-white/75" />
+          <span className="mt-0.5 block h-0.5 w-14 rounded-full bg-white/40" />
+          <div className="mt-1 flex gap-1">
+            <span className={`h-4 flex-1 rounded bg-gradient-to-br ${gradient}`} />
+            <span className="h-4 flex-1 rounded bg-white/20" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "booking") {
+    return (
+      <div className="px-1.5 pt-0.5">
+        <div className="flex items-center justify-between">
+          <span className="h-1 w-7 rounded-full bg-white/50" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/40" />
+        </div>
+        <div className="mt-1 rounded-lg border border-white/20 bg-white/15 p-1">
+          <div className="flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-white/85" />
+            <span className="h-px flex-1 border-t border-dashed border-white/50" />
+            <span className={`h-1.5 w-1.5 rounded-full bg-gradient-to-br ${gradient}`} />
+          </div>
+          <div className="mt-1 flex items-center justify-between">
+            <span className="h-0.5 w-6 rounded-full bg-white/40" />
+            <span className="h-0.5 w-6 rounded-full bg-white/40" />
+          </div>
+          <span className={`mt-1 block h-3 w-full rounded bg-gradient-to-r ${gradient}`} />
+        </div>
+        <div className="mt-1 space-y-1">
+          {[0, 1].map((index) => (
+            <div key={index} className="flex items-center gap-1 rounded-md bg-white/15 p-1">
+              <span className={`h-3 w-3 rounded bg-gradient-to-br ${gradient}`} />
+              <div className="flex-1">
+                <span className="block h-0.5 w-8 rounded-full bg-white/60" />
+                <span className="mt-0.5 block h-0.5 w-6 rounded-full bg-white/35" />
+              </div>
+              <span className="h-2 w-4 rounded bg-white/70" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "books") {
+    return (
+      <div className="px-1.5 pt-0.5">
+        <div className="flex items-center justify-between">
+          <span className="h-1.5 w-9 rounded-full bg-white/85" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/40" />
+        </div>
+        <div className="mt-1 grid grid-cols-3 gap-1">
+          {[0, 1, 2, 3, 4, 5].map((index) => (
+            <div
+              key={index}
+              className={`relative h-8 rounded-sm ${
+                index % 3 === 0
+                  ? `bg-gradient-to-br ${gradient}`
+                  : index % 3 === 1
+                    ? "bg-white/30"
+                    : "bg-white/20"
+              }`}
+            >
+              <span className="absolute inset-y-0 left-0 w-0.5 bg-black/25" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "dating") {
+    return (
+      <div className="absolute inset-0 p-1.5">
+        <div className={`relative h-[64px] w-full overflow-hidden rounded-lg bg-gradient-to-br ${gradient}`}>
+          <div className="absolute inset-0 opacity-60" style={dotPattern} />
+          <div className="absolute inset-x-1 bottom-1 rounded bg-black/35 p-1">
+            <span className="block h-1 w-12 rounded-full bg-white/85" />
+            <span className="mt-0.5 block h-0.5 w-8 rounded-full bg-white/50" />
+          </div>
+        </div>
+        <div className="mt-1.5 flex justify-center gap-3">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full border border-red-300/60 bg-red-400/30 text-[7px] leading-none text-white">
+            ✕
+          </span>
+          <span className="flex h-5 w-5 items-center justify-center rounded-full border border-emerald-300/60 bg-emerald-400/40 text-[7px] leading-none text-white">
+            ♥
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="px-1.5 pt-0.5">
+      <div className="flex items-center justify-between">
+        <span className="h-1.5 w-8 rounded-full bg-white/85" />
+        <span className={`h-3 w-3 rounded-full bg-gradient-to-br ${gradient}`} />
+      </div>
+      <div className="mt-1 grid grid-cols-2 gap-1">
+        {[0, 1, 2, 3].map((index) => (
+          <div key={index} className="rounded-md bg-white/15 p-1">
+            <span className="block h-0.5 w-5 rounded-full bg-white/50" />
+            <span className="mt-0.5 block h-1.5 w-7 rounded bg-white/70" />
+          </div>
+        ))}
+      </div>
+      <div className="mt-1 space-y-1">
+        {[0, 1].map((index) => (
+          <div key={index} className="h-3.5 rounded-md bg-white/15" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PhoneMock({ variant, gradient }: { variant: PhoneVariant; gradient: string }) {
+  return (
+    <div className="absolute inset-x-0 bottom-0 top-7 flex items-center justify-center">
+      <div className="relative h-[128px] w-[72px] rounded-[18px] border border-white/40 bg-black/45 p-[3px] shadow-xl">
+        <div className="relative h-full w-full overflow-hidden rounded-[15px] bg-slate-900/55">
+          <span className="absolute left-1/2 top-1 z-10 h-1 w-5 -translate-x-1/2 rounded-full bg-black/70" />
+          {/* status bar */}
+          <div className="flex items-center justify-between px-2 pt-1">
+            <span className="text-[5px] font-semibold leading-none text-white/85">9:41</span>
+            <span className="flex items-center gap-[1px]">
+              <span className="h-[3px] w-[6px] rounded-[1px] bg-white/70" />
+              <span className="h-[4px] w-[8px] rounded-[1px] border border-white/60" />
+            </span>
+          </div>
+          <PhoneScreen variant={variant} gradient={gradient} />
+          {/* tab bar */}
+          <div className="absolute inset-x-2 bottom-1 flex justify-between">
+            {[0, 1, 2, 3].map((index) => (
+              <span
+                key={index}
+                className={`h-1.5 w-1.5 rounded-full ${index === 0 ? "bg-white/90" : "bg-white/40"}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -283,7 +443,7 @@ export default function ProjectPreview({
       {/* website mock (skeleton / fallback when there is no live site) */}
       {variant === "site" && <SiteMock gradient={gradient} />}
       {variant === "dashboard" && <DashboardMock gradient={gradient} />}
-      {variant === "phone" && <PhoneMock gradient={gradient} />}
+      {variant === "phone" && <PhoneMock variant={getPhoneVariant(name)} gradient={gradient} />}
       {variant === "chat" && <ChatMock gradient={gradient} />}
       {variant === "terminal" && <TerminalMock gradient={gradient} />}
 
