@@ -647,6 +647,16 @@ export const projects: Project[] = [
   // PRIVATE — WEB (client work)
   // ================================================================
   {
+    name: "NP Sports",
+    description: "Shopify e-commerce store for a badminton & pickleball retailer in Australia — racquets, footwear, apparel and accessories (Li-Ning, Yonex, Victor, Mizuno).",
+    platform: "web",
+    audience: "client",
+    tech: ["Shopify", "Liquid", "JavaScript"],
+    demo: "https://npsports.com.au",
+    isPrivate: true,
+    year: 2026
+  },
+  {
     name: "SCENTOY",
     description: "E-commerce store for a home-fragrance brand — candles, reed diffusers, car fragrance and gift sets (WordPress + WooCommerce).",
     platform: "web",

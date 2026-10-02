@@ -80,6 +80,7 @@ export default function Skills() {
         { name: "GraphQL", icon: "https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" },
         { name: "WordPress", icon: "https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white" },
         { name: "WooCommerce", icon: "https://img.shields.io/badge/WooCommerce-96588A?style=for-the-badge&logo=woocommerce&logoColor=white" },
+        { name: "Shopify", icon: "https://img.shields.io/badge/Shopify-7AB55C?style=for-the-badge&logo=shopify&logoColor=white" },
         { name: "Android SDK", icon: "https://img.shields.io/badge/Android%20SDK-3DDC84?style=for-the-badge&logo=android&logoColor=white" }
       ]
     },
