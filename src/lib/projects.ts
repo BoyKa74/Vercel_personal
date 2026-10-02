@@ -98,11 +98,12 @@ export const projects: Project[] = [
   },
   {
     name: "Vlux Company",
-    description: "Corporate website for VluxAI, deployed on Vercel.",
+    description: "Corporate website for Vlux — AI-powered support for Vietnamese businesses (WordPress + WooCommerce).",
     platform: "web",
     audience: "enterprise",
-    tech: ["HTML", "JavaScript"],
+    tech: ["WordPress", "WooCommerce", "PHP"],
     github: "https://github.com/BoyKa74/Vlux_Company",
+    demo: "https://vluxai.com",
     featured: true,
     year: 2025
   },
@@ -645,6 +646,36 @@ export const projects: Project[] = [
   // ================================================================
   // PRIVATE — WEB (client work)
   // ================================================================
+  {
+    name: "SCENTOY",
+    description: "E-commerce store for a home-fragrance brand — candles, reed diffusers, car fragrance and gift sets (WordPress + WooCommerce).",
+    platform: "web",
+    audience: "client",
+    tech: ["WordPress", "WooCommerce", "PHP"],
+    demo: "https://scentoy.com",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "HT Nails",
+    description: "Website for HT Nails salon in Australia — services, gallery and online booking (WordPress + WooCommerce).",
+    platform: "web",
+    audience: "client",
+    tech: ["WordPress", "WooCommerce", "PHP"],
+    demo: "https://htnails.com.au",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "Soho Nails",
+    description: "Website for Soho Nails salon in Australia — services, gallery and online booking (WordPress + WooCommerce).",
+    platform: "web",
+    audience: "client",
+    tech: ["WordPress", "WooCommerce", "PHP"],
+    demo: "https://sohonails.com.au",
+    isPrivate: true,
+    year: 2026
+  },
   {
     name: "Open Question — Life Coaching",
     description: "Demo marketing site for a 1:1 life coach — home, about, services, reviews, contact and a reading list.",

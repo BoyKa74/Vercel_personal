@@ -29,6 +29,7 @@ export default function Skills() {
         { name: "Java", icon: "https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" },
         { name: "C++", icon: "https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" },
         { name: "Python", icon: "https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" },
+        { name: "PHP", icon: "https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" },
         { name: "Dart", icon: "https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" },
         { name: "HTML", icon: "https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white" },
         { name: "CSS", icon: "https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white" },
@@ -77,6 +78,8 @@ export default function Skills() {
         { name: "Cursor", icon: "https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white" },
         { name: "Firebase", icon: "https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" },
         { name: "GraphQL", icon: "https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white" },
+        { name: "WordPress", icon: "https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white" },
+        { name: "WooCommerce", icon: "https://img.shields.io/badge/WooCommerce-96588A?style=for-the-badge&logo=woocommerce&logoColor=white" },
         { name: "Android SDK", icon: "https://img.shields.io/badge/Android%20SDK-3DDC84?style=for-the-badge&logo=android&logoColor=white" }
       ]
     },
