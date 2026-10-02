@@ -121,6 +121,23 @@ export default function Skills() {
     }
   ];
 
+  const services = [
+    { emoji: "🌐", title: "Custom Web Development", description: "Business sites, SaaS dashboards and web apps built to scale." },
+    { emoji: "📱", title: "Cross-Platform Mobile Apps", description: "iOS & Android apps from a single Flutter codebase." },
+    { emoji: "🎨", title: "Pixel-Perfect UI from Figma", description: "Designs translated 1:1 into clean, responsive interfaces." },
+    { emoji: "🤖", title: "AI-Powered Applications", description: "LLM, RAG and computer-vision features inside real products." },
+    { emoji: "🗄️", title: "Database Architecture", description: "Schema design and data layers with SQL & NoSQL databases." },
+    { emoji: "☁️", title: "Deployment & Cloud Hosting", description: "Vercel, AWS, Netlify, Render and Google Cloud." },
+    { emoji: "🔄", title: "Website Migration", description: "Move platforms or hosts without losing SEO or data." },
+    { emoji: "🖥️", title: "Website Cloning", description: "Pixel-faithful clones rebuilt on a modern stack." },
+    { emoji: "⚙️", title: "Technology Stack Migration", description: "Legacy code upgraded to React, Next.js and modern tooling." },
+    { emoji: "🎨", title: "Figma → React / Next.js", description: "Figma files converted into component-based code." },
+    { emoji: "📄", title: "PDF → Responsive Website", description: "Print or PDF designs turned into responsive pages." },
+    { emoji: "🖼️", title: "Adobe XD → HTML / React", description: "XD mockups built into production-ready frontends." },
+    { emoji: "🐞", title: "Bug Fixing & Performance Optimization", description: "Debugging, Core Web Vitals and speed improvements." },
+    { emoji: "🧪", title: "QA Tester", description: "Manual and automated testing across web & mobile." }
+  ];
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -214,7 +231,7 @@ export default function Skills() {
               isDarkMode ? 'text-white' : 'text-white'
             }`}
           >
-            🛠 Technologies & Tools
+            🛠 Tech & Services
           </motion.h2>
           
           <motion.p
@@ -225,7 +242,7 @@ export default function Skills() {
               isDarkMode ? 'text-gray-300' : 'text-white/90'
             }`}
           >
-            Full-stack development expertise with modern technologies and frameworks
+            Services I deliver and the technologies I use to build them
           </motion.p>
           
           <motion.div
@@ -240,6 +257,33 @@ export default function Skills() {
             style={{ maxWidth: '100px' }}
           />
         </motion.div>
+
+        {/* Services */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.6) }}
+              className={`group flex items-start gap-3 p-4 rounded-xl ${
+                isDarkMode
+                  ? 'bg-white/5 backdrop-blur-sm border border-white/10 hover:border-blue-400/40'
+                  : 'bg-white/15 backdrop-blur-sm border border-white/20 hover:border-yellow-200/60'
+              } transition-all duration-300 hover:scale-[1.03] ocean-current`}
+            >
+              <span className="text-2xl leading-none">{service.emoji}</span>
+              <div>
+                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-white'}`}>
+                  {service.title}
+                </h3>
+                <p className={`mt-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-white/75'}`}>
+                  {service.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
         <div className="space-y-12">
           {skillCategories.map((category, categoryIndex) => (
