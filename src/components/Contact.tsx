@@ -161,8 +161,8 @@ const Contact = () => {
       id="contact" 
       className={`py-20 transition-all duration-1000 ${
         isDarkMode 
-          ? 'bg-gray-800' 
-          : 'bg-gradient-to-b from-blue-700 via-blue-800 to-blue-900'
+          ? 'bg-gray-800/30' 
+          : 'bg-gradient-to-b from-blue-700/15 via-blue-800/15 to-blue-900/25'
       } relative overflow-hidden`}
     >
       {/* Ocean effects for light mode */}

@@ -28,8 +28,8 @@ export default function About() {
       id="about" 
       className={`py-20 transition-all duration-1000 ${
         isDarkMode 
-          ? 'bg-gray-900' 
-          : 'bg-gradient-to-b from-blue-300 via-blue-400 to-blue-500'
+          ? 'bg-gray-900/25' 
+          : 'bg-gradient-to-b from-blue-300/10 via-blue-400/10 to-blue-500/20'
       } relative overflow-hidden`}
     >
       {/* Ocean effects for light mode */}

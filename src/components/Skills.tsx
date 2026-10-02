@@ -127,8 +127,8 @@ export default function Skills() {
       id="skills" 
       className={`py-20 transition-all duration-1000 ${
         isDarkMode 
-          ? 'bg-gray-900' 
-          : 'bg-gradient-to-b from-blue-500 via-blue-600 to-blue-700'
+          ? 'bg-gray-900/25' 
+          : 'bg-gradient-to-b from-blue-500/10 via-blue-600/10 to-blue-700/20'
       } relative overflow-hidden`}
     >
       {/* Ocean effects for light mode */}

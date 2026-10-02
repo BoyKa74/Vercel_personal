@@ -107,8 +107,8 @@ export default function Projects() {
       id="projects"
       className={`py-20 transition-all duration-1000 ${
         isDarkMode
-          ? 'bg-gray-800'
-          : 'bg-gradient-to-b from-blue-600 via-blue-700 to-blue-800'
+          ? 'bg-gray-800/25'
+          : 'bg-gradient-to-b from-blue-600/10 via-blue-700/10 to-blue-800/20'
       } relative overflow-hidden`}
     >
       {/* Ocean effects for light mode */}

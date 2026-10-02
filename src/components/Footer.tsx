@@ -52,8 +52,8 @@ export default function Footer() {
     <footer 
       className={`transition-all duration-1000 ${
         isDarkMode 
-          ? 'bg-gray-950 border-t border-gray-800' 
-          : 'bg-gradient-to-b from-blue-800 via-blue-900 to-indigo-900 border-t border-blue-700/50'
+          ? 'bg-gray-950/40 border-t border-gray-800' 
+          : 'bg-gradient-to-b from-blue-800/20 via-blue-900/25 to-indigo-900/30 border-t border-blue-700/50'
       } relative overflow-hidden`}
     >
       {/* Ocean floor effects for light mode */}

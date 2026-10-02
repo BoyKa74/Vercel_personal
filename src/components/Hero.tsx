@@ -461,8 +461,8 @@ export default function Hero() {
       id="home" 
       className={`min-h-screen flex items-center justify-center transition-all duration-1000 ${
         isDarkMode 
-          ? 'bg-gray-900' 
-          : 'bg-gradient-to-b from-sky-400 via-blue-500 to-blue-600'
+          ? 'bg-transparent' 
+          : 'bg-gradient-to-b from-sky-400/10 via-blue-500/10 to-blue-600/20'
       } relative overflow-hidden`}
       onMouseMove={handleMouseMove}
     >
