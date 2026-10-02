@@ -43,6 +43,18 @@ export const projects: Project[] = [
     year: 2026
   },
   {
+    name: "Lumionix",
+    description: "Marketing website for Lumionix — smart camera accessories brand (KOMET, Lamda, Aura RGB).",
+    platform: "web",
+    audience: "enterprise",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/Lumionix/lumionix-web",
+    demo: "https://lumionix.com/",
+    featured: true,
+    isPrivate: true,
+    year: 2026
+  },
+  {
     name: "Anata Digital",
     description: "Pixel-faithful clone of anata.digital — a freelance task built with Next.js App Router and Tailwind CSS v4.",
     platform: "web",
@@ -486,18 +498,6 @@ export const projects: Project[] = [
   // ================================================================
   // PRIVATE — LIVE CLIENT & COMPANY PRODUCTS (featured)
   // ================================================================
-  {
-    name: "Lumionix",
-    description: "Marketing website for Lumionix — smart camera accessories brand (KOMET, Lamda, Aura RGB).",
-    platform: "web",
-    audience: "enterprise",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
-    github: "https://github.com/Lumionix/lumionix-web",
-    demo: "https://lumionix.com/",
-    featured: true,
-    isPrivate: true,
-    year: 2026
-  },
   {
     name: "NairaFix",
     description: "Live dollar-to-naira rate tracker (Aboki + CBN rates) — production client site.",
@@ -1538,7 +1538,7 @@ export const projects: Project[] = [
     description: "Grounded course assistant — answers come strictly from indexed video transcripts, each with the exact timestamp where it is discussed (Supabase pgvector + Voyage AI).",
     platform: "ai",
     audience: "client",
-    tech: ["Next.js 16", "Supabase pgvector", "Voyage AI", "RAG"],
+    tech: ["Next.js 16", "Supabase pgvector", "Voyage AI", "RAG", "LLM"],
     github: "https://github.com/BoyKa74/Job_Upwork_CourseAI",
     demo: "https://course-ai-demo-three.vercel.app",
     isPrivate: true,
@@ -1549,7 +1549,7 @@ export const projects: Project[] = [
     description: "AI-personalized news platform — Next.js web, admin panel, Python backend and Flutter mobile app.",
     platform: "ai",
     audience: "enterprise",
-    tech: ["Next.js", "Python", "Flutter", "AI"],
+    tech: ["Next.js", "Python", "Flutter", "LLM", "RAG"],
     github: "https://github.com/WTABS/socialAI-FE",
     team: true,
     isPrivate: true,
@@ -1568,7 +1568,7 @@ export const projects: Project[] = [
   {
     name: "RAG Demo Dashboard",
     description: "MVP dashboard for retrieval-augmented generation (RAG) search over structured assets using Supabase and Next.js.",
-    platform: "tools",
+    platform: "ai",
     audience: "personal",
     tech: ["Next.js", "Supabase", "RAG"],
     github: "https://github.com/BoyKa74/RAG-Demo-Dashboard",

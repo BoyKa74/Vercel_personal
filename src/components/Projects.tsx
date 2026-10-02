@@ -9,6 +9,7 @@ import { projects, type Audience, type Platform } from '@/lib/projects';
 import ProjectPreview from '@/components/ProjectPreview';
 
 type TabId = 'featured' | Platform | 'private';
+type TechFilter = 'RAG' | 'LLM';
 
 const platformTabs: { id: TabId; name: string; short: string; icon: ReactNode }[] = [
   { id: 'featured', name: 'Featured', short: 'Featured', icon: <Sparkles className="w-5 h-5" /> },
@@ -26,6 +27,11 @@ const audienceFilters: { id: Audience; name: string }[] = [
   { id: 'personal', name: 'Personal' },
   { id: 'academic', name: 'Academic' },
   { id: 'learning', name: 'Learning' }
+];
+
+const techFilters: { id: TechFilter; name: string }[] = [
+  { id: 'RAG', name: 'RAG' },
+  { id: 'LLM', name: 'LLM' }
 ];
 
 const platformEmoji: Record<Platform, string> = {
@@ -50,7 +56,7 @@ export default function Projects() {
   const gridRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeTab, setActiveTab] = useState<TabId>('featured');
-  const [activeFilter, setActiveFilter] = useState<'all' | Audience>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | Audience | TechFilter>('all');
   const [showAll, setShowAll] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
@@ -70,29 +76,47 @@ export default function Projects() {
 
   const tabCount = (tab: TabId) => getTabProjects(tab).length;
 
-  const filterCount = (filter: 'all' | Audience) =>
-    filter === 'all'
-      ? tabProjects.length
-      : tabProjects.filter((project) => project.audience === filter).length;
+  const filterCount = (filter: 'all' | Audience | TechFilter) => {
+    if (filter === 'all') return tabProjects.length;
+    if (filter === 'RAG' || filter === 'LLM') {
+      return tabProjects.filter((project) =>
+        project.tech.some((tech) => tech.toUpperCase() === filter)
+      ).length;
+    }
+    return tabProjects.filter((project) => project.audience === filter).length;
+  };
 
-  const availableFilters = audienceFilters.filter((filter) => filterCount(filter.id) > 0);
+  const availableFilters: { id: 'all' | Audience | TechFilter; name: string }[] = [
+    ...audienceFilters.filter((filter) => filterCount(filter.id) > 0),
+    ...(activeTab === 'ai' ? techFilters.filter((filter) => filterCount(filter.id) > 0) : [])
+  ];
 
   const visibleProjects =
     activeFilter === 'all'
       ? tabProjects
-      : tabProjects.filter((project) => project.audience === activeFilter);
+      : activeFilter === 'RAG' || activeFilter === 'LLM'
+        ? tabProjects.filter((project) =>
+            project.tech.some((tech) => tech.toUpperCase() === activeFilter)
+          )
+        : tabProjects.filter((project) => project.audience === activeFilter);
 
   const displayedProjects = showAll
     ? visibleProjects
     : visibleProjects.slice(0, INITIAL_COUNT);
 
+  const filterExistsInTab = (tab: TabId) =>
+    getTabProjects(tab).some((project) => {
+      if (activeFilter === 'all') return true;
+      if (activeFilter === 'RAG' || activeFilter === 'LLM') {
+        return project.tech.some((tech) => tech.toUpperCase() === activeFilter);
+      }
+      return project.audience === activeFilter;
+    });
+
   const handleTabChange = (tab: TabId) => {
     setActiveTab(tab);
     setShowAll(false);
-    const filterStillExists = getTabProjects(tab).some(
-      (project) => project.audience === activeFilter
-    );
-    if (activeFilter !== 'all' && !filterStillExists) {
+    if (activeFilter !== 'all' && !filterExistsInTab(tab)) {
       setActiveFilter('all');
     }
   };
@@ -226,7 +250,7 @@ export default function Projects() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="flex justify-center mb-6"
         >
-          <div className={`flex flex-wrap justify-center gap-2 p-2 rounded-xl ${
+          <div className={`flex flex-nowrap justify-start md:justify-center gap-2 p-2 rounded-xl overflow-x-auto max-w-full ${
             isDarkMode
               ? 'bg-white/5 backdrop-blur-sm border border-white/10'
               : 'bg-white/15 backdrop-blur-sm border border-white/20'
@@ -235,7 +259,7 @@ export default function Projects() {
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`flex items-center space-x-2 px-5 py-3 rounded-lg transition-all duration-300 ${
+                className={`shrink-0 flex items-center space-x-2 px-5 py-3 rounded-lg transition-all duration-300 ${
                   activeTab === tab.id
                     ? isDarkMode
                       ? 'bg-blue-500 text-white shadow-lg'
