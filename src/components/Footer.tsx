@@ -22,13 +22,13 @@ export default function Footer() {
   const socialLinks = [
     {
       icon: <Github className="w-5 h-5" />,
-      href: "https://github.com",
+      href: "https://github.com/BoyKa74",
       label: "GitHub",
       color: "hover:text-gray-300"
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
-      href: "https://linkedin.com",
+      href: "https://www.linkedin.com/in/vudev/",
       label: "LinkedIn",
       color: "hover:text-blue-400"
     },

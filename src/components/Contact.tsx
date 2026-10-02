@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, MessageCircle, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
 
 const Contact = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -122,10 +122,10 @@ const Contact = () => {
       href: "mailto:maivananhvu.dev@gmail.com"
     },
     {
-      icon: <Phone className="w-6 h-6" />,
-      label: "Phone",
-      value: "+84 86 542 734",
-      href: "tel:+8486542734"
+      icon: <MessageCircle className="w-6 h-6" />,
+      label: "WhatsApp",
+      value: "+84 865 427 034",
+      href: "https://wa.me/84865427034"
     },
     {
       icon: <MapPin className="w-6 h-6" />,
@@ -139,13 +139,13 @@ const Contact = () => {
     {
       icon: <Github className="w-6 h-6" />,
       label: "GitHub",
-      href: "https://github.com",
+      href: "https://github.com/BoyKa74",
       color: "hover:text-gray-300"
     },
     {
       icon: <Linkedin className="w-6 h-6" />,
       label: "LinkedIn", 
-      href: "https://linkedin.com",
+      href: "https://www.linkedin.com/in/vudev/",
       color: "hover:text-blue-400"
     },
     {

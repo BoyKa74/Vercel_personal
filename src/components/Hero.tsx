@@ -387,13 +387,13 @@ export default function Hero() {
   const socialLinks = [
     {
       icon: <Github className="w-6 h-6" />,
-      href: "https://github.com",
+      href: "https://github.com/BoyKa74",
       label: "GitHub",
       color: "hover:text-gray-300"
     },
     {
       icon: <Linkedin className="w-6 h-6" />,
-      href: "https://linkedin.com",
+      href: "https://www.linkedin.com/in/vudev/",
       label: "LinkedIn", 
       color: "hover:text-blue-400"
     },

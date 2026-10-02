@@ -99,64 +99,143 @@ function StarField({ count }: { count: number }) {
   );
 }
 
-// ------------------------------------------------------------ floating shapes
-type ShapeConfig = {
-  position: [number, number, number];
+// ------------------------------------------------------------------- jets
+type JetConfig = {
+  offset: number;
+  speed: number;
   color: string;
   scale: number;
-  kind: "icosa" | "octa" | "torus" | "knot";
-  wireframe: boolean;
-  speed: number;
+  lane: [number, number, number];
 };
 
-function FloatingShape({ config }: { config: ShapeConfig }) {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame((state, delta) => {
-    if (!ref.current) return;
-    ref.current.rotation.x += delta * config.speed * 0.6;
-    ref.current.rotation.y += delta * config.speed;
-    ref.current.position.y =
-      config.position[1] + Math.sin(state.clock.elapsedTime * 0.6 + config.position[2]) * 0.5;
+function Jet({ offset, speed, color, scale, lane }: JetConfig) {
+  const group = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (!group.current) return;
+    const time = state.clock.elapsedTime;
+    const range = 40;
+    const x = ((time * speed + offset) % (range * 2)) - range;
+    group.current.position.set(x, lane[1] + Math.sin(time * 0.7 + offset) * 0.5, lane[2]);
+    group.current.rotation.y = speed > 0 ? 0 : Math.PI;
+    group.current.rotation.z = Math.sin(time * 1.1 + offset) * 0.12;
+    group.current.rotation.x = Math.sin(time * 0.8 + offset) * 0.06;
   });
 
   return (
-    <mesh ref={ref} position={config.position} scale={config.scale}>
-      {config.kind === "icosa" && <icosahedronGeometry args={[1, 0]} />}
-      {config.kind === "octa" && <octahedronGeometry args={[1, 0]} />}
-      {config.kind === "torus" && <torusGeometry args={[1, 0.35, 10, 28]} />}
-      {config.kind === "knot" && <torusKnotGeometry args={[0.7, 0.22, 64, 10]} />}
-      <meshStandardMaterial
-        color={config.color}
-        emissive={config.color}
-        emissiveIntensity={config.wireframe ? 0.9 : 0.45}
-        wireframe={config.wireframe}
-        roughness={0.35}
-        metalness={0.6}
-      />
-    </mesh>
+    <group ref={group} position={lane} scale={scale}>
+      {/* fuselage */}
+      <mesh rotation={[0, 0, -Math.PI / 2]}>
+        <capsuleGeometry args={[0.16, 1.05, 4, 10]} />
+        <meshStandardMaterial color={color} metalness={0.75} roughness={0.28} emissive={color} emissiveIntensity={0.12} />
+      </mesh>
+      {/* nose */}
+      <mesh position={[0.86, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+        <coneGeometry args={[0.16, 0.36, 10]} />
+        <meshStandardMaterial color="#e8f1ff" metalness={0.85} roughness={0.2} />
+      </mesh>
+      {/* main wings */}
+      <mesh position={[0.02, 0, 0]}>
+        <boxGeometry args={[0.42, 0.05, 1.7]} />
+        <meshStandardMaterial color="#c9d8f2" metalness={0.6} roughness={0.35} />
+      </mesh>
+      {/* tail wings */}
+      <mesh position={[-0.62, 0.02, 0]}>
+        <boxGeometry args={[0.24, 0.04, 0.72]} />
+        <meshStandardMaterial color="#b9c9e6" metalness={0.6} roughness={0.4} />
+      </mesh>
+      {/* vertical fin */}
+      <mesh position={[-0.62, 0.22, 0]}>
+        <boxGeometry args={[0.26, 0.42, 0.05]} />
+        <meshStandardMaterial color="#b9c9e6" metalness={0.6} roughness={0.4} />
+      </mesh>
+      {/* engine glow */}
+      <mesh position={[-0.78, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <coneGeometry args={[0.1, 0.34, 8]} />
+        <meshBasicMaterial color="#6fd3ff" transparent opacity={0.85} />
+      </mesh>
+    </group>
   );
 }
 
-function FloatingShapes() {
-  const shapes = useMemo<ShapeConfig[]>(
+function Jets() {
+  const jets = useMemo<JetConfig[]>(
     () => [
-      { position: [4.2, 1.6, -6], color: "#5b8cff", scale: 1.1, kind: "icosa", wireframe: false, speed: 0.35 },
-      { position: [-4.4, -1.2, -13], color: "#a45bff", scale: 0.9, kind: "knot", wireframe: true, speed: 0.5 },
-      { position: [3.6, -2.2, -20], color: "#4fd1ff", scale: 1.3, kind: "octa", wireframe: false, speed: 0.28 },
-      { position: [-3.8, 2.4, -28], color: "#ff5bd1", scale: 0.8, kind: "torus", wireframe: true, speed: 0.42 },
-      { position: [4.8, 1.0, -36], color: "#5b8cff", scale: 1.5, kind: "icosa", wireframe: true, speed: 0.22 },
-      { position: [-4.6, -2.0, -44], color: "#7cf5c8", scale: 1.0, kind: "octa", wireframe: false, speed: 0.38 },
-      { position: [3.4, 2.6, -52], color: "#a45bff", scale: 1.2, kind: "torus", wireframe: false, speed: 0.3 },
-      { position: [-3.2, 0.4, -62], color: "#4fd1ff", scale: 0.9, kind: "knot", wireframe: false, speed: 0.46 },
-      { position: [4.4, -1.6, -74], color: "#ff5bd1", scale: 1.4, kind: "icosa", wireframe: true, speed: 0.26 }
+      { offset: 0, speed: 3.2, color: "#8fb4ff", scale: 1, lane: [0, 2.2, -8] },
+      { offset: 22, speed: 3.2, color: "#a48bff", scale: 0.85, lane: [0, -2.6, -26] },
+      { offset: 40, speed: -2.6, color: "#7fe3ff", scale: 1.1, lane: [0, 1.4, -46] },
+      { offset: 58, speed: 2.8, color: "#ff9fe0", scale: 0.9, lane: [0, -1.8, -66] }
     ],
     []
   );
-
   return (
     <>
-      {shapes.map((shape, index) => (
-        <FloatingShape key={index} config={shape} />
+      {jets.map((jet, index) => (
+        <Jet key={index} {...jet} />
+      ))}
+    </>
+  );
+}
+
+// ----------------------------------------------------------------- meteors
+type MeteorConfig = {
+  offset: number;
+  speed: number;
+  scale: number;
+  lane: [number, number, number];
+  spin: number;
+};
+
+function Meteor({ offset, speed, scale, lane, spin }: MeteorConfig) {
+  const group = useRef<THREE.Group>(null);
+  useFrame((state, delta) => {
+    if (!group.current) return;
+    const time = state.clock.elapsedTime;
+    const range = 44;
+    const x = ((time * speed + offset) % (range * 2)) - range;
+    group.current.position.set(x, lane[1] + Math.sin(time * 0.5 + offset) * 1.4, lane[2]);
+    group.current.rotation.x += delta * spin;
+    group.current.rotation.y += delta * spin * 0.7;
+  });
+
+  return (
+    <group ref={group} position={lane} scale={scale}>
+      <mesh>
+        <icosahedronGeometry args={[0.5, 0]} />
+        <meshStandardMaterial color="#8d7f74" roughness={0.95} metalness={0.15} emissive="#ff7a2f" emissiveIntensity={0.35} />
+      </mesh>
+      {/* fiery trail */}
+      <mesh position={[-1.15, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <coneGeometry args={[0.34, 2.3, 8, 1, true]} />
+        <meshBasicMaterial
+          color="#ff9a3c"
+          transparent
+          opacity={0.32}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+function Meteors() {
+  const meteors = useMemo<MeteorConfig[]>(
+    () => [
+      { offset: 0, speed: 4.5, scale: 1, lane: [0, 3.4, -14], spin: 1.4 },
+      { offset: 9, speed: 4.5, scale: 0.7, lane: [0, -3.8, -22], spin: 1.1 },
+      { offset: 18, speed: 5.2, scale: 1.25, lane: [0, 2.6, -34], spin: 1.7 },
+      { offset: 27, speed: 4.2, scale: 0.85, lane: [0, -1.6, -44], spin: 1.3 },
+      { offset: 36, speed: 5.6, scale: 1.1, lane: [0, 4.2, -56], spin: 1.9 },
+      { offset: 45, speed: 4.8, scale: 0.75, lane: [0, -3.2, -68], spin: 1.2 },
+      { offset: 54, speed: 5, scale: 1.35, lane: [0, 1.8, -80], spin: 1.5 }
+    ],
+    []
+  );
+  return (
+    <>
+      {meteors.map((meteor, index) => (
+        <Meteor key={index} {...meteor} />
       ))}
     </>
   );
@@ -292,6 +371,140 @@ function FishSchool() {
   );
 }
 
+// ------------------------------------------------------------------ whales
+type WhaleConfig = {
+  offset: number;
+  speed: number;
+  scale: number;
+  color: string;
+  lane: [number, number, number];
+};
+
+function Whale({ offset, speed, scale, color, lane }: WhaleConfig) {
+  const group = useRef<THREE.Group>(null);
+  const tail = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (!group.current) return;
+    const time = state.clock.elapsedTime;
+    const range = 36;
+    const x = ((time * speed + offset) % (range * 2)) - range;
+    group.current.position.set(x, lane[1] + Math.sin(time * 0.45 + offset) * 0.7, lane[2]);
+    group.current.rotation.y = speed > 0 ? 0 : Math.PI;
+    group.current.rotation.z = Math.sin(time * 0.45 + offset) * 0.07;
+    if (tail.current) tail.current.rotation.y = Math.sin(time * 1.5 + offset) * 0.4;
+  });
+
+  return (
+    <group ref={group} position={lane} scale={scale}>
+      {/* body */}
+      <mesh scale={[2.3, 1, 1.05]}>
+        <sphereGeometry args={[0.62, 18, 14]} />
+        <meshStandardMaterial color={color} roughness={0.72} metalness={0.05} />
+      </mesh>
+      {/* belly */}
+      <mesh scale={[1.9, 0.55, 0.72]} position={[0.1, -0.22, 0]}>
+        <sphereGeometry args={[0.6, 14, 10]} />
+        <meshStandardMaterial color="#bfe3f2" roughness={0.8} />
+      </mesh>
+      {/* fins */}
+      <mesh position={[0.35, -0.28, 0.5]} rotation={[0.5, 0, -0.4]}>
+        <boxGeometry args={[0.5, 0.06, 0.3]} />
+        <meshStandardMaterial color={color} roughness={0.75} />
+      </mesh>
+      <mesh position={[0.35, -0.28, -0.5]} rotation={[-0.5, 0, -0.4]}>
+        <boxGeometry args={[0.5, 0.06, 0.3]} />
+        <meshStandardMaterial color={color} roughness={0.75} />
+      </mesh>
+      {/* tail fluke */}
+      <group ref={tail} position={[-1.4, 0, 0]}>
+        <mesh position={[-0.18, 0, 0]} scale={[0.55, 0.09, 0.95]}>
+          <boxGeometry args={[0.7, 1, 1]} />
+          <meshStandardMaterial color={color} roughness={0.75} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+function Whales() {
+  const whales = useMemo<WhaleConfig[]>(
+    () => [
+      { offset: 6, speed: 1.1, scale: 1.5, color: "#2f6f9f", lane: [0, 1.6, -12] },
+      { offset: 30, speed: -0.9, scale: 1.1, color: "#3d7fae", lane: [0, -2.4, -34] },
+      { offset: 60, speed: 0.8, scale: 1.8, color: "#275c86", lane: [0, 2.4, -58] }
+    ],
+    []
+  );
+  return (
+    <>
+      {whales.map((whale, index) => (
+        <Whale key={index} {...whale} />
+      ))}
+    </>
+  );
+}
+
+// --------------------------------------------------------------- submarine
+function Submarine({
+  lane,
+  speed,
+  scale
+}: {
+  lane: [number, number, number];
+  speed: number;
+  scale: number;
+}) {
+  const group = useRef<THREE.Group>(null);
+  const propeller = useRef<THREE.Group>(null);
+  useFrame((state, delta) => {
+    if (!group.current) return;
+    const time = state.clock.elapsedTime;
+    const range = 30;
+    const x = ((time * speed) % (range * 2)) - range;
+    group.current.position.set(x, lane[1] + Math.sin(time * 0.6) * 0.45, lane[2]);
+    group.current.rotation.z = Math.sin(time * 0.6) * 0.05;
+    if (propeller.current) propeller.current.rotation.x += delta * 9;
+  });
+
+  return (
+    <group ref={group} position={lane} scale={scale}>
+      {/* hull */}
+      <mesh rotation={[0, 0, Math.PI / 2]}>
+        <capsuleGeometry args={[0.45, 2.3, 6, 14]} />
+        <meshStandardMaterial color="#d9a441" metalness={0.55} roughness={0.4} />
+      </mesh>
+      {/* conning tower */}
+      <mesh position={[0.15, 0.62, 0]}>
+        <boxGeometry args={[0.55, 0.5, 0.42]} />
+        <meshStandardMaterial color="#c4922f" metalness={0.55} roughness={0.45} />
+      </mesh>
+      {/* periscope */}
+      <mesh position={[0.15, 1.05, 0]}>
+        <cylinderGeometry args={[0.045, 0.045, 0.55, 8]} />
+        <meshStandardMaterial color="#8a6a20" metalness={0.6} roughness={0.4} />
+      </mesh>
+      {/* portholes */}
+      {[-0.75, -0.35, 0.05, 0.45, 0.85].map((px, index) => (
+        <mesh key={index} position={[px, 0.06, 0.43]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.085, 0.085, 0.05, 10]} />
+          <meshBasicMaterial color="#aef0ff" />
+        </mesh>
+      ))}
+      {/* propeller */}
+      <group ref={propeller} position={[-1.62, 0, 0]}>
+        <mesh>
+          <boxGeometry args={[0.06, 0.5, 0.12]} />
+          <meshStandardMaterial color="#7a6428" metalness={0.7} roughness={0.35} />
+        </mesh>
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <boxGeometry args={[0.06, 0.12, 0.5]} />
+          <meshStandardMaterial color="#7a6428" metalness={0.7} roughness={0.35} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
 function Seaweed() {
   const stalks = useMemo(
     () =>
@@ -399,7 +612,8 @@ function SpaceScene() {
       <pointLight position={[-8, -4, -34]} intensity={140} color="#a45bff" distance={60} />
       <pointLight position={[0, 2, -70]} intensity={160} color="#4fd1ff" distance={70} />
       <StarField count={1600} />
-      <FloatingShapes />
+      <Jets />
+      <Meteors />
       <Planet />
     </>
   );
@@ -415,6 +629,9 @@ function OceanScene() {
       <pointLight position={[0, 4, -40]} intensity={90} color="#3aa0ff" distance={60} />
       <Bubbles count={320} />
       <FishSchool />
+      <Whales />
+      <Submarine lane={[0, -0.8, -26]} speed={1.6} scale={1.1} />
+      <Submarine lane={[0, 2.2, -60]} speed={-1.2} scale={0.9} />
       <Seaweed />
       <LightRays />
       <SeaFloor />
