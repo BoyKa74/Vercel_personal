@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Platform } from "@/lib/projects";
+import { Bell, BookOpen, Heart, Home, MapPin, MessageCircle, Plane, Plus, Search, Send, User } from "lucide-react";
 
 const mockGradients = [
   "from-sky-500/80 via-blue-600/70 to-indigo-800/90",
@@ -139,19 +140,46 @@ const getPhoneVariant = (name: string): PhoneVariant => {
   return "generic";
 };
 
+const shortAppName = (name: string) => {
+  const words = name.replace(" — Team Repo", "").split(" ");
+  return words.slice(0, 2).join(" ");
+};
+
+const StatusBar = () => (
+  <div className="relative z-10 flex items-center justify-between px-2 pt-[3px]">
+    <span className="text-[5px] font-semibold leading-none text-white/90">9:41</span>
+    <span className="flex items-center gap-[2px]">
+      <span className="flex items-end gap-[1px]">
+        <span className="h-[2px] w-[1.5px] bg-white/80" />
+        <span className="h-[3px] w-[1.5px] bg-white/80" />
+        <span className="h-[4px] w-[1.5px] bg-white/80" />
+      </span>
+      <span className="relative h-[5px] w-[9px] rounded-[1.5px] border border-white/70 p-[1px]">
+        <span className="block h-full w-2/3 rounded-[1px] bg-white/80" />
+      </span>
+    </span>
+  </div>
+);
+
+const AppBar = ({ gradient, logo, appName }: { gradient: string; logo?: string; appName: string }) => (
+  <div className="relative z-10 flex items-center gap-1 bg-black/20 px-1.5 py-[3px] backdrop-blur-sm">
+    {logo ? (
+      <img src={logo} alt="" className="h-3.5 w-3.5 rounded-[4px] object-cover" />
+    ) : (
+      <span className={`flex h-3.5 w-3.5 items-center justify-center rounded-[4px] bg-gradient-to-br ${gradient} text-[5px] font-bold text-white`}>
+        {appName.charAt(0)}
+      </span>
+    )}
+    <span className="text-[5px] font-semibold text-white/95">{appName}</span>
+    <Bell className="ml-auto h-2 w-2 text-white/70" />
+  </div>
+);
+
 function PhoneScreen({ variant, gradient }: { variant: PhoneVariant; gradient: string }) {
   if (variant === "feed") {
     return (
-      <div className="px-1.5 pt-0.5">
-        <div className="flex items-center gap-1">
-          <span className={`h-3.5 w-3.5 rounded-full bg-gradient-to-br ${gradient}`} />
-          <div className="flex-1">
-            <span className="block h-1 w-9 rounded-full bg-white/80" />
-            <span className="mt-0.5 block h-0.5 w-5 rounded-full bg-white/40" />
-          </div>
-          <span className="h-1 w-3 rounded-full bg-white/50" />
-        </div>
-        <div className="mt-1 flex gap-1">
+      <div className="px-1.5 pt-1">
+        <div className="flex gap-1">
           {[0, 1, 2, 3].map((index) => (
             <span
               key={index}
@@ -199,12 +227,8 @@ function PhoneScreen({ variant, gradient }: { variant: PhoneVariant; gradient: s
 
   if (variant === "booking") {
     return (
-      <div className="px-1.5 pt-0.5">
-        <div className="flex items-center justify-between">
-          <span className="h-1 w-7 rounded-full bg-white/50" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/40" />
-        </div>
-        <div className="mt-1 rounded-lg border border-white/20 bg-white/15 p-1">
+      <div className="px-1.5 pt-1">
+        <div className="rounded-lg border border-white/20 bg-white/15 p-1">
           <div className="flex items-center gap-1">
             <span className="h-1.5 w-1.5 rounded-full bg-white/85" />
             <span className="h-px flex-1 border-t border-dashed border-white/50" />
@@ -234,12 +258,8 @@ function PhoneScreen({ variant, gradient }: { variant: PhoneVariant; gradient: s
 
   if (variant === "books") {
     return (
-      <div className="px-1.5 pt-0.5">
-        <div className="flex items-center justify-between">
-          <span className="h-1.5 w-9 rounded-full bg-white/85" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/40" />
-        </div>
-        <div className="mt-1 grid grid-cols-3 gap-1">
+      <div className="px-1.5 pt-1">
+        <div className="grid grid-cols-3 gap-1">
           {[0, 1, 2, 3, 4, 5].map((index) => (
             <div
               key={index}
@@ -282,12 +302,8 @@ function PhoneScreen({ variant, gradient }: { variant: PhoneVariant; gradient: s
   }
 
   return (
-    <div className="px-1.5 pt-0.5">
-      <div className="flex items-center justify-between">
-        <span className="h-1.5 w-8 rounded-full bg-white/85" />
-        <span className={`h-3 w-3 rounded-full bg-gradient-to-br ${gradient}`} />
-      </div>
-      <div className="mt-1 grid grid-cols-2 gap-1">
+    <div className="px-1.5 pt-1">
+      <div className="grid grid-cols-2 gap-1">
         {[0, 1, 2, 3].map((index) => (
           <div key={index} className="rounded-md bg-white/15 p-1">
             <span className="block h-0.5 w-5 rounded-full bg-white/50" />
@@ -304,29 +320,48 @@ function PhoneScreen({ variant, gradient }: { variant: PhoneVariant; gradient: s
   );
 }
 
-function PhoneMock({ variant, gradient }: { variant: PhoneVariant; gradient: string }) {
+function PhoneMock({
+  variant,
+  gradient,
+  logo,
+  appName
+}: {
+  variant: PhoneVariant;
+  gradient: string;
+  logo?: string;
+  appName: string;
+}) {
   return (
     <div className="absolute inset-x-0 bottom-0 top-7 flex items-center justify-center">
-      <div className="relative h-[128px] w-[72px] rounded-[18px] border border-white/40 bg-black/45 p-[3px] shadow-xl">
-        <div className="relative h-full w-full overflow-hidden rounded-[15px] bg-slate-900/55">
-          <span className="absolute left-1/2 top-1 z-10 h-1 w-5 -translate-x-1/2 rounded-full bg-black/70" />
-          {/* status bar */}
-          <div className="flex items-center justify-between px-2 pt-1">
-            <span className="text-[5px] font-semibold leading-none text-white/85">9:41</span>
-            <span className="flex items-center gap-[1px]">
-              <span className="h-[3px] w-[6px] rounded-[1px] bg-white/70" />
-              <span className="h-[4px] w-[8px] rounded-[1px] border border-white/60" />
-            </span>
-          </div>
-          <PhoneScreen variant={variant} gradient={gradient} />
-          {/* tab bar */}
-          <div className="absolute inset-x-2 bottom-1 flex justify-between">
-            {[0, 1, 2, 3].map((index) => (
-              <span
-                key={index}
-                className={`h-1.5 w-1.5 rounded-full ${index === 0 ? "bg-white/90" : "bg-white/40"}`}
-              />
-            ))}
+      <div className="relative h-[132px] w-[80px]">
+        {/* side buttons */}
+        <span className="absolute -left-[2px] top-6 h-3 w-[2px] rounded-l bg-zinc-500" />
+        <span className="absolute -left-[2px] top-10 h-5 w-[2px] rounded-l bg-zinc-500" />
+        <span className="absolute -right-[2px] top-8 h-6 w-[2px] rounded-r bg-zinc-500" />
+
+        {/* body */}
+        <div className="h-full w-full rounded-[20px] border border-zinc-600 bg-zinc-900 p-[3px] shadow-2xl">
+          <div className="relative h-full w-full overflow-hidden rounded-[17px] bg-slate-950">
+            {/* wallpaper */}
+            <div className={`absolute inset-0 bg-gradient-to-b ${gradient} opacity-20`} />
+            {/* dynamic island */}
+            <span className="absolute left-1/2 top-[3px] z-20 h-[5px] w-6 -translate-x-1/2 rounded-full bg-black" />
+
+            <StatusBar />
+            <AppBar gradient={gradient} logo={logo} appName={appName} />
+            <PhoneScreen variant={variant} gradient={gradient} />
+
+            {/* bottom nav */}
+            <div className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-around border-t border-white/10 bg-black/45 px-1 pb-[6px] pt-[3px]">
+              <Home className="h-2.5 w-2.5 text-white" />
+              <Search className="h-2.5 w-2.5 text-white/45" />
+              <Plus className="h-2.5 w-2.5 text-white/45" />
+              <Heart className="h-2.5 w-2.5 text-white/45" />
+              <User className="h-2.5 w-2.5 text-white/45" />
+            </div>
+
+            {/* home indicator */}
+            <span className="absolute bottom-[1px] left-1/2 z-20 h-[2px] w-6 -translate-x-1/2 rounded-full bg-white/60" />
           </div>
         </div>
       </div>
@@ -401,13 +436,15 @@ export default function ProjectPreview({
   platform,
   demo,
   github,
-  isPrivate
+  isPrivate,
+  logo
 }: {
   name: string;
   platform: Platform;
   demo?: string;
   github?: string;
   isPrivate?: boolean;
+  logo?: string;
 }) {
   const [screenshotLoaded, setScreenshotLoaded] = useState(false);
   const [screenshotFailed, setScreenshotFailed] = useState(false);
@@ -443,7 +480,14 @@ export default function ProjectPreview({
       {/* website mock (skeleton / fallback when there is no live site) */}
       {variant === "site" && <SiteMock gradient={gradient} />}
       {variant === "dashboard" && <DashboardMock gradient={gradient} />}
-      {variant === "phone" && <PhoneMock variant={getPhoneVariant(name)} gradient={gradient} />}
+      {variant === "phone" && (
+        <PhoneMock
+          variant={getPhoneVariant(name)}
+          gradient={gradient}
+          logo={logo}
+          appName={shortAppName(name)}
+        />
+      )}
       {variant === "chat" && <ChatMock gradient={gradient} />}
       {variant === "terminal" && <TerminalMock gradient={gradient} />}
 

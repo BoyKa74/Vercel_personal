@@ -9,6 +9,7 @@ export interface Project {
   tech: string[];
   github?: string;
   demo?: string;
+  logo?: string;
   team?: boolean;
   featured?: boolean;
   isPrivate?: boolean;
@@ -378,6 +379,7 @@ export const projects: Project[] = [
     name: "Flight Booking App",
     description: "Flutter flight booking application — team course project.",
     platform: "mobile",
+    logo: "/apps/flight-booking.jpg",
     audience: "academic",
     tech: ["Flutter", "Dart"],
     github: "https://github.com/BoyKa74/BanVeMayBay",
@@ -387,6 +389,7 @@ export const projects: Project[] = [
     name: "Flight Booking App — Team Repo",
     description: "Team repository (hosted by a teammate) of the Flutter flight booking app.",
     platform: "mobile",
+    logo: "/apps/flight-booking.jpg",
     audience: "academic",
     tech: ["Flutter", "Dart"],
     github: "https://github.com/kimchunku09/Banvemaybay",
@@ -1534,6 +1537,16 @@ export const projects: Project[] = [
   // PRIVATE — AI
   // ================================================================
   {
+    name: "Git Voice Pro",
+    description: "AI voice studio — text-to-speech, zero-shot voice cloning, Whisper transcription, vocal isolation and multilingual translation (Gradio WebUI).",
+    platform: "ai",
+    audience: "personal",
+    tech: ["Python", "Gradio", "TTS", "Voice Cloning"],
+    github: "https://github.com/BoyKa74/Git-voice-pro",
+    isPrivate: true,
+    year: 2025
+  },
+  {
     name: "CourseMind — Course AI Assistant",
     description: "Grounded course assistant — answers come strictly from indexed video transcripts, each with the exact timestamp where it is discussed (Supabase pgvector + Voyage AI).",
     platform: "ai",
@@ -1594,6 +1607,7 @@ export const projects: Project[] = [
     name: "Vox Diary",
     description: "Intelligent reminders & voice journaling app built with Flutter — company project.",
     platform: "mobile",
+    logo: "/apps/vox-diary.png",
     audience: "enterprise",
     tech: ["Flutter", "Dart"],
     github: "https://github.com/appy-eth/vox-diary",
@@ -1615,6 +1629,7 @@ export const projects: Project[] = [
     name: "Project X",
     description: "Flutter app — team course project.",
     platform: "mobile",
+    logo: "/apps/project-x.png",
     audience: "academic",
     tech: ["Flutter", "Dart"],
     github: "https://github.com/NguyenQuyHoang/Flutter2_Project_x_v1",

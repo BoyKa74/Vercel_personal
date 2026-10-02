@@ -355,6 +355,7 @@ export default function Projects() {
                   demo={project.demo}
                   github={project.github}
                   isPrivate={project.isPrivate}
+                  logo={project.logo}
                 />
 
                 {/* sheen sweep on hover */}
