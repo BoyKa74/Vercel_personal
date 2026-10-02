@@ -619,7 +619,7 @@ export default function Hero() {
                   ? 'bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 bg-clip-text text-transparent' 
                   : 'bg-gradient-to-r from-yellow-200 via-orange-300 to-yellow-400 bg-clip-text text-transparent'
               }`}>
-                Mai Vủ
+                Vủ
               </span>
             </motion.h1>
 
@@ -632,7 +632,7 @@ export default function Hero() {
                 isDarkMode ? 'text-gray-300' : 'text-white/90'
               }`}
             >
-              Full Stack Developer
+              Kỹ sư công nghệ thông tin AI
             </motion.h2>
 
             {/* Description */}
@@ -644,8 +644,12 @@ export default function Hero() {
                 isDarkMode ? 'text-gray-400' : 'text-white/80'
               }`}
             >
-              Passionate about creating exceptional digital experiences with modern technologies. 
-              Specializing in React, Node.js, and building scalable web applications.
+              Passionate about creating exceptional digital experiences with modern technologies.
+              Specializing
+              <br />
+              <span className="font-medium">Full-Stack Web Developer | AI Engineer | Mobile App Developer</span>
+              <br />
+              <span className="text-base opacity-90">Tool Developer · QA Tester · DevOps · Database</span>
             </motion.p>
 
             {/* CTA Buttons */}
