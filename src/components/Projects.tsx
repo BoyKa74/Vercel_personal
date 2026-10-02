@@ -9,7 +9,10 @@ import { projects, type Audience, type Platform } from '@/lib/projects';
 import ProjectPreview from '@/components/ProjectPreview';
 
 type TabId = 'featured' | Platform | 'private';
-type TechFilter = 'RAG' | 'LLM';
+type TechFilter = 'RAG' | 'LLM' | 'WordPress' | 'Shopify';
+
+const isTechFilter = (filter: 'all' | Audience | TechFilter): filter is TechFilter =>
+  filter === 'RAG' || filter === 'LLM' || filter === 'WordPress' || filter === 'Shopify';
 
 const platformTabs: { id: TabId; name: string; short: string; icon: ReactNode }[] = [
   { id: 'featured', name: 'Featured', short: 'Featured', icon: <Sparkles className="w-5 h-5" /> },
@@ -31,8 +34,16 @@ const audienceFilters: { id: Audience; name: string }[] = [
 
 const techFilters: { id: TechFilter; name: string }[] = [
   { id: 'RAG', name: 'RAG' },
-  { id: 'LLM', name: 'LLM' }
+  { id: 'LLM', name: 'LLM' },
+  { id: 'WordPress', name: 'WordPress' },
+  { id: 'Shopify', name: 'Shopify' }
 ];
+
+const techFiltersByTab: Partial<Record<TabId, TechFilter[]>> = {
+  ai: ['RAG', 'LLM'],
+  web: ['WordPress', 'Shopify'],
+  private: ['WordPress', 'Shopify']
+};
 
 const platformEmoji: Record<Platform, string> = {
   web: '🌐',
@@ -78,25 +89,30 @@ export default function Projects() {
 
   const filterCount = (filter: 'all' | Audience | TechFilter) => {
     if (filter === 'all') return tabProjects.length;
-    if (filter === 'RAG' || filter === 'LLM') {
+    if (isTechFilter(filter)) {
       return tabProjects.filter((project) =>
-        project.tech.some((tech) => tech.toUpperCase() === filter)
+        project.tech.some((tech) => tech.toUpperCase() === filter.toUpperCase())
       ).length;
     }
     return tabProjects.filter((project) => project.audience === filter).length;
   };
 
+  const tabTechFilters = (techFiltersByTab[activeTab] ?? [])
+    .map((id) => techFilters.find((filter) => filter.id === id))
+    .filter((filter): filter is { id: TechFilter; name: string } => Boolean(filter))
+    .filter((filter) => filterCount(filter.id) > 0);
+
   const availableFilters: { id: 'all' | Audience | TechFilter; name: string }[] = [
     ...audienceFilters.filter((filter) => filterCount(filter.id) > 0),
-    ...(activeTab === 'ai' ? techFilters.filter((filter) => filterCount(filter.id) > 0) : [])
+    ...tabTechFilters
   ];
 
   const visibleProjects =
     activeFilter === 'all'
       ? tabProjects
-      : activeFilter === 'RAG' || activeFilter === 'LLM'
+      : isTechFilter(activeFilter)
         ? tabProjects.filter((project) =>
-            project.tech.some((tech) => tech.toUpperCase() === activeFilter)
+            project.tech.some((tech) => tech.toUpperCase() === activeFilter.toUpperCase())
           )
         : tabProjects.filter((project) => project.audience === activeFilter);
 
@@ -107,8 +123,8 @@ export default function Projects() {
   const filterExistsInTab = (tab: TabId) =>
     getTabProjects(tab).some((project) => {
       if (activeFilter === 'all') return true;
-      if (activeFilter === 'RAG' || activeFilter === 'LLM') {
-        return project.tech.some((tech) => tech.toUpperCase() === activeFilter);
+      if (isTechFilter(activeFilter)) {
+        return project.tech.some((tech) => tech.toUpperCase() === activeFilter.toUpperCase());
       }
       return project.audience === activeFilter;
     });
@@ -304,12 +320,20 @@ export default function Projects() {
               }}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeFilter === filter.id
-                  ? isDarkMode
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
-                    : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-blue-900 shadow-lg'
-                  : isDarkMode
-                    ? 'bg-white/5 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10'
-                    : 'bg-white/15 text-white/80 hover:text-white hover:bg-white/25 border border-white/20'
+                  ? isTechFilter(filter.id)
+                    ? isDarkMode
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
+                      : 'bg-gradient-to-r from-cyan-300 to-blue-400 text-blue-950 shadow-lg'
+                    : isDarkMode
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                      : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-blue-900 shadow-lg'
+                  : isTechFilter(filter.id)
+                    ? isDarkMode
+                      ? 'bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/20 border border-cyan-300/25'
+                      : 'bg-white/15 text-white/85 hover:bg-white/25 border border-cyan-100/50'
+                    : isDarkMode
+                      ? 'bg-white/5 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10'
+                      : 'bg-white/15 text-white/80 hover:text-white hover:bg-white/25 border border-white/20'
               } no-spaceship z-30`}
             >
               {filter.name}
