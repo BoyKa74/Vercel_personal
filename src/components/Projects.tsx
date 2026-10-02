@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { ExternalLink, Github, Users, Globe, Smartphone, BrainCircuit, Boxes, Sparkles, Lock, LayoutGrid, ChevronUp } from 'lucide-react';
 import { projects, type Audience, type Platform } from '@/lib/projects';
+import ProjectPreview from '@/components/ProjectPreview';
 
 type TabId = 'featured' | Platform | 'private';
 
@@ -34,31 +35,6 @@ const platformEmoji: Record<Platform, string> = {
 };
 
 const INITIAL_COUNT = 3;
-
-const mockGradients = [
-  'from-sky-500/70 via-blue-600/60 to-indigo-800/80',
-  'from-fuchsia-500/60 via-purple-600/60 to-indigo-800/80',
-  'from-emerald-500/60 via-teal-600/60 to-cyan-800/80',
-  'from-amber-500/60 via-orange-600/60 to-rose-800/80',
-  'from-rose-500/60 via-pink-600/60 to-purple-800/80',
-  'from-cyan-400/60 via-sky-600/60 to-blue-800/80'
-];
-
-const mockGradient = (name: string) =>
-  mockGradients[
-    name.split('').reduce((total, char) => total + char.charCodeAt(0), 0) % mockGradients.length
-  ];
-
-const getInitials = (name: string) => {
-  const words = name
-    .replace(/[—|·/]/g, ' ')
-    .split(/\s+/)
-    .filter((word) => /[A-Za-z0-9]/.test(word));
-  return words
-    .slice(0, 2)
-    .map((word) => word[0].toUpperCase())
-    .join('');
-};
 
 const getTabProjects = (tab: TabId) =>
   tab === 'featured'
@@ -347,37 +323,12 @@ export default function Projects() {
             >
               {/* Mock preview */}
               <div className="relative h-44 overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${mockGradient(project.name)}`} />
-                <div
-                  className="absolute inset-0 opacity-60"
-                  style={{
-                    backgroundImage:
-                      'radial-gradient(circle, rgba(255,255,255,0.16) 1px, transparent 1px)',
-                    backgroundSize: '12px 12px'
-                  }}
+                <ProjectPreview
+                  name={project.name}
+                  platform={project.platform}
+                  demo={project.demo}
+                  github={project.github}
                 />
-                <div className="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-white/20 blur-2xl" />
-
-                {/* browser chrome */}
-                <div className="absolute inset-x-0 top-0 flex h-7 items-center gap-1.5 border-b border-white/15 bg-black/25 px-3 backdrop-blur-sm">
-                  <span className="h-2 w-2 rounded-full bg-red-400/80" />
-                  <span className="h-2 w-2 rounded-full bg-yellow-300/80" />
-                  <span className="h-2 w-2 rounded-full bg-green-400/80" />
-                  <span className="ml-2 truncate text-[10px] text-white/70">
-                    {project.demo
-                      ? project.demo.replace(/^https?:\/\//, '').replace(/\/$/, '')
-                      : project.github
-                        ? `github.com/${project.github.split('/').slice(-2).join('/')}`
-                        : 'private project'}
-                  </span>
-                </div>
-
-                {/* monogram */}
-                <div className="absolute inset-x-0 top-7 bottom-10 flex items-center justify-center">
-                  <span className="text-5xl font-black tracking-tight text-white/85 drop-shadow-[0_2px_14px_rgba(0,0,0,0.4)]">
-                    {getInitials(project.name)}
-                  </span>
-                </div>
 
                 {/* sheen sweep on hover */}
                 <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
