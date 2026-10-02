@@ -632,7 +632,7 @@ export default function Hero() {
                 isDarkMode ? 'text-gray-300' : 'text-white/90'
               }`}
             >
-              Kỹ sư công nghệ thông tin AI
+              AI Engineer
             </motion.h2>
 
             {/* Description */}

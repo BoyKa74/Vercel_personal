@@ -1,10 +1,10 @@
 "use client"
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { ExternalLink, Github, Users, Globe, Smartphone, BrainCircuit, Boxes, Sparkles, Lock } from 'lucide-react';
+import { ExternalLink, Github, Users, Globe, Smartphone, BrainCircuit, Boxes, Sparkles, Lock, LayoutGrid, ChevronUp } from 'lucide-react';
 import { projects, type Audience, type Platform } from '@/lib/projects';
 
 type TabId = 'featured' | Platform | 'private';
@@ -33,6 +33,33 @@ const platformEmoji: Record<Platform, string> = {
   other: '🧰'
 };
 
+const INITIAL_COUNT = 3;
+
+const mockGradients = [
+  'from-sky-500/70 via-blue-600/60 to-indigo-800/80',
+  'from-fuchsia-500/60 via-purple-600/60 to-indigo-800/80',
+  'from-emerald-500/60 via-teal-600/60 to-cyan-800/80',
+  'from-amber-500/60 via-orange-600/60 to-rose-800/80',
+  'from-rose-500/60 via-pink-600/60 to-purple-800/80',
+  'from-cyan-400/60 via-sky-600/60 to-blue-800/80'
+];
+
+const mockGradient = (name: string) =>
+  mockGradients[
+    name.split('').reduce((total, char) => total + char.charCodeAt(0), 0) % mockGradients.length
+  ];
+
+const getInitials = (name: string) => {
+  const words = name
+    .replace(/[—|·/]/g, ' ')
+    .split(/\s+/)
+    .filter((word) => /[A-Za-z0-9]/.test(word));
+  return words
+    .slice(0, 2)
+    .map((word) => word[0].toUpperCase())
+    .join('');
+};
+
 const getTabProjects = (tab: TabId) =>
   tab === 'featured'
     ? projects.filter((project) => project.featured)
@@ -42,9 +69,11 @@ const getTabProjects = (tab: TabId) =>
 
 export default function Projects() {
   const ref = useRef(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeTab, setActiveTab] = useState<TabId>('featured');
   const [activeFilter, setActiveFilter] = useState<'all' | Audience>('all');
+  const [showAll, setShowAll] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Theme detection
@@ -75,14 +104,26 @@ export default function Projects() {
       ? tabProjects
       : tabProjects.filter((project) => project.audience === activeFilter);
 
+  const displayedProjects = showAll
+    ? visibleProjects
+    : visibleProjects.slice(0, INITIAL_COUNT);
+
   const handleTabChange = (tab: TabId) => {
     setActiveTab(tab);
+    setShowAll(false);
     const filterStillExists = getTabProjects(tab).some(
       (project) => project.audience === activeFilter
     );
     if (activeFilter !== 'all' && !filterStillExists) {
       setActiveFilter('all');
     }
+  };
+
+  const toggleShowAll = () => {
+    if (showAll) {
+      gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setShowAll((value) => !value);
   };
 
   const getAudienceColor = (audience: Audience) => {
@@ -255,7 +296,10 @@ export default function Projects() {
           {[{ id: 'all' as const, name: 'All' }, ...availableFilters].map((filter) => (
             <button
               key={filter.id}
-              onClick={() => setActiveFilter(filter.id)}
+              onClick={() => {
+                setActiveFilter(filter.id);
+                setShowAll(false);
+              }}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeFilter === filter.id
                   ? isDarkMode
@@ -274,51 +318,90 @@ export default function Projects() {
 
         {/* Project Grid */}
         <motion.div
+          ref={gridRef}
+          layout
           key={`${activeTab}-${activeFilter}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {visibleProjects.map((project, index) => (
+          <AnimatePresence mode="popLayout">
+            {displayedProjects.map((project, index) => (
             <motion.div
+              layout
               key={project.github || project.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.5) }}
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.96 }}
+              transition={{
+                duration: 0.45,
+                delay: Math.min(index * 0.04, 0.35),
+                layout: { duration: 0.4 }
+              }}
               className={`group rounded-xl overflow-hidden flex flex-col ${
                 isDarkMode
                   ? 'bg-white/5 backdrop-blur-sm border border-white/10'
                   : 'bg-white/15 backdrop-blur-sm border border-white/20'
               } hover:scale-[1.03] transition-all duration-300 ocean-current`}
             >
-              {/* Project Header */}
-              <div className={`relative h-20 flex items-center justify-between px-5 ${
-                isDarkMode
-                  ? 'bg-gradient-to-br from-blue-500/20 to-purple-600/20'
-                  : 'bg-gradient-to-br from-cyan-300/30 to-blue-400/30'
-              }`}>
-                <span className="text-3xl opacity-70">{platformEmoji[project.platform]}</span>
-                <div className="flex items-center space-x-2">
-                  {project.team && (
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${
-                      isDarkMode ? 'text-blue-300 bg-blue-300/20' : 'text-blue-100 bg-blue-900/40'
-                    }`}>
-                      <Users className="w-3 h-3" />
-                      <span>Team</span>
-                    </span>
-                  )}
-                  {project.isPrivate && (
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${
-                      isDarkMode ? 'text-orange-300 bg-orange-300/20' : 'text-orange-100 bg-orange-900/40'
-                    }`}>
-                      <Lock className="w-3 h-3" />
-                      <span>Private</span>
-                    </span>
-                  )}
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getAudienceColor(project.audience)}`}>
-                    {project.audience.charAt(0).toUpperCase() + project.audience.slice(1)}
+              {/* Mock preview */}
+              <div className="relative h-44 overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-br ${mockGradient(project.name)}`} />
+                <div
+                  className="absolute inset-0 opacity-60"
+                  style={{
+                    backgroundImage:
+                      'radial-gradient(circle, rgba(255,255,255,0.16) 1px, transparent 1px)',
+                    backgroundSize: '12px 12px'
+                  }}
+                />
+                <div className="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-white/20 blur-2xl" />
+
+                {/* browser chrome */}
+                <div className="absolute inset-x-0 top-0 flex h-7 items-center gap-1.5 border-b border-white/15 bg-black/25 px-3 backdrop-blur-sm">
+                  <span className="h-2 w-2 rounded-full bg-red-400/80" />
+                  <span className="h-2 w-2 rounded-full bg-yellow-300/80" />
+                  <span className="h-2 w-2 rounded-full bg-green-400/80" />
+                  <span className="ml-2 truncate text-[10px] text-white/70">
+                    {project.demo
+                      ? project.demo.replace(/^https?:\/\//, '').replace(/\/$/, '')
+                      : project.github
+                        ? `github.com/${project.github.split('/').slice(-2).join('/')}`
+                        : 'private project'}
                   </span>
+                </div>
+
+                {/* monogram */}
+                <div className="absolute inset-x-0 top-7 bottom-10 flex items-center justify-center">
+                  <span className="text-5xl font-black tracking-tight text-white/85 drop-shadow-[0_2px_14px_rgba(0,0,0,0.4)]">
+                    {getInitials(project.name)}
+                  </span>
+                </div>
+
+                {/* sheen sweep on hover */}
+                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+
+                {/* badges */}
+                <div className="absolute inset-x-3 bottom-3 flex items-center justify-between">
+                  <span className="text-2xl opacity-80">{platformEmoji[project.platform]}</span>
+                  <div className="flex items-center space-x-1.5">
+                    {project.team && (
+                      <span className="flex items-center space-x-1 rounded-full bg-black/30 px-2 py-1 text-xs font-medium text-blue-100">
+                        <Users className="w-3 h-3" />
+                        <span>Team</span>
+                      </span>
+                    )}
+                    {project.isPrivate && (
+                      <span className="flex items-center space-x-1 rounded-full bg-black/30 px-2 py-1 text-xs font-medium text-orange-100">
+                        <Lock className="w-3 h-3" />
+                        <span>Private</span>
+                      </span>
+                    )}
+                    <span className={`rounded-full px-3 py-1 text-xs font-medium ${getAudienceColor(project.audience)}`}>
+                      {project.audience.charAt(0).toUpperCase() + project.audience.slice(1)}
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -406,8 +489,39 @@ export default function Projects() {
                 )}
               </div>
             </motion.div>
-          ))}
+            ))}
+          </AnimatePresence>
         </motion.div>
+
+        {/* View all / Show less */}
+        {visibleProjects.length > INITIAL_COUNT && (
+          <motion.div layout className="flex flex-col items-center mt-10">
+            {!showAll && (
+              <p className={`mb-3 text-sm ${isDarkMode ? 'text-gray-400' : 'text-white/80'}`}>
+                Showing {INITIAL_COUNT} of {visibleProjects.length} projects
+              </p>
+            )}
+            <motion.button
+              onClick={toggleShowAll}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`relative overflow-hidden flex items-center space-x-2 px-8 py-3 rounded-full font-medium ${
+                isDarkMode
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                  : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-blue-900'
+              } shadow-lg no-spaceship z-30`}
+            >
+              <motion.span
+                className="absolute inset-y-0 left-0 w-16 bg-white/30 blur-md"
+                initial={{ x: -90 }}
+                animate={{ x: 340 }}
+                transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 1.4, ease: 'easeInOut' }}
+              />
+              {showAll ? <ChevronUp className="w-4 h-4" /> : <LayoutGrid className="w-4 h-4" />}
+              <span>{showAll ? 'Show less' : `View all ${visibleProjects.length} projects`}</span>
+            </motion.button>
+          </motion.div>
+        )}
 
         {/* Call to Action */}
         <motion.div
