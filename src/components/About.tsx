@@ -248,7 +248,7 @@ export default function About() {
               >
                 <h4 className={`text-2xl font-bold ${
                   isDarkMode ? 'text-blue-400' : 'text-yellow-200'
-                }`}>2+</h4>
+                }`}>5+</h4>
                 <p className={`text-sm ${
                   isDarkMode ? 'text-gray-300' : 'text-white/90'
                 }`}>Years Experience</p>
@@ -265,7 +265,7 @@ export default function About() {
               >
                 <h4 className={`text-2xl font-bold ${
                   isDarkMode ? 'text-purple-400' : 'text-orange-200'
-                }`}>20+</h4>
+                }`}>200+</h4>
                 <p className={`text-sm ${
                   isDarkMode ? 'text-gray-300' : 'text-white/90'
                 }`}>Projects Completed</p>

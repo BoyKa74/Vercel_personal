@@ -1,4 +1,4 @@
-export type Platform = 'web' | 'mobile' | 'ai' | 'other';
+export type Platform = 'web' | 'mobile' | 'ai' | 'tools' | 'other';
 export type Audience = 'client' | 'enterprise' | 'personal' | 'academic' | 'learning';
 
 export interface Project {
@@ -415,7 +415,7 @@ export const projects: Project[] = [
   {
     name: "Image Colorizer",
     description: "Tool that turns black-and-white photos into color with OpenCV.",
-    platform: "ai",
+    platform: "tools",
     audience: "personal",
     tech: ["Python", "OpenCV"],
     github: "https://github.com/BoyKa74/image_colorzier",
@@ -428,7 +428,7 @@ export const projects: Project[] = [
   {
     name: "CI/CD with Docker & GitHub Actions",
     description: "Practice repo for CI/CD pipelines with Docker and GitHub Actions.",
-    platform: "other",
+    platform: "tools",
     audience: "learning",
     tech: ["Docker", "GitHub Actions", "TypeScript"],
     github: "https://github.com/NguyenQuyHoang/learn-ci-cd-with-docker-and-githup-action",
@@ -689,7 +689,7 @@ export const projects: Project[] = [
   {
     name: "QR Code Members",
     description: "QR-code membership dues lookup for a small organization — runs entirely on Google Apps Script + Sheets with $0 hosting.",
-    platform: "web",
+    platform: "tools",
     audience: "client",
     tech: ["Google Apps Script", "Google Sheets", "JavaScript"],
     github: "https://github.com/BoyKa74/Job_Upwork_QR_Code_members",
@@ -709,7 +709,7 @@ export const projects: Project[] = [
   {
     name: "Sports Odds Research Tool",
     description: "Prototype that pulls NBA data from ESPN, adds mocked betting odds and flags games where the higher-ranked team is the underdog.",
-    platform: "web",
+    platform: "tools",
     audience: "client",
     tech: ["Python", "FastAPI", "pytest"],
     github: "https://github.com/BoyKa74/Job_Upwork_Test",
@@ -1100,7 +1100,7 @@ export const projects: Project[] = [
   {
     name: "Canvas Smart Embed",
     description: "Canvas-based video slideshow with autoplay embed.",
-    platform: "web",
+    platform: "tools",
     audience: "client",
     tech: ["HTML", "JavaScript", "Canvas"],
     github: "https://github.com/BoyKa74/Job_Embed_Autoplay",
@@ -1568,7 +1568,7 @@ export const projects: Project[] = [
   {
     name: "RAG Demo Dashboard",
     description: "MVP dashboard for retrieval-augmented generation (RAG) search over structured assets using Supabase and Next.js.",
-    platform: "ai",
+    platform: "tools",
     audience: "personal",
     tech: ["Next.js", "Supabase", "RAG"],
     github: "https://github.com/BoyKa74/RAG-Demo-Dashboard",
@@ -1680,7 +1680,7 @@ export const projects: Project[] = [
   {
     name: "CallTranslate",
     description: "Call translation app prototype.",
-    platform: "web",
+    platform: "tools",
     audience: "personal",
     tech: ["JavaScript"],
     github: "https://github.com/BoyKa74/CallTranslate",

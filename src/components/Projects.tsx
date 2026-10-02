@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { ExternalLink, Github, Users, Globe, Smartphone, BrainCircuit, Boxes, Sparkles, Lock, LayoutGrid, ChevronUp } from 'lucide-react';
+import { ExternalLink, Github, Users, Globe, Smartphone, BrainCircuit, Boxes, Wrench, Sparkles, Lock, LayoutGrid, ChevronUp } from 'lucide-react';
 import { projects, type Audience, type Platform } from '@/lib/projects';
 import ProjectPreview from '@/components/ProjectPreview';
 
@@ -15,6 +15,7 @@ const platformTabs: { id: TabId; name: string; short: string; icon: ReactNode }[
   { id: 'web', name: 'Web', short: 'Web', icon: <Globe className="w-5 h-5" /> },
   { id: 'mobile', name: 'Mobile App', short: 'Mobile', icon: <Smartphone className="w-5 h-5" /> },
   { id: 'ai', name: 'AI', short: 'AI', icon: <BrainCircuit className="w-5 h-5" /> },
+  { id: 'tools', name: 'Tools', short: 'Tools', icon: <Wrench className="w-5 h-5" /> },
   { id: 'other', name: 'Other', short: 'Other', icon: <Boxes className="w-5 h-5" /> },
   { id: 'private', name: 'Private', short: 'Private', icon: <Lock className="w-5 h-5" /> }
 ];
@@ -31,6 +32,7 @@ const platformEmoji: Record<Platform, string> = {
   web: '🌐',
   mobile: '📱',
   ai: '🧠',
+  tools: '🛠️',
   other: '🧰'
 };
 
@@ -328,6 +330,7 @@ export default function Projects() {
                   platform={project.platform}
                   demo={project.demo}
                   github={project.github}
+                  isPrivate={project.isPrivate}
                 />
 
                 {/* sheen sweep on hover */}

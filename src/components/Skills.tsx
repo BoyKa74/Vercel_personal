@@ -81,6 +81,25 @@ export default function Skills() {
       ]
     },
     {
+      title: "🚀 Deploy & Cloud",
+      skills: [
+        { name: "Vercel", icon: "https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" },
+        { name: "AWS", icon: "https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white" },
+        { name: "Netlify", icon: "https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" },
+        { name: "Render", icon: "https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=46E3B7" },
+        { name: "Google Cloud", icon: "https://img.shields.io/badge/Google%20Cloud-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white" }
+      ]
+    },
+    {
+      title: "🌐 Domains",
+      skills: [
+        { name: "GoDaddy", icon: "https://img.shields.io/badge/GoDaddy-1BDBDB?style=for-the-badge&logo=godaddy&logoColor=white" },
+        { name: "Google Domains", icon: "https://img.shields.io/badge/Google%20Domains-4285F4?style=for-the-badge&logo=google&logoColor=white" },
+        { name: "Cloudflare", icon: "https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" },
+        { name: "Namecheap", icon: "https://img.shields.io/badge/Namecheap-DE3723?style=for-the-badge&logo=namecheap&logoColor=white" }
+      ]
+    },
+    {
       title: "🧪 Testing",
       skills: [
         { name: "Selenium", icon: "https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=selenium&logoColor=white" },
@@ -94,7 +113,10 @@ export default function Skills() {
         { name: "GitHub Copilot", icon: "https://img.shields.io/badge/Copilot-000000?style=for-the-badge&logo=github&logoColor=white" },
         { name: "Gemini", icon: "https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white" },
         { name: "Grok", icon: "https://img.shields.io/badge/Grok-FFAD1F?style=for-the-badge&logo=x&logoColor=black" },
-        { name: "DeepSheet", icon: "https://img.shields.io/badge/DeepSheet-FF4081?style=for-the-badge&logo=google-sheets&logoColor=white" }
+        { name: "DeepSheet", icon: "https://img.shields.io/badge/DeepSheet-FF4081?style=for-the-badge&logo=google-sheets&logoColor=white" },
+        { name: "Codex", icon: "https://img.shields.io/badge/Codex-000000?style=for-the-badge&logo=openai&logoColor=white" },
+        { name: "Claude Code", icon: "https://img.shields.io/badge/Claude%20Code-D97757?style=for-the-badge&logo=anthropic&logoColor=white" },
+        { name: "OpenCode", icon: "https://img.shields.io/badge/OpenCode-1F1F1F?style=for-the-badge&logo=gnometerminal&logoColor=white" }
       ]
     }
   ];

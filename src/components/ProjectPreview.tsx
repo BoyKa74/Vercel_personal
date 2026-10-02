@@ -240,20 +240,22 @@ export default function ProjectPreview({
   name,
   platform,
   demo,
-  github
+  github,
+  isPrivate
 }: {
   name: string;
   platform: Platform;
   demo?: string;
   github?: string;
-  isDarkMode?: boolean;
+  isPrivate?: boolean;
 }) {
   const [screenshotLoaded, setScreenshotLoaded] = useState(false);
   const [screenshotFailed, setScreenshotFailed] = useState(false);
   const gradient = mockGradient(name);
   const variant = getVariant(name, platform);
-  const screenshotUrl = demo
-    ? `https://image.thum.io/get/png/width/640/viewportWidth/1280/viewportHeight/560/noanimate/${demo}`
+  const screenshotTarget = demo ?? (!isPrivate && github ? github : null);
+  const screenshotUrl = screenshotTarget
+    ? `https://image.thum.io/get/png/width/640/viewportWidth/1280/viewportHeight/560/noanimate/${screenshotTarget}`
     : null;
 
   return (
