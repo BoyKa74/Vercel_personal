@@ -1591,6 +1591,17 @@ export const projects: Project[] = [
     year: 2025
   },
   {
+    name: "Vox Diary",
+    description: "Intelligent reminders & voice journaling app built with Flutter — company project.",
+    platform: "mobile",
+    audience: "enterprise",
+    tech: ["Flutter", "Dart"],
+    github: "https://github.com/appy-eth/vox-diary",
+    team: true,
+    isPrivate: true,
+    year: 2026
+  },
+  {
     name: "Dating App",
     description: "Flutter MVP dating app — sign up, profiles and matching by shared interests.",
     platform: "mobile",
