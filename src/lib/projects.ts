@@ -645,6 +645,91 @@ export const projects: Project[] = [
   // PRIVATE — WEB (client work)
   // ================================================================
   {
+    name: "Open Question — Life Coaching",
+    description: "Demo marketing site for a 1:1 life coach — home, about, services, reviews, contact and a reading list.",
+    platform: "web",
+    audience: "client",
+    tech: ["Next.js 16", "TypeScript", "Tailwind CSS v4"],
+    github: "https://github.com/BoyKa74/Job_Upwork_life_coaching",
+    demo: "https://job-upwork-life-coaching.vercel.app",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "GHCA — Community Association",
+    description: "7-page marketing website for the Garden Highway Community Association, built from approved mockups and copy.",
+    platform: "web",
+    audience: "client",
+    tech: ["Next.js 16", "TypeScript", "Tailwind CSS v4"],
+    github: "https://github.com/BoyKa74/Job_Upwork_7Pages",
+    demo: "https://sevenpages-phi.vercel.app",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "Cairn — Fundraising Platform",
+    description: "Donation platform demo for an Upwork brief — campaigns as cairns, donation ledger and a smooth donor experience (Stripe-ready).",
+    platform: "web",
+    audience: "client",
+    tech: ["Next.js 16", "TypeScript", "SQLite", "Stripe"],
+    github: "https://github.com/BoyKa74/Job_Upwork_Fundraising_Platform",
+    demo: "https://fundraising-silk.vercel.app",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "Munas — Matchmaking Platform",
+    description: "Marriage matchmaking & social platform monorepo — live matchmaking, real-time chat, subscriptions and multiplayer Ludo (API + admin + Flutter app).",
+    platform: "web",
+    audience: "client",
+    tech: ["Next.js", "Flutter", "TypeScript", "Node.js"],
+    github: "https://github.com/BoyKa74/Job_Upwork_Munas",
+    demo: "https://job-upwork-munas-admin.vercel.app",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "QR Code Members",
+    description: "QR-code membership dues lookup for a small organization — runs entirely on Google Apps Script + Sheets with $0 hosting.",
+    platform: "web",
+    audience: "client",
+    tech: ["Google Apps Script", "Google Sheets", "JavaScript"],
+    github: "https://github.com/BoyKa74/Job_Upwork_QR_Code_members",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "Agents vs Listing",
+    description: "Rental property aggregation from Facebook/Zalo groups and agency sites — photo-based duplicate detection, merged listings and a live map (AWS deploy).",
+    platform: "web",
+    audience: "client",
+    tech: ["Python", "FastAPI", "AWS", "Docker"],
+    github: "https://github.com/BoyKa74/Job_Upwork_KEN",
+    demo: "https://frontend-gules-chi-17.vercel.app",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "Sports Odds Research Tool",
+    description: "Prototype that pulls NBA data from ESPN, adds mocked betting odds and flags games where the higher-ranked team is the underdog.",
+    platform: "web",
+    audience: "client",
+    tech: ["Python", "FastAPI", "pytest"],
+    github: "https://github.com/BoyKa74/Job_Upwork_Test",
+    isPrivate: true,
+    year: 2026
+  },
+  {
+    name: "Ambury Bundle Page",
+    description: "Developer brief for the ambury.co bundle page — implementation in progress.",
+    platform: "web",
+    audience: "client",
+    tech: [],
+    github: "https://github.com/BoyKa74/Job_Upwork_Bundle",
+    isPrivate: true,
+    year: 2026
+  },
+  {
     name: "Truenorth Collections",
     description: "Official website for a premium watch brand — deployed as a static site on Vercel.",
     platform: "web",
@@ -1458,6 +1543,17 @@ export const projects: Project[] = [
   // ================================================================
   // PRIVATE — AI
   // ================================================================
+  {
+    name: "CourseMind — Course AI Assistant",
+    description: "Grounded course assistant — answers come strictly from indexed video transcripts, each with the exact timestamp where it is discussed (Supabase pgvector + Voyage AI).",
+    platform: "ai",
+    audience: "client",
+    tech: ["Next.js 16", "Supabase pgvector", "Voyage AI", "RAG"],
+    github: "https://github.com/BoyKa74/Job_Upwork_CourseAI",
+    demo: "https://course-ai-demo-three.vercel.app",
+    isPrivate: true,
+    year: 2026
+  },
   {
     name: "VTABS SociBot AI",
     description: "AI-personalized news platform — Next.js web, admin panel, Python backend and Flutter mobile app.",
