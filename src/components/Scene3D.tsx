@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { MutableRefObject } from "react";
+import type { MutableRefObject, RefObject } from "react";
 import * as THREE from "three";
 
 type Theme = "dark" | "light";
@@ -109,16 +109,30 @@ type JetConfig = {
 };
 
 function Jet({ offset, speed, color, scale, lane }: JetConfig) {
-  const group = useRef<THREE.Group>(null);
-  useFrame((state) => {
+  const { group, burst, animate } = usePoke(scale);
+  const glow = useRef<THREE.Mesh>(null);
+  const direction = speed > 0 ? 1 : -1;
+
+  useFrame((state, delta) => {
     if (!group.current) return;
     const time = state.clock.elapsedTime;
+    const boost = animate(delta);
+    const progress = 1 - boost;
     const range = 40;
-    const x = ((time * speed + offset) % (range * 2)) - range;
-    group.current.position.set(x, lane[1] + Math.sin(time * 0.7 + offset) * 0.5, lane[2]);
-    group.current.rotation.y = speed > 0 ? 0 : Math.PI;
+    const baseX = ((time * speed + offset) % (range * 2)) - range;
+    const lunge = Math.sin(progress * Math.PI) * 4;
+    group.current.position.set(
+      baseX + direction * lunge,
+      lane[1] + Math.sin(time * 0.7 + offset) * 0.5,
+      lane[2]
+    );
+    group.current.rotation.y = direction > 0 ? 0 : Math.PI;
     group.current.rotation.z = Math.sin(time * 1.1 + offset) * 0.12;
-    group.current.rotation.x = Math.sin(time * 0.8 + offset) * 0.06;
+    group.current.rotation.x =
+      Math.sin(time * 0.8 + offset) * 0.06 + (boost > 0 ? progress * Math.PI * 2 : 0);
+    if (glow.current) {
+      glow.current.scale.setScalar(1 + boost * 2.4);
+    }
   });
 
   return (
@@ -149,10 +163,11 @@ function Jet({ offset, speed, color, scale, lane }: JetConfig) {
         <meshStandardMaterial color="#b9c9e6" metalness={0.6} roughness={0.4} />
       </mesh>
       {/* engine glow */}
-      <mesh position={[-0.78, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+      <mesh ref={glow} position={[-0.78, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
         <coneGeometry args={[0.1, 0.34, 8]} />
         <meshBasicMaterial color="#6fd3ff" transparent opacity={0.85} />
       </mesh>
+      <PokeBurst burstRef={burst} color="#8fd8ff" />
     </group>
   );
 }
@@ -199,20 +214,45 @@ function Meteor({ offset, speed, scale, lane, spin }: MeteorConfig) {
 
   return (
     <group ref={group} position={lane} scale={scale}>
-      <mesh>
-        <icosahedronGeometry args={[0.5, 0]} />
-        <meshStandardMaterial color="#8d7f74" roughness={0.95} metalness={0.15} emissive="#ff7a2f" emissiveIntensity={0.35} />
+      {/* rocky core — irregular, flat shaded */}
+      <mesh rotation={[0.4, 0.8, 0.2]}>
+        <icosahedronGeometry args={[0.42, 1]} />
+        <meshStandardMaterial
+          color="#6f6259"
+          roughness={0.95}
+          metalness={0.1}
+          flatShading
+          emissive="#ff6a1f"
+          emissiveIntensity={0.18}
+        />
       </mesh>
-      {/* fiery trail */}
-      <mesh position={[-1.15, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <coneGeometry args={[0.34, 2.3, 8, 1, true]} />
+      <mesh position={[0.18, 0.12, -0.1]} scale={0.55}>
+        <icosahedronGeometry args={[0.4, 0]} />
+        <meshStandardMaterial color="#5c5148" roughness={1} flatShading />
+      </mesh>
+      <mesh position={[-0.2, -0.14, 0.12]} scale={0.4}>
+        <dodecahedronGeometry args={[0.4, 0]} />
+        <meshStandardMaterial color="#7a6a5e" roughness={1} flatShading />
+      </mesh>
+      {/* comet streak — stretched glow, no cone */}
+      <mesh position={[-1.05, 0, 0]} scale={[3.4, 0.34, 0.34]}>
+        <sphereGeometry args={[0.4, 16, 12]} />
         <meshBasicMaterial
-          color="#ff9a3c"
+          color="#ff8a2a"
           transparent
-          opacity={0.32}
+          opacity={0.16}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
-          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh position={[-0.6, 0, 0]} scale={[1.9, 0.22, 0.22]}>
+        <sphereGeometry args={[0.34, 16, 12]} />
+        <meshBasicMaterial
+          color="#ffc46b"
+          transparent
+          opacity={0.3}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
         />
       </mesh>
     </group>
@@ -304,6 +344,103 @@ function Bubbles({ count }: { count: number }) {
   );
 }
 
+// ------------------------------------------------------------ poke effects
+function usePoke(baseScale: number) {
+  const group = useRef<THREE.Group>(null);
+  const burst = useRef<THREE.Mesh>(null);
+  const poke = useRef(0);
+
+  useEffect(() => {
+    const node = group.current;
+    if (!node) return;
+    node.userData.onPoke = () => {
+      poke.current = 1;
+    };
+    return () => {
+      delete node.userData.onPoke;
+    };
+  }, []);
+
+  const animate = (delta: number) => {
+    poke.current = Math.max(0, poke.current - delta * 1.1);
+    const boost = poke.current;
+    if (group.current) {
+      group.current.scale.setScalar(baseScale * (1 + boost * 0.16));
+    }
+    if (burst.current) {
+      const active = boost > 0;
+      burst.current.visible = active;
+      if (active) {
+        const progress = 1 - boost;
+        burst.current.scale.setScalar(0.7 + progress * 2.8);
+        const material = burst.current.material as THREE.MeshBasicMaterial;
+        material.opacity = boost * 0.6;
+      }
+    }
+    return boost;
+  };
+
+  return { group, burst, animate };
+}
+
+function PokeBurst({ burstRef, color }: { burstRef: RefObject<THREE.Mesh | null>; color: string }) {
+  return (
+    <mesh ref={burstRef} visible={false}>
+      <sphereGeometry args={[0.6, 14, 14]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={0}
+        wireframe
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </mesh>
+  );
+}
+
+function PokeHandler() {
+  const { camera, scene, gl } = useThree();
+
+  useEffect(() => {
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    const onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && target.closest("a, button, input, textarea, select, [role='button']")) {
+        return;
+      }
+      const rect = gl.domElement.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+
+      const targets: THREE.Object3D[] = [];
+      scene.traverse((node) => {
+        if (typeof node.userData.onPoke === "function") targets.push(node);
+      });
+
+      const hits = raycaster.intersectObjects(targets, true);
+      for (const hit of hits) {
+        let node: THREE.Object3D | null = hit.object;
+        while (node) {
+          if (typeof node.userData.onPoke === "function") {
+            node.userData.onPoke();
+            return;
+          }
+          node = node.parent;
+        }
+      }
+    };
+
+    window.addEventListener("click", onClick);
+    return () => window.removeEventListener("click", onClick);
+  }, [camera, scene, gl]);
+
+  return null;
+}
+
 function Fish({
   offset,
   speed,
@@ -317,18 +454,28 @@ function Fish({
   scale: number;
   lane: [number, number, number];
 }) {
-  const group = useRef<THREE.Group>(null);
+  const { group, burst, animate } = usePoke(scale);
   const tail = useRef<THREE.Mesh>(null);
-  useFrame((state) => {
+  const direction = speed > 0 ? 1 : -1;
+
+  useFrame((state, delta) => {
     const time = state.clock.elapsedTime;
+    const boost = animate(delta);
+    const progress = 1 - boost;
     if (group.current) {
       const range = 30;
-      const x = ((time * speed + offset) % (range * 2)) - range;
-      group.current.position.set(x, lane[1] + Math.sin(time * 1.4 + offset) * 0.35, lane[2]);
-      group.current.rotation.y = speed > 0 ? 0 : Math.PI;
+      const baseX = ((time * speed + offset) % (range * 2)) - range;
+      const lunge = Math.sin(progress * Math.PI) * 3.2;
+      group.current.position.set(
+        baseX + direction * lunge,
+        lane[1] + Math.sin(time * 1.4 + offset) * 0.35,
+        lane[2]
+      );
+      group.current.rotation.y = direction > 0 ? 0 : Math.PI;
+      group.current.rotation.x = boost > 0 ? progress * Math.PI * 2 : 0;
     }
     if (tail.current) {
-      tail.current.rotation.y = Math.sin(time * 6 + offset) * 0.5;
+      tail.current.rotation.y = Math.sin(time * 6 + offset) * 0.5 + boost * 0.8;
     }
   });
 
@@ -342,6 +489,7 @@ function Fish({
         <coneGeometry args={[0.14, 0.28, 4]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.3} roughness={0.5} />
       </mesh>
+      <PokeBurst burstRef={burst} color="#ffffff" />
     </group>
   );
 }
@@ -381,17 +529,29 @@ type WhaleConfig = {
 };
 
 function Whale({ offset, speed, scale, color, lane }: WhaleConfig) {
-  const group = useRef<THREE.Group>(null);
+  const { group, burst, animate } = usePoke(scale);
   const tail = useRef<THREE.Group>(null);
-  useFrame((state) => {
+  const direction = speed > 0 ? 1 : -1;
+
+  useFrame((state, delta) => {
     if (!group.current) return;
     const time = state.clock.elapsedTime;
+    const boost = animate(delta);
+    const progress = 1 - boost;
     const range = 36;
-    const x = ((time * speed + offset) % (range * 2)) - range;
-    group.current.position.set(x, lane[1] + Math.sin(time * 0.45 + offset) * 0.7, lane[2]);
-    group.current.rotation.y = speed > 0 ? 0 : Math.PI;
+    const baseX = ((time * speed + offset) % (range * 2)) - range;
+    const lunge = Math.sin(progress * Math.PI) * 3.5;
+    group.current.position.set(
+      baseX + direction * lunge,
+      lane[1] + Math.sin(time * 0.45 + offset) * 0.7,
+      lane[2]
+    );
+    group.current.rotation.y = direction > 0 ? 0 : Math.PI;
     group.current.rotation.z = Math.sin(time * 0.45 + offset) * 0.07;
-    if (tail.current) tail.current.rotation.y = Math.sin(time * 1.5 + offset) * 0.4;
+    group.current.rotation.x = boost > 0 ? progress * Math.PI * 2 : 0;
+    if (tail.current) {
+      tail.current.rotation.y = Math.sin(time * 1.5 + offset) * 0.4 + boost * 0.9;
+    }
   });
 
   return (
@@ -422,6 +582,7 @@ function Whale({ offset, speed, scale, color, lane }: WhaleConfig) {
           <meshStandardMaterial color={color} roughness={0.75} />
         </mesh>
       </group>
+      <PokeBurst burstRef={burst} color="#bfe3f2" />
     </group>
   );
 }
@@ -454,16 +615,26 @@ function Submarine({
   speed: number;
   scale: number;
 }) {
-  const group = useRef<THREE.Group>(null);
+  const { group, burst, animate } = usePoke(scale);
   const propeller = useRef<THREE.Group>(null);
+  const direction = speed > 0 ? 1 : -1;
+
   useFrame((state, delta) => {
     if (!group.current) return;
     const time = state.clock.elapsedTime;
+    const boost = animate(delta);
+    const progress = 1 - boost;
     const range = 30;
-    const x = ((time * speed) % (range * 2)) - range;
-    group.current.position.set(x, lane[1] + Math.sin(time * 0.6) * 0.45, lane[2]);
+    const baseX = ((time * speed) % (range * 2)) - range;
+    const lunge = Math.sin(progress * Math.PI) * 3.8;
+    group.current.position.set(
+      baseX + direction * lunge,
+      lane[1] + Math.sin(time * 0.6) * 0.45,
+      lane[2]
+    );
     group.current.rotation.z = Math.sin(time * 0.6) * 0.05;
-    if (propeller.current) propeller.current.rotation.x += delta * 9;
+    group.current.rotation.x = boost > 0 ? progress * Math.PI * 2 : 0;
+    if (propeller.current) propeller.current.rotation.x += delta * (9 + boost * 70);
   });
 
   return (
@@ -501,6 +672,7 @@ function Submarine({
           <meshStandardMaterial color="#7a6428" metalness={0.7} roughness={0.35} />
         </mesh>
       </group>
+      <PokeBurst burstRef={burst} color="#aef0ff" />
     </group>
   );
 }
@@ -699,6 +871,7 @@ export default function Scene3D() {
           style={{ position: "absolute", inset: 0 }}
         >
           <CameraRig scroll={scroll} mouse={mouse} />
+          <PokeHandler />
           {theme === "dark" ? <SpaceScene /> : <OceanScene />}
         </Canvas>
       )}
