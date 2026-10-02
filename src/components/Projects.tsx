@@ -380,6 +380,7 @@ export default function Projects() {
                   github={project.github}
                   isPrivate={project.isPrivate}
                   logo={project.logo}
+                  image={project.image}
                 />
 
                 {/* sheen sweep on hover */}

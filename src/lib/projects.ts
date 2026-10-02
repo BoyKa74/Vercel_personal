@@ -9,6 +9,7 @@ export interface Project {
   tech: string[];
   github?: string;
   demo?: string;
+  image?: string;
   logo?: string;
   team?: boolean;
   featured?: boolean;
@@ -663,6 +664,7 @@ export const projects: Project[] = [
     audience: "client",
     tech: ["WordPress", "WooCommerce", "PHP"],
     demo: "https://scentoy.com",
+    image: "/previews/scentoy.jpg",
     isPrivate: true,
     year: 2026
   },

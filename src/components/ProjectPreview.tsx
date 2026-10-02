@@ -437,7 +437,8 @@ export default function ProjectPreview({
   demo,
   github,
   isPrivate,
-  logo
+  logo,
+  image
 }: {
   name: string;
   platform: Platform;
@@ -445,6 +446,7 @@ export default function ProjectPreview({
   github?: string;
   isPrivate?: boolean;
   logo?: string;
+  image?: string;
 }) {
   const [screenshotLoaded, setScreenshotLoaded] = useState(false);
   const [screenshotFailed, setScreenshotFailed] = useState(false);
@@ -452,9 +454,11 @@ export default function ProjectPreview({
   const variant = getVariant(name, platform);
   const screenshotTarget =
     platform === "mobile" ? null : (demo ?? (!isPrivate && github ? github : null));
-  const screenshotUrl = screenshotTarget
-    ? `https://image.thum.io/get/png/width/640/viewportWidth/1280/viewportHeight/560/noanimate/${screenshotTarget}`
-    : null;
+  const screenshotUrl =
+    image ??
+    (screenshotTarget
+      ? `https://image.thum.io/get/png/width/640/viewportWidth/1280/viewportHeight/560/noanimate/${screenshotTarget}`
+      : null);
 
   return (
     <div className="absolute inset-0">
