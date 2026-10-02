@@ -458,6 +458,20 @@ function Fish({
   const tail = useRef<THREE.Mesh>(null);
   const direction = speed > 0 ? 1 : -1;
 
+  const bodyPoints = useMemo(
+    () => [
+      new THREE.Vector2(0.005, -0.45),
+      new THREE.Vector2(0.07, -0.34),
+      new THREE.Vector2(0.14, -0.2),
+      new THREE.Vector2(0.185, -0.04),
+      new THREE.Vector2(0.18, 0.12),
+      new THREE.Vector2(0.145, 0.26),
+      new THREE.Vector2(0.09, 0.37),
+      new THREE.Vector2(0.03, 0.45)
+    ],
+    []
+  );
+
   useFrame((state, delta) => {
     const time = state.clock.elapsedTime;
     const boost = animate(delta);
@@ -481,13 +495,35 @@ function Fish({
 
   return (
     <group ref={group} position={lane} scale={scale}>
-      <mesh rotation={[0, 0, -Math.PI / 2]}>
-        <coneGeometry args={[0.16, 0.62, 6]} />
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.35} roughness={0.5} />
+      {/* body — smooth spindle */}
+      <mesh rotation={[0, 0, -Math.PI / 2]} scale={[1, 0.85, 0.62]}>
+        <latheGeometry args={[bodyPoints, 20]} />
+        <meshStandardMaterial
+          color={color}
+          roughness={0.32}
+          metalness={0.3}
+          emissive={color}
+          emissiveIntensity={0.12}
+        />
       </mesh>
-      <mesh ref={tail} position={[-0.36, 0, 0]}>
-        <coneGeometry args={[0.14, 0.28, 4]} />
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.3} roughness={0.5} />
+      {/* dorsal fin */}
+      <mesh position={[0.02, 0.17, 0]} rotation={[0, 0, -0.2]} scale={[1, 1, 0.16]}>
+        <coneGeometry args={[0.12, 0.22, 10]} />
+        <meshStandardMaterial color={color} roughness={0.4} emissive={color} emissiveIntensity={0.1} />
+      </mesh>
+      {/* tail fin */}
+      <mesh ref={tail} position={[-0.5, 0, 0]} rotation={[0, 0, Math.PI / 2]} scale={[1, 1, 0.16]}>
+        <coneGeometry args={[0.17, 0.3, 12]} />
+        <meshStandardMaterial color={color} roughness={0.4} emissive={color} emissiveIntensity={0.1} />
+      </mesh>
+      {/* eyes */}
+      <mesh position={[0.22, 0.05, 0.075]}>
+        <sphereGeometry args={[0.032, 10, 10]} />
+        <meshStandardMaterial color="#0a1420" roughness={0.15} />
+      </mesh>
+      <mesh position={[0.22, 0.05, -0.075]}>
+        <sphereGeometry args={[0.032, 10, 10]} />
+        <meshStandardMaterial color="#0a1420" roughness={0.15} />
       </mesh>
       <PokeBurst burstRef={burst} color="#ffffff" />
     </group>
@@ -533,6 +569,24 @@ function Whale({ offset, speed, scale, color, lane }: WhaleConfig) {
   const tail = useRef<THREE.Group>(null);
   const direction = speed > 0 ? 1 : -1;
 
+  const bodyPoints = useMemo(
+    () => [
+      new THREE.Vector2(0.02, -1.55),
+      new THREE.Vector2(0.16, -1.35),
+      new THREE.Vector2(0.3, -1.1),
+      new THREE.Vector2(0.44, -0.8),
+      new THREE.Vector2(0.54, -0.45),
+      new THREE.Vector2(0.6, -0.05),
+      new THREE.Vector2(0.6, 0.35),
+      new THREE.Vector2(0.54, 0.72),
+      new THREE.Vector2(0.42, 1.02),
+      new THREE.Vector2(0.27, 1.26),
+      new THREE.Vector2(0.12, 1.42),
+      new THREE.Vector2(0.02, 1.52)
+    ],
+    []
+  );
+
   useFrame((state, delta) => {
     if (!group.current) return;
     const time = state.clock.elapsedTime;
@@ -550,38 +604,56 @@ function Whale({ offset, speed, scale, color, lane }: WhaleConfig) {
     group.current.rotation.z = Math.sin(time * 0.45 + offset) * 0.07;
     group.current.rotation.x = boost > 0 ? progress * Math.PI * 2 : 0;
     if (tail.current) {
-      tail.current.rotation.y = Math.sin(time * 1.5 + offset) * 0.4 + boost * 0.9;
+      tail.current.rotation.z = Math.sin(time * 1.2 + offset) * 0.32 + boost * 0.7;
     }
   });
 
   return (
     <group ref={group} position={lane} scale={scale}>
-      {/* body */}
-      <mesh scale={[2.3, 1, 1.05]}>
-        <sphereGeometry args={[0.62, 18, 14]} />
-        <meshStandardMaterial color={color} roughness={0.72} metalness={0.05} />
+      {/* body — smooth whale profile */}
+      <mesh rotation={[0, 0, -Math.PI / 2]} scale={[1, 0.92, 0.88]}>
+        <latheGeometry args={[bodyPoints, 24]} />
+        <meshStandardMaterial color={color} roughness={0.5} metalness={0.08} />
       </mesh>
-      {/* belly */}
-      <mesh scale={[1.9, 0.55, 0.72]} position={[0.1, -0.22, 0]}>
-        <sphereGeometry args={[0.6, 14, 10]} />
-        <meshStandardMaterial color="#bfe3f2" roughness={0.8} />
+      {/* lighter belly */}
+      <mesh position={[0.15, -0.5, 0]} scale={[1.3, 0.26, 0.55]}>
+        <sphereGeometry args={[0.55, 18, 14]} />
+        <meshStandardMaterial color="#cfeaf5" roughness={0.7} />
       </mesh>
-      {/* fins */}
-      <mesh position={[0.35, -0.28, 0.5]} rotation={[0.5, 0, -0.4]}>
-        <boxGeometry args={[0.5, 0.06, 0.3]} />
-        <meshStandardMaterial color={color} roughness={0.75} />
+      {/* pectoral fins */}
+      <mesh position={[0.55, -0.32, 0.42]} rotation={[0.55, -0.3, -0.35]} scale={[0.42, 0.07, 0.2]}>
+        <sphereGeometry args={[0.5, 12, 10]} />
+        <meshStandardMaterial color={color} roughness={0.55} />
       </mesh>
-      <mesh position={[0.35, -0.28, -0.5]} rotation={[-0.5, 0, -0.4]}>
-        <boxGeometry args={[0.5, 0.06, 0.3]} />
-        <meshStandardMaterial color={color} roughness={0.75} />
+      <mesh position={[0.55, -0.32, -0.42]} rotation={[-0.55, 0.3, -0.35]} scale={[0.42, 0.07, 0.2]}>
+        <sphereGeometry args={[0.5, 12, 10]} />
+        <meshStandardMaterial color={color} roughness={0.55} />
+      </mesh>
+      {/* dorsal ridge */}
+      <mesh position={[-0.35, 0.44, 0]} rotation={[0, 0, -0.25]} scale={[0.3, 0.12, 0.06]}>
+        <sphereGeometry args={[0.5, 10, 8]} />
+        <meshStandardMaterial color={color} roughness={0.55} />
       </mesh>
       {/* tail fluke */}
-      <group ref={tail} position={[-1.4, 0, 0]}>
-        <mesh position={[-0.18, 0, 0]} scale={[0.55, 0.09, 0.95]}>
-          <boxGeometry args={[0.7, 1, 1]} />
-          <meshStandardMaterial color={color} roughness={0.75} />
+      <group ref={tail} position={[-1.5, 0, 0]}>
+        <mesh position={[-0.15, 0, 0.28]} rotation={[0.25, 0.35, 0.1]} scale={[0.5, 0.06, 0.26]}>
+          <sphereGeometry args={[0.6, 12, 10]} />
+          <meshStandardMaterial color={color} roughness={0.55} />
+        </mesh>
+        <mesh position={[-0.15, 0, -0.28]} rotation={[-0.25, -0.35, 0.1]} scale={[0.5, 0.06, 0.26]}>
+          <sphereGeometry args={[0.6, 12, 10]} />
+          <meshStandardMaterial color={color} roughness={0.55} />
         </mesh>
       </group>
+      {/* eyes */}
+      <mesh position={[0.97, -0.02, 0.32]}>
+        <sphereGeometry args={[0.055, 10, 10]} />
+        <meshStandardMaterial color="#0a1a28" roughness={0.15} />
+      </mesh>
+      <mesh position={[0.97, -0.02, -0.32]}>
+        <sphereGeometry args={[0.055, 10, 10]} />
+        <meshStandardMaterial color="#0a1a28" roughness={0.15} />
+      </mesh>
       <PokeBurst burstRef={burst} color="#bfe3f2" />
     </group>
   );
