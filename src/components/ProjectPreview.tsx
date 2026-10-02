@@ -136,7 +136,7 @@ const getPhoneVariant = (name: string): PhoneVariant => {
   if (value.includes("hydrant")) return "map";
   if (value.includes("flight") || value.includes("booking")) return "booking";
   if (value.includes("book")) return "books";
-  if (value.includes("dating")) return "dating";
+  if (value.includes("dating") || value.includes("night")) return "dating";
   return "generic";
 };
 
@@ -333,7 +333,7 @@ function PhoneMock({
 }) {
   return (
     <div className="absolute inset-x-0 bottom-0 top-7 flex items-center justify-center">
-      <div className="relative h-[132px] w-[80px]">
+      <div className="relative h-[138px] w-[84px]">
         {/* side buttons */}
         <span className="absolute -left-[2px] top-6 h-3 w-[2px] rounded-l bg-zinc-500" />
         <span className="absolute -left-[2px] top-10 h-5 w-[2px] rounded-l bg-zinc-500" />
@@ -450,7 +450,8 @@ export default function ProjectPreview({
   const [screenshotFailed, setScreenshotFailed] = useState(false);
   const gradient = mockGradient(name);
   const variant = getVariant(name, platform);
-  const screenshotTarget = demo ?? (!isPrivate && github ? github : null);
+  const screenshotTarget =
+    platform === "mobile" ? null : (demo ?? (!isPrivate && github ? github : null));
   const screenshotUrl = screenshotTarget
     ? `https://image.thum.io/get/png/width/640/viewportWidth/1280/viewportHeight/560/noanimate/${screenshotTarget}`
     : null;
