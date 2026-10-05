@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Facebook, Mail, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Mail, MessageCircle } from "lucide-react";
 import type { ReactNode } from "react";
 
 type ContactChannel = {
@@ -29,6 +29,12 @@ const channels: ContactChannel[] = [
     href: "https://www.facebook.com/MVAV2k4",
     icon: <Facebook className="h-5 w-5" />,
     className: "bg-[#1877F2] hover:bg-[#0f66d8]"
+  },
+  {
+    label: "Instagram · @oldsouls_04",
+    href: "https://www.instagram.com/oldsouls_04/",
+    icon: <Instagram className="h-5 w-5" />,
+    className: "bg-gradient-to-br from-[#f58529] via-[#dd2a7b] to-[#8134af] hover:opacity-90"
   },
   {
     label: "Email · maivananhvu.dev@gmail.com",

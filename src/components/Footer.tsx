@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, Heart, Facebook, MessageCircle } from 'lucide-react';
+import { Github, Linkedin, Mail, Heart, Facebook, Instagram, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -43,6 +43,12 @@ export default function Footer() {
       href: "https://www.facebook.com/MVAV2k4",
       label: "Facebook",
       color: "hover:text-blue-500"
+    },
+    {
+      icon: <Instagram className="w-5 h-5" />,
+      href: "https://www.instagram.com/oldsouls_04/",
+      label: "Instagram",
+      color: "hover:text-pink-400"
     },
     {
       icon: <Mail className="w-5 h-5" />,

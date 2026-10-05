@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from "framer-motion";
-import { Mail, MessageCircle, MapPin, Send, Github, Linkedin, Facebook } from 'lucide-react';
+import { Mail, MessageCircle, MapPin, Send, Github, Linkedin, Facebook, Instagram } from 'lucide-react';
 
 const Contact = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -159,6 +159,12 @@ const Contact = () => {
       label: "Facebook",
       href: "https://www.facebook.com/MVAV2k4",
       color: "hover:text-blue-500"
+    },
+    {
+      icon: <Instagram className="w-6 h-6" />,
+      label: "Instagram",
+      href: "https://www.instagram.com/oldsouls_04/",
+      color: "hover:text-pink-400"
     }
   ];
 

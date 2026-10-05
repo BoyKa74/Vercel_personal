@@ -30,6 +30,7 @@ export default function Skills() {
         { name: "C++", icon: "https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" },
         { name: "Python", icon: "https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" },
         { name: "PHP", icon: "https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" },
+        { name: "Angular", icon: "https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" },
         { name: "Dart", icon: "https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" },
         { name: "HTML", icon: "https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white" },
         { name: "CSS", icon: "https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white" },
@@ -37,10 +38,11 @@ export default function Skills() {
       ]
     },
     {
-      title: "🎨 Frontend Frameworks",
+      title: "🎨 Frontend & Mobile Frameworks",
       skills: [
         { name: "Next.js", icon: "https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" },
         { name: "React", icon: "https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" },
+        { name: "React Native", icon: "https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" },
         { name: "Tailwind CSS", icon: "https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" },
         { name: "Flutter", icon: "https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" }
       ]
@@ -48,6 +50,7 @@ export default function Skills() {
     {
       title: "⚙️ Backend Frameworks", 
       skills: [
+        { name: "NestJS", icon: "https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" },
         { name: "Node.js", icon: "https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" },
         { name: "Express.js", icon: "https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" },
         { name: "Spring MVC", icon: "https://img.shields.io/badge/Spring%20MVC-6DB33F?style=for-the-badge&logo=spring&logoColor=white" },
@@ -81,6 +84,8 @@ export default function Skills() {
         { name: "WordPress", icon: "https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white" },
         { name: "WooCommerce", icon: "https://img.shields.io/badge/WooCommerce-96588A?style=for-the-badge&logo=woocommerce&logoColor=white" },
         { name: "Shopify", icon: "https://img.shields.io/badge/Shopify-7AB55C?style=for-the-badge&logo=shopify&logoColor=white" },
+        { name: "Figma", icon: "https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" },
+        { name: "Windsurf", icon: "https://img.shields.io/badge/Windsurf-00A0FF?style=for-the-badge&logo=gnometerminal&logoColor=white" },
         { name: "Android SDK", icon: "https://img.shields.io/badge/Android%20SDK-3DDC84?style=for-the-badge&logo=android&logoColor=white" }
       ]
     },
@@ -91,7 +96,16 @@ export default function Skills() {
         { name: "AWS", icon: "https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white" },
         { name: "Netlify", icon: "https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" },
         { name: "Render", icon: "https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=46E3B7" },
-        { name: "Google Cloud", icon: "https://img.shields.io/badge/Google%20Cloud-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white" }
+        { name: "Google Cloud", icon: "https://img.shields.io/badge/Google%20Cloud-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white" },
+        { name: "Azure", icon: "https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white" },
+        { name: "Crazy Domains", icon: "https://img.shields.io/badge/Crazy%20Domains-FF6600?style=for-the-badge" }
+      ]
+    },
+    {
+      title: "📱 App Deployment",
+      skills: [
+        { name: "Google Play", icon: "https://img.shields.io/badge/Google%20Play-414141?style=for-the-badge&logo=googleplay&logoColor=white" },
+        { name: "App Store", icon: "https://img.shields.io/badge/App%20Store-0D96F6?style=for-the-badge&logo=appstore&logoColor=white" }
       ]
     },
     {
@@ -119,8 +133,10 @@ export default function Skills() {
         { name: "Grok", icon: "https://img.shields.io/badge/Grok-FFAD1F?style=for-the-badge&logo=x&logoColor=black" },
         { name: "DeepSheet", icon: "https://img.shields.io/badge/DeepSheet-FF4081?style=for-the-badge&logo=google-sheets&logoColor=white" },
         { name: "Codex", icon: "https://img.shields.io/badge/Codex-000000?style=for-the-badge&logo=openai&logoColor=white" },
+        { name: "Claude", icon: "https://img.shields.io/badge/Claude-8A2BE2?style=for-the-badge&logo=anthropic&logoColor=white" },
         { name: "Claude Code", icon: "https://img.shields.io/badge/Claude%20Code-D97757?style=for-the-badge&logo=anthropic&logoColor=white" },
-        { name: "OpenCode", icon: "https://img.shields.io/badge/OpenCode-1F1F1F?style=for-the-badge&logo=gnometerminal&logoColor=white" }
+        { name: "OpenCode", icon: "https://img.shields.io/badge/OpenCode-1F1F1F?style=for-the-badge&logo=gnometerminal&logoColor=white" },
+        { name: "DeepSeek AI", icon: "https://img.shields.io/badge/DeepSeek_AI-000000?style=for-the-badge" }
       ]
     }
   ];
