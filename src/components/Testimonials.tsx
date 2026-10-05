@@ -116,53 +116,57 @@ export default function Testimonials() {
           </motion.div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((item, index) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.5, delay: Math.min(index * 0.08, 0.5) }}
-              className={`flex flex-col rounded-xl p-6 ${
-                isDarkMode
-                  ? "bg-white/5 backdrop-blur-sm border border-white/10"
-                  : "bg-white/15 backdrop-blur-sm border border-white/20"
-              } hover:scale-[1.02] transition-all duration-300 ocean-current`}
-            >
-              <span className="flex items-center gap-1 mb-4">
-                {[0, 1, 2, 3, 4].map((star) => (
-                  <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                ))}
-              </span>
-
-              <p className={`text-sm leading-relaxed flex-1 ${isDarkMode ? "text-gray-300" : "text-white/90"}`}>
-                “{item.quote}”
-              </p>
-
-              <div className={`mt-5 flex items-center gap-3 border-t pt-4 ${
-                isDarkMode ? "border-white/10" : "border-white/20"
-              }`}>
-                <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ${
-                    isDarkMode
-                      ? "bg-gradient-to-br from-blue-500 to-purple-600"
-                      : "bg-gradient-to-br from-blue-400 to-indigo-500"
-                  }`}
-                >
-                  {initials(item.name)}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="marquee relative overflow-hidden"
+        >
+          <div className="marquee-track gap-5 py-2" style={{ animationDuration: "40s" }}>
+            {[...testimonials, ...testimonials].map((item, index) => (
+              <div
+                key={`${item.name}-${index}`}
+                className={`flex w-[85vw] max-w-[360px] shrink-0 flex-col rounded-xl p-6 ${
+                  isDarkMode
+                    ? "bg-white/5 backdrop-blur-sm border border-white/10"
+                    : "bg-white/15 backdrop-blur-sm border border-white/20"
+                }`}
+              >
+                <span className="flex items-center gap-1 mb-4">
+                  {[0, 1, 2, 3, 4].map((star) => (
+                    <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
                 </span>
-                <div>
-                  <p className={`text-sm font-semibold ${isDarkMode ? "text-white" : "text-white"}`}>
-                    {item.name}
-                  </p>
-                  <p className={`text-xs ${isDarkMode ? "text-gray-400" : "text-white/75"}`}>
-                    {item.role}
-                  </p>
+
+                <p className={`text-sm leading-relaxed flex-1 ${isDarkMode ? "text-gray-300" : "text-white/90"}`}>
+                  “{item.quote}”
+                </p>
+
+                <div className={`mt-5 flex items-center gap-3 border-t pt-4 ${
+                  isDarkMode ? "border-white/10" : "border-white/20"
+                }`}>
+                  <span
+                    className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ${
+                      isDarkMode
+                        ? "bg-gradient-to-br from-blue-500 to-purple-600"
+                        : "bg-gradient-to-br from-blue-400 to-indigo-500"
+                    }`}
+                  >
+                    {initials(item.name)}
+                  </span>
+                  <div>
+                    <p className={`text-sm font-semibold ${isDarkMode ? "text-white" : "text-white"}`}>
+                      {item.name}
+                    </p>
+                    <p className={`text-xs ${isDarkMode ? "text-gray-400" : "text-white/75"}`}>
+                      {item.role}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
