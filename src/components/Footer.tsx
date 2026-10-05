@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, Heart, Facebook, Instagram, MessageCircle } from 'lucide-react';
+import { Github, Linkedin, Mail, Facebook, Instagram, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -257,46 +257,6 @@ export default function Footer() {
           } mb-8`}
         />
 
-        {/* Bottom Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          viewport={{ once: true }}
-          className="flex flex-col md:flex-row justify-between items-center"
-        >
-          <p className={`text-sm mb-4 md:mb-0 ${
-            isDarkMode ? 'text-gray-500' : 'text-white/60'
-          }`}>
-            © {new Date().getFullYear()} Mai Vủ. All rights reserved.
-          </p>
-          
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className={`flex items-center space-x-2 text-sm ${
-              isDarkMode ? 'text-gray-500' : 'text-white/60'
-            }`}
-          >
-            <span>Made with</span>
-            <motion.div
-              animate={{ 
-                scale: [1, 1.2, 1],
-                rotate: [0, 10, -10, 0]
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity,
-                repeatDelay: 3
-              }}
-              className={`${
-                isDarkMode ? 'text-red-400' : 'text-red-300'
-              }`}
-            >
-              <Heart className="w-4 h-4 fill-current" />
-            </motion.div>
-            <span>and lots of ☕</span>
-          </motion.div>
-        </motion.div>
       </div>
 
       {/* Animated background elements */}
