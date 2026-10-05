@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, Heart } from 'lucide-react';
+import { Github, Linkedin, Mail, Heart, Facebook, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -33,10 +33,22 @@ export default function Footer() {
       color: "hover:text-blue-400"
     },
     {
-      icon: <Mail className="w-5 h-5" />,
-      href: "mailto:maivu.dev@email.com",
-      label: "Email",
+      icon: <MessageCircle className="w-5 h-5" />,
+      href: "https://wa.me/84865427034",
+      label: "WhatsApp",
       color: "hover:text-green-400"
+    },
+    {
+      icon: <Facebook className="w-5 h-5" />,
+      href: "https://www.facebook.com/MVAV2k4",
+      label: "Facebook",
+      color: "hover:text-blue-500"
+    },
+    {
+      icon: <Mail className="w-5 h-5" />,
+      href: "mailto:maivananhvu.dev@gmail.com",
+      label: "Email",
+      color: "hover:text-emerald-400"
     }
   ];
 
@@ -205,7 +217,7 @@ export default function Footer() {
               <p className={`${
                 isDarkMode ? 'text-gray-400' : 'text-white/80'
               }`}>
-                📧 maivananhvu.dev@email.com
+                📧 maivananhvu.dev@gmail.com
               </p>
               <p className={`${
                 isDarkMode ? 'text-gray-400' : 'text-white/80'

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from "framer-motion";
-import { Mail, MessageCircle, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, MessageCircle, MapPin, Send, Github, Linkedin, Facebook } from 'lucide-react';
 
 const Contact = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -128,6 +128,12 @@ const Contact = () => {
       href: "https://wa.me/84865427034"
     },
     {
+      icon: <span className="text-[13px] font-extrabold leading-none">Zalo</span>,
+      label: "Zalo",
+      value: "0865 427 034",
+      href: "https://zalo.me/84865427034"
+    },
+    {
       icon: <MapPin className="w-6 h-6" />,
       label: "Location",
       value: "Da Nang, Vietnam",
@@ -149,10 +155,10 @@ const Contact = () => {
       color: "hover:text-blue-400"
     },
     {
-      icon: <Twitter className="w-6 h-6" />,
-      label: "Twitter",
-      href: "https://twitter.com",
-      color: "hover:text-sky-400"
+      icon: <Facebook className="w-6 h-6" />,
+      label: "Facebook",
+      href: "https://www.facebook.com/MVAV2k4",
+      color: "hover:text-blue-500"
     }
   ];
 

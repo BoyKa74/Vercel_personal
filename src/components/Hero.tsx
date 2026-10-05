@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { Github, Linkedin, Mail, ChevronDown, Sun, Moon, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, ChevronDown, Sun, Moon, Send, MessageCircle } from 'lucide-react';
 
 // Fish component for day theme
 function Fish({ onClick }: { onClick: (x: number, y: number) => void }) {
@@ -597,6 +597,23 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-sm font-medium ${
+                isDarkMode
+                  ? 'bg-emerald-400/10 text-emerald-300 border border-emerald-400/25'
+                  : 'bg-emerald-900/25 text-emerald-100 border border-emerald-200/40'
+              }`}
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Available for new projects
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className={`text-lg mb-4 ${
                 isDarkMode ? 'text-blue-400' : 'text-yellow-200'
@@ -657,7 +674,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.1 }}
-              className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start"
+              className="flex flex-col sm:flex-row gap-4 mb-5 justify-center lg:justify-start"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -667,9 +684,10 @@ export default function Hero() {
                     ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700' 
                     : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600'
                 } text-white transition-all duration-300 shadow-lg no-spaceship z-30`}
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                <span>View My Work</span>
+                <Send className="w-5 h-5" />
+                <span>Start a Project</span>
               </motion.button>
               
               <motion.button
@@ -680,16 +698,46 @@ export default function Hero() {
                     ? 'border border-white/20 text-white hover:bg-white/10' 
                     : 'border border-white/40 text-white hover:bg-white/20'
                 } transition-all duration-300 no-spaceship z-30`}
-                onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = '/resume.pdf';
-                  link.download = 'Mai_Vu_Resume.pdf';
-                  link.click();
-                }}
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                <Download className="w-5 h-5" />
-                <span>Download CV</span>
+                <span>View My Work</span>
               </motion.button>
+            </motion.div>
+
+            {/* Quick contact */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+              className="flex flex-wrap items-center gap-3 mb-8 justify-center lg:justify-start"
+            >
+              <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-white/75'}`}>
+                Or message me directly:
+              </span>
+              <a
+                href="https://wa.me/84865427034"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-[#25D366]/15 text-[#4ade80] border border-[#25D366]/30 hover:bg-[#25D366]/25 transition-colors no-spaceship z-30"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </a>
+              <a
+                href="https://zalo.me/84865427034"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-[#0068FF]/15 text-[#7db4ff] border border-[#0068FF]/30 hover:bg-[#0068FF]/25 transition-colors no-spaceship z-30"
+              >
+                <span className="text-[11px] font-extrabold">Zalo</span>
+              </a>
+              <a
+                href="mailto:maivananhvu.dev@gmail.com"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-white/10 text-gray-200 border border-white/20 hover:bg-white/20 transition-colors no-spaceship z-30"
+              >
+                <Mail className="w-4 h-4" />
+                Email
+              </a>
             </motion.div>
 
             {/* Social Links */}
@@ -719,6 +767,31 @@ export default function Hero() {
                 >
                   {social.icon}
                 </motion.a>
+              ))}
+            </motion.div>
+
+            {/* Trust stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
+              className="grid grid-cols-3 gap-4 mt-10 max-w-md mx-auto lg:mx-0"
+            >
+              {[
+                { value: '5+', label: 'Years Experience' },
+                { value: '250+', label: 'Projects Delivered' },
+                { value: '15+', label: 'Technologies' }
+              ].map((stat) => (
+                <div key={stat.label} className="text-center lg:text-left">
+                  <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-white'}`}>
+                    {stat.value}
+                  </p>
+                  <p className={`text-xs uppercase tracking-wide ${
+                    isDarkMode ? 'text-gray-400' : 'text-white/75'
+                  }`}>
+                    {stat.label}
+                  </p>
+                </div>
               ))}
             </motion.div>
           </motion.div>
