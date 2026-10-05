@@ -128,6 +128,68 @@ export default function About() {
             <motion.div
               whileInView={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 1.1 }}
+              className="space-y-4"
+            >
+              <h3 className={`text-xl font-semibold ${
+                isDarkMode ? 'text-blue-400' : 'text-yellow-200'
+              }`}>
+                Professional Experience
+              </h3>
+              <div className="space-y-3">
+                {[
+                  {
+                    role: 'Technical Lead',
+                    company: 'VluxAI',
+                    period: '2024 — Present',
+                    note: 'Leading web & AI product development for Vietnamese businesses.'
+                  },
+                  {
+                    role: 'Software Developer',
+                    company: 'HighScores.ai',
+                    period: '2023 — 2024',
+                    note: 'Built and maintained the Perfectice assessment platform (Angular).'
+                  },
+                  {
+                    role: 'Freelance Full-Stack Developer',
+                    company: 'Worldwide clients',
+                    period: '2021 — Present',
+                    note: '250+ projects delivered — web, mobile, AI, WordPress & Shopify.'
+                  }
+                ].map((item) => (
+                  <div
+                    key={item.company}
+                    className={`rounded-lg p-4 border ${
+                      isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white/15 border-white/20'
+                    }`}
+                  >
+                    <div className="flex flex-wrap items-baseline justify-between gap-1">
+                      <p className={`font-semibold ${isDarkMode ? 'text-white' : 'text-white'}`}>
+                        {item.role} ·{' '}
+                        <span className={isDarkMode ? 'text-blue-400' : 'text-yellow-200'}>
+                          {item.company}
+                        </span>
+                      </p>
+                      <span className={`text-xs uppercase tracking-wide ${
+                        isDarkMode ? 'text-gray-400' : 'text-white/70'
+                      }`}>
+                        {item.period}
+                      </span>
+                    </div>
+                    <p className={`mt-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-white/80'}`}>
+                      {item.note}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-white/80'}`}>
+                🎓 Software Engineering — Vietnam DongA University
+              </p>
+            </motion.div>
+
+            <motion.div
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 1.2 }}
               className="space-y-4"
             >

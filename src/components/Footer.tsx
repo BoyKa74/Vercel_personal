@@ -125,6 +125,11 @@ export default function Footer() {
             viewport={{ once: true }}
             className="text-center md:text-left"
           >
+            <img
+              src="/logo-vuweb-light.png"
+              alt="VUWEB"
+              className="h-12 w-auto mb-4 mx-auto md:mx-0"
+            />
             <h3 className={`text-2xl font-bold mb-4 ${
               isDarkMode 
                 ? 'bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent' 

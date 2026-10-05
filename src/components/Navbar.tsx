@@ -138,13 +138,17 @@ const Navbar = () => {
             onClick={() => scrollToSection('home')}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`text-2xl font-bold bg-gradient-to-r ${
+            className="flex items-center gap-2"
+            aria-label="VUWEB — home"
+          >
+            <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
+            <span className={`text-2xl font-bold bg-gradient-to-r ${
               isDarkMode 
                 ? 'from-blue-400 via-purple-500 to-indigo-600' 
                 : 'from-blue-600 via-purple-600 to-indigo-700'
-            } bg-clip-text text-transparent`}
-          >
-            MVAV
+            } bg-clip-text text-transparent`}>
+              VUWEB
+            </span>
           </motion.button>
           
           {/* Desktop menu */}
