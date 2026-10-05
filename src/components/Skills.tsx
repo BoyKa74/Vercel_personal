@@ -139,6 +139,8 @@ export default function Skills() {
     { emoji: "📄", title: "PDF → Responsive Website", description: "Print or PDF designs turned into responsive pages." },
     { emoji: "🖼️", title: "Adobe XD → HTML / React", description: "XD mockups built into production-ready frontends." },
     { emoji: "🐞", title: "Bug Fixing & Performance Optimization", description: "Debugging, Core Web Vitals and speed improvements." },
+    { emoji: "🛠️", title: "Website Maintenance & Support", description: "Updates, backups, security patches and ongoing technical support." },
+    { emoji: "⚡", title: "System Optimization & SEO", description: "Speed, caching, server/infrastructure tuning and on-page SEO." },
     { emoji: "🧪", title: "QA Tester", description: "Manual and automated testing across web & mobile." }
   ];
 
